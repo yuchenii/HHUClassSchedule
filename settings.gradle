@@ -1,2 +1,3 @@
+include ':TimetableView'
 include ':app'
 rootProject.name = "HHU课程表"
