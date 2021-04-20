@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -77,15 +78,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-//        mySubjects = SubjectRepertory.loadDefaultSubjects2();
-//        mySubjects.addAll(SubjectRepertory.loadDefaultSubjects());
+//       mySubjects = SubjectRepertory.loadDefaultSubjects2();
+//       mySubjects.addAll(SubjectRepertory.loadDefaultSubjects());
 
         SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
         String peopleListJson = sp.getString("KEY_Data_List_DATA",null);
         if(peopleListJson == null){
-            mySubjects = SubjectRepertory.loadDefaultSubjects2();
-            mySubjects.addAll(SubjectRepertory.loadDefaultSubjects());
-            toSaveSubjects(mySubjects);
+            mySubjects = SubjectRepertory.loadDefaultSubjects();
+            if(!mySubjects.isEmpty()){
+                toSaveSubjects(mySubjects);
+            }
         }else {
             mySubjects = toGetSubjects();
         }
@@ -369,6 +371,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     case R.id.top18:
                         modifyOverlayStyle();
+                        break;
+                    case R.id.top19:
+                        Intent intent = new Intent(MainActivity.this, parseHtmlActivity.class);
+                        startActivity(intent);
                         break;
 
                     default:
