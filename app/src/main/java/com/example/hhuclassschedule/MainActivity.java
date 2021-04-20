@@ -162,6 +162,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .curTerm(null)
                 .maxSlideItem(12)
                 .monthWidthDp(30)
+                .cornerAll(20)
+                .marTop(10)
+                .marLeft(10)
                 //透明度
                 //日期栏0.1f、侧边栏0.1f，周次选择栏0.6f
                 //透明度范围为0->1，0为全透明，1为不透明
