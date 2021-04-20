@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 初始化课程控件
      */
-    private void initTimetableView() {
+    protected void initTimetableView() {
         //获取控件
         mWeekView = findViewById(R.id.id_weekview);
         mTimetableView = findViewById(R.id.id_timetableView);

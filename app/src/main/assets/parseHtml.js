@@ -1,9 +1,3 @@
-function callJS(){
-            let result = parseHtml();
-               return result;
-   }
-
-
 function getSectionTimes(str_sectionTimes, index) {
     let sectionTimes = {};
     str_sectionTimes = (str_sectionTimes.replace("第", "")).replace("节(", " ");

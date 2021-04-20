@@ -27,9 +27,12 @@ import java.io.InputStreamReader;
 
 public class parseHtmlActivity extends AppCompatActivity {
 
-
-
     private static final String TAG = "parseHtmlActivity";
+
+    WebView webview;
+    Button btn;
+    String parseHtmlJS;
+    String URL = "http://jwxs.hhu.edu.cn";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +41,6 @@ public class parseHtmlActivity extends AppCompatActivity {
 
     }
 
-
-
-    WebView webview;
-    Button btn;
-    String Result;
 
     @SuppressLint("SetJavaScriptEnabled")
     public void btn_openWeb(View view) throws IOException {
@@ -53,28 +51,18 @@ public class parseHtmlActivity extends AppCompatActivity {
         ws.setBuiltInZoomControls(true);
         ws.setAllowFileAccess(true);
 
-        //  webview.loadUrl("file:///android_asset/javascript.html");
-        //  webview.loadUrl("http://jwxs.hhu.edu.cn");
-
 
         InputStreamReader inputReader = new InputStreamReader(getResources().getAssets().open("parseHtml.js"));
         BufferedReader bufReader = new BufferedReader(inputReader);
         String line = "";
-        //  String Result = "";
-        Result = "";
+        parseHtmlJS = "";
         while ((line = bufReader.readLine()) != null)
-            Result += line;
+            parseHtmlJS += line;
 
-        Log.e("myout: ","value0="+Result);
+        Log.e(TAG,"parseHtmlJS: "+parseHtmlJS);
 
-
-        webview.loadUrl(Result);
-        webview.loadUrl("http://jwxs.hhu.edu.cn");
-        //   webview.loadUrl("file:///android_asset/javascript.html");
-
-
-
-
+        webview.loadUrl(parseHtmlJS);
+        webview.loadUrl(URL);
 
         webview.setWebViewClient(new WebViewClient() {
 
@@ -88,13 +76,13 @@ public class parseHtmlActivity extends AppCompatActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon){
                 if (Build.VERSION.SDK_INT >= 19) {
-                    webview.evaluateJavascript(Result, new ValueCallback<String>() {
+                    webview.evaluateJavascript(parseHtmlJS, new ValueCallback<String>() {
                         @Override public void onReceiveValue(String value) {//js与native交互的回调函数
-                            Log.e("myout: ", "value2=" + value);
+                            Log.e(TAG, "insertJs: " + value);
                         }
                     });
-                    String str = "nihao";
-                    Log.e("myout: ", "value3=" + str);
+                    String str = "PageStarted";
+                    Log.e(TAG, "onPageStarted: " + str);
                 }
             }
 
@@ -150,7 +138,7 @@ public class parseHtmlActivity extends AppCompatActivity {
                         // 注意调用的JS方法名要对应上
                         // 调用javascript的callJS()方法
                         // webview.loadUrl("javascript:callJS()");
-                        webview.evaluateJavascript("javascript:callJS()", new ValueCallback<String>() {
+                        webview.evaluateJavascript("javascript:parseHtml()", new ValueCallback<String>() {
                             @Override
                             public void onReceiveValue(String value) {
                                 //此处为 js 返回的结果
@@ -159,6 +147,11 @@ public class parseHtmlActivity extends AppCompatActivity {
                                 editor.putString("htmlToString", value); //存入json串
                                 editor.commit();//提交
                                 Log.e(TAG, "htmlToString: "+ value);
+
+                                // 更新课表
+                                MainActivity mainActivity = new MainActivity();
+                                mainActivity.mySubjects = SubjectRepertory.loadDefaultSubjects();
+                                mainActivity.initTimetableView();
                             }
                         });
 
