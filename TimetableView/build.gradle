@@ -1,17 +1,16 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'//添加
 
 dependencies {
     api fileTree(include: '*.jar', dir: 'libs')
 }
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     sourceSets {
@@ -49,13 +48,3 @@ android {
     }
 }
 
-//添加
-publish {
-    userOrg = 'zhuangfei'//bintray.com用户名
-    repoName='Maven'
-    groupId = 'com.zhuangfei'//jcenter上的路径
-    artifactId = 'TimetableView'//项目名称
-    publishVersion = '2.0.6'//版本号
-    desc = 'A beautiful Android based curriculum schedule widget'//描述，不重要
-    website = 'https://github.com/zfman/TimetableView'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
-}

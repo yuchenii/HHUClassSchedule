@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //设置周次选择属性
         mWeekView.source(mySubjects)
-                .curWeek(1)
+           //     .curWeek(1)
                 .callback(new IWeekView.OnWeekItemClickedListener() {
                     @Override
                     public void onWeekClicked(int week) {
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .showView();
 
         mTimetableView.source(mySubjects)
-                .curWeek(1)
+          //      .curWeek(1)
                 .curTerm(null)
                 .maxSlideItem(12)
                 .monthWidthDp(30)
@@ -444,6 +444,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MySubject mysubject = new MySubject(null,"Test","寝室","张三",weeks,1,2,1,-1,null);
         Schedule schedule = new Schedule("Test","寝室","张三",weeks,1,2,1,-1);
         mySubjects.add(mysubject);
+
+
         mTimetableView.dataSource().add(schedule);
         mTimetableView.updateView();
         toSaveSubjects(mySubjects);
