@@ -1,57 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".parseHtmlActivity">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <include layout="@layout/toolbar" />
+
+
+
+    <WebView
+        android:id="@+id/classWeb"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical"
+        android:layout_height="0.0dip"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toTopOf="@id/v_bottom_bg"
+        >
+
+    </WebView>
+
+    <View
+        android:id="@+id/v_bottom_bg"
+        android:layout_width="0.0dip"
+        android:layout_height="105.0dip"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="67dp"
-            android:orientation="horizontal">
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0.0dip"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20.0dip"
+        android:layout_marginEnd="20.0dip"
+        android:text="导入课程表"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="17.0sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_subtitle"
+        app:layout_constraintEnd_toStartOf="@+id/tv_button"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/v_bottom_bg"
+        app:layout_constraintTop_toTopOf="@id/v_bottom_bg"
+        app:layout_constraintVertical_chainStyle="packed" />
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_weight="1"
-                android:text="TextView" />
+    <TextView
+        android:id="@id/tv_subtitle"
+        android:layout_width="0.0dip"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3.0dip"
+        android:text="请先在浏览器登录教务系统，定位到个人课程表页面后，点击一点导入"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textColor="@color/black_60"
+        android:textSize="12.0sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/tv_title"
+        app:layout_constraintStart_toStartOf="@id/tv_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintVertical_chainStyle="packed" />
 
-            <Button
-                android:id="@+id/button7"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="btn_openWeb"
-                android:text="Button" />
-        </LinearLayout>
-
-        <WebView
-            android:id="@+id/my_web"
-            android:layout_width="match_parent"
-            android:layout_height="423dp">
-
-        </WebView>
-
-        <Button
-            android:id="@+id/button8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="一键导入" />
-
-    </LinearLayout>
-
+    <TextView
+        android:id="@id/tv_button"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="一键导入"
+        android:textSize="14.0sp"
+        android:textColor="@color/app_blue_bg"
+        android:gravity="center"
+        android:background="@drawable/widgets_button_small_blue_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="30.0dip"
+        android:paddingStart="12.0dip"
+        android:paddingEnd="12.0dip"
+        android:layout_marginEnd="20.0dip"
+        app:layout_constraintBottom_toBottomOf="@id/v_bottom_bg"
+        app:layout_constraintEnd_toEndOf="@id/v_bottom_bg"
+        app:layout_constraintTop_toTopOf="@id/v_bottom_bg" />
 </androidx.constraintlayout.widget.ConstraintLayout>

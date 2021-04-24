@@ -20,6 +20,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +31,7 @@ public class parseHtmlActivity extends AppCompatActivity {
     private static final String TAG = "parseHtmlActivity";
 
     WebView webview;
-    Button btn;
+    TextView btn;
     String parseHtmlJS;
     String URL = "http://jwxs.hhu.edu.cn";
 
@@ -38,17 +39,23 @@ public class parseHtmlActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parse_html);
+        try {
+            btn_openWeb();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
 
     @SuppressLint("SetJavaScriptEnabled")
-    public void btn_openWeb(View view) throws IOException {
-        webview = (WebView) findViewById(R.id.my_web);
+    public void btn_openWeb() throws IOException {
+        webview = (WebView) findViewById(R.id.classWeb);
         WebSettings ws = webview.getSettings();
         ws.setJavaScriptEnabled(true);
         ws.setJavaScriptCanOpenWindowsAutomatically(true);
-        ws.setBuiltInZoomControls(true);
+        ws.setBuiltInZoomControls(true);  // 开启缩放
+        ws.setDisplayZoomControls(false);  // 隐藏原生的缩放控件
         ws.setAllowFileAccess(true);
 
 
@@ -124,7 +131,7 @@ public class parseHtmlActivity extends AppCompatActivity {
 
 
 
-        btn = (Button) findViewById(R.id.button8);
+        btn = (TextView) findViewById(R.id.tv_button);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
