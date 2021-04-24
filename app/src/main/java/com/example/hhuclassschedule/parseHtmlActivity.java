@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JsResult;
@@ -21,6 +22,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,6 +52,21 @@ public class parseHtmlActivity extends AppCompatActivity {
 
     @SuppressLint("SetJavaScriptEnabled")
     public void btn_openWeb() throws IOException {
+
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
+        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
+     //   getActionBar().setTitle("登录");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+
         webview = (WebView) findViewById(R.id.classWeb);
         WebSettings ws = webview.getSettings();
         ws.setJavaScriptEnabled(true);
@@ -66,7 +83,7 @@ public class parseHtmlActivity extends AppCompatActivity {
         while ((line = bufReader.readLine()) != null)
             parseHtmlJS += line;
 
-        Log.e(TAG,"parseHtmlJS: "+parseHtmlJS);
+        Log.e(TAG, "parseHtmlJS: " + parseHtmlJS);
 
         webview.loadUrl(parseHtmlJS);
         webview.loadUrl(URL);
@@ -81,10 +98,11 @@ public class parseHtmlActivity extends AppCompatActivity {
 
             // js 注入
             @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon){
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 if (Build.VERSION.SDK_INT >= 19) {
                     webview.evaluateJavascript(parseHtmlJS, new ValueCallback<String>() {
-                        @Override public void onReceiveValue(String value) {//js与native交互的回调函数
+                        @Override
+                        public void onReceiveValue(String value) {//js与native交互的回调函数
                             Log.e(TAG, "insertJs: " + value);
                         }
                     });
@@ -92,6 +110,20 @@ public class parseHtmlActivity extends AppCompatActivity {
                     Log.e(TAG, "onPageStarted: " + str);
                 }
             }
+
+
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                String title = view.getTitle();
+                if (!TextUtils.isEmpty(title)) {
+                    // 设置标题
+                    TextView textView = findViewById(R.id.toolbar_title);
+                    textView.setText(title);
+
+                    Log.e(TAG,"title"+title);
+                }
+            }
+
 
 //            @Override
 //            public void onPageFinished(WebView view, String url){
@@ -107,6 +139,8 @@ public class parseHtmlActivity extends AppCompatActivity {
 //            }
 
         });
+
+
 
         // alert 弹窗
         webview.setWebChromeClient(new WebChromeClient() {
@@ -128,7 +162,6 @@ public class parseHtmlActivity extends AppCompatActivity {
             }
 
         });
-
 
 
         btn = (TextView) findViewById(R.id.tv_button);
@@ -153,7 +186,7 @@ public class parseHtmlActivity extends AppCompatActivity {
                                 SharedPreferences.Editor editor = sp.edit();
                                 editor.putString("htmlToString", value); //存入json串
                                 editor.commit();//提交
-                                Log.e(TAG, "htmlToString: "+ value);
+                                Log.e(TAG, "htmlToString: " + value);
 
                                 // 更新课表
                                 MainActivity mainActivity = new MainActivity();
