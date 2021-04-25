@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:textSize="24sp"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:fontFamily="@font/iconfont"
+        android:layout_width="56dp"
+        android:layout_height="64dp"
+        android:text=""
+        android:textColor="#16AEA0" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="24dp"
+        android:background="@null"
+        android:gravity="center_vertical"
+        android:hint="课程名称"
+        android:lines="1"
+        android:singleLine="true"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_color"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_below="@id/et_name"
+        android:background="?android:attr/selectableItemBackground">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/iv_color"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/iconfont"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:text="" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_color"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="-8dp"
+            android:layout_marginEnd="24dp"
+            android:background="@null"
+            android:enabled="false"
+            android:gravity="center_vertical"
+            android:hint="选取颜色"
+            android:lines="1"
+            android:singleLine="true"
+            android:textSize="14sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/ll_color"
+        android:alpha="0.5"
+        android:background="@color/grey" />
+
+</RelativeLayout>

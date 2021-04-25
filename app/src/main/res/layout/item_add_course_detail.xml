@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:singleLine="true"
+        android:text="时间段"
+        android:textSize="12sp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/ib_delete"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/iconfont"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="@string/icon_close"
+        android:textSize="20sp" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_weeks"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_below="@id/tv_item"
+        android:background="?android:attr/selectableItemBackground">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:textSize="24sp"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/iconfont"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:text="@string/icon_date"
+            android:textColor="#16AD9F" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/et_weeks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="24dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="周数"
+            android:lines="1"
+            android:textSize="14sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_time"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_below="@id/ll_weeks"
+        android:background="?android:attr/selectableItemBackground">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:textSize="24sp"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/iconfont"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:text="@string/icon_clock"
+            android:textColor="#FFA622" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/et_time"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="24dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="周一    第1 - 2节"
+            android:lines="1"
+            android:textSize="14sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_teacher"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_below="@id/ll_time"
+        android:background="?android:attr/selectableItemBackground">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:textSize="24sp"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/iconfont"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:text="@string/icon_person"
+            android:textColor="#1571D5" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/et_teacher"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="24dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="授课老师（可不填）"
+            android:lines="1"
+            android:singleLine="true"
+            android:textSize="14sp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_room"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_below="@id/ll_teacher"
+        android:background="?android:attr/selectableItemBackground">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:textSize="24sp"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/iconfont"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:text="@string/icon_location"
+            android:textColor="#F63D3E" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/et_room"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="24dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="上课地点（可不填）"
+            android:lines="1"
+            android:singleLine="true"
+            android:textSize="14sp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</RelativeLayout>
