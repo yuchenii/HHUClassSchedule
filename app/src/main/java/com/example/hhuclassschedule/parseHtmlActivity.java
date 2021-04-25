@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -188,10 +189,13 @@ public class parseHtmlActivity extends AppCompatActivity {
                                 editor.commit();//提交
                                 Log.e(TAG, "htmlToString: " + value);
 
-                                // 更新课表
-                                MainActivity mainActivity = new MainActivity();
-                                mainActivity.mySubjects = SubjectRepertory.loadDefaultSubjects();
-                                mainActivity.initTimetableView();
+//                                // 更新课表
+//                                MainActivity mainActivity = new MainActivity();
+//                                mainActivity.mySubjects = SubjectRepertory.loadDefaultSubjects();
+//                                mainActivity.initTimetableView();
+                                Intent intent = new Intent(parseHtmlActivity.this,MainActivity.class);
+                                startActivity(intent);
+                                finish();
                             }
                         });
 
