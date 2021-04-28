@@ -34,7 +34,7 @@ public class parseHtmlActivity extends AppCompatActivity {
     private static final String TAG = "parseHtmlActivity";
 
     WebView webview;
-    TextView btn;
+    TextView tv_btn;
     String parseHtmlJS;
     String URL = "http://jwxs.hhu.edu.cn";
 
@@ -100,16 +100,14 @@ public class parseHtmlActivity extends AppCompatActivity {
             // js 注入
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                if (Build.VERSION.SDK_INT >= 19) {
-                    webview.evaluateJavascript(parseHtmlJS, new ValueCallback<String>() {
-                        @Override
-                        public void onReceiveValue(String value) {//js与native交互的回调函数
-                            Log.e(TAG, "insertJs: " + value);
-                        }
-                    });
-                    String str = "PageStarted";
-                    Log.e(TAG, "onPageStarted: " + str);
-                }
+                webview.evaluateJavascript(parseHtmlJS, new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String value) {//js与native交互的回调函数
+                        Log.e(TAG, "insertJs: " + value);
+                    }
+                });
+                String str = "PageStarted";
+                Log.e(TAG, "onPageStarted: " + str);
             }
 
 
@@ -165,9 +163,9 @@ public class parseHtmlActivity extends AppCompatActivity {
         });
 
 
-        btn = (TextView) findViewById(R.id.tv_button);
+        tv_btn = (TextView) findViewById(R.id.tv_button);
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        tv_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 通过Handler发送消息
