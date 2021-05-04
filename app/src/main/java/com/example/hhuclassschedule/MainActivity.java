@@ -172,7 +172,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .callback(new ISchedule.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, List<Schedule> scheduleList) {
-                        display(scheduleList);
+                       // display(scheduleList);
+                        showCourseDetail(scheduleList);
                     }
                 })
                 .callback(new ISchedule.OnItemLongClickListener() {
@@ -283,6 +284,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         builder.setNegativeButton("取消", null);
         builder.create().show();
+    }
+
+
+    protected  void showCourseDetail(List<Schedule> beans){
+        View courseDetail = getLayoutInflater().inflate(R.layout.fragment_course_detail,null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(courseDetail);
+//        builder.setPositiveButton("设置为当前周", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                if (target != -1) {
+//                    mWeekView.curWeek(target + 1).updateView();
+//                    mTimetableView.changeWeekForce(target + 1);
+//                }
+//            }
+//        });
+//        builder.setNegativeButton("取消", null);
+        builder.create().show();
+
     }
 
     /**
