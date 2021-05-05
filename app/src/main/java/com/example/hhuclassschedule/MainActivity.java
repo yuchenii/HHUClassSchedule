@@ -321,36 +321,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // 删除课程
         TextView tv_delete_course = courseDetail.findViewById(R.id.ib_delete_course);
         tv_delete_course.setClickable(true);
+
         tv_delete_course.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TextView tv_tips = courseDetail.findViewById(R.id.tv_tips);
+                if(tv_tips.getVisibility()==View.GONE){
+                    tv_tips.setVisibility(View.VISIBLE);
+                }else{
+                    int delete_id = (int)beans.get(0).getExtras().get("extras_id");
+                    deleteSubject(delete_id);
+                    dialog.dismiss();
 
-                int delete_id = (int)beans.get(0).getExtras().get("extras_id");
-                List<Schedule> ds = mTimetableView.dataSource();
-                Iterator<Schedule> it = ds.iterator();
-                while (it.hasNext()) {
-                    Schedule next = it.next();
-                    int id = (int) next.getExtras().get("extras_id");
-                    if (id == delete_id) {
-                        it.remove();
-                        break;
-                    }
                 }
-                mTimetableView.updateView();
-
-                List<MySubject> ms = mySubjects;
-                Iterator<MySubject> iterator = ms.iterator();
-                while (iterator.hasNext()) {
-                    MySubject next = iterator.next();
-                    int id = next.getId();
-                    if (id == delete_id) {
-                        iterator.remove();
-                        break;
-                    }
-                }
-                toSaveSubjects(mySubjects);
-                dialog.dismiss();
-
             }
         });
 
@@ -407,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         addSubject();
                         break;
                     case R.id.top2:
-                        deleteSubject();
+                        deleteSubject(18312);
                         break;
 
                     case R.id.top4:
@@ -476,7 +459,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 内部使用集合维护课程数据，操作集合的方法来操作它即可
      * 最后更新一下视图（全局更新）
      */
-    protected void deleteSubject() {
+    protected void deleteSubject(int delete_id) {
 //        int size = mTimetableView.dataSource().size();
 //        int pos = (int) (Math.random() * size);
 //        if (size > 0) {
@@ -489,7 +472,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         while (it.hasNext()) {
             Schedule next = it.next();
             int id = (int) next.getExtras().get("extras_id");
-            if (id == 18312) {
+            if (id == delete_id) {
                 it.remove();
                 break;
             }
@@ -501,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         while (iterator.hasNext()) {
             MySubject next = iterator.next();
             int id = next.getId();
-            if (id == 18312) {
+            if (id == delete_id) {
                 iterator.remove();
                 break;
             }
