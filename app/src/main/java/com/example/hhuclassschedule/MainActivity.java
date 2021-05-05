@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,13 +83,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //       mySubjects.addAll(SubjectRepertory.loadDefaultSubjects());
 
         SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
-        String peopleListJson = sp.getString("KEY_Data_List_DATA",null);
-        if(peopleListJson == null){
+        String peopleListJson = sp.getString("KEY_Data_List_DATA", null);
+        if (peopleListJson == null) {
             mySubjects = SubjectRepertory.loadDefaultSubjects();
-            if(!mySubjects.isEmpty()){
+            if (!mySubjects.isEmpty()) {
                 toSaveSubjects(mySubjects);
             }
-        }else {
+        } else {
             mySubjects = toGetSubjects();
         }
 
@@ -98,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         layout.setOnClickListener(this);
         initTimetableView();
     }
-
 
 
     /**
@@ -112,19 +112,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                .onHighLight();
 
         //用于更正日期的显示
-        int cur=mTimetableView.curWeek();
-        mTimetableView.onDateBuildListener().onUpdateDate(cur,cur);
+        int cur = mTimetableView.curWeek();
+        mTimetableView.onDateBuildListener().onUpdateDate(cur, cur);
 //        mTimetableView.onDateBuildListener().onHighLight();
 
         //更新文本
-        OnDateDelayAdapter adapter= (OnDateDelayAdapter) mTimetableView.onDateBuildListener();
-        long when=adapter.whenBeginSchool();
-        if(when>0){
-            titleTextView.setText("距离开学还有"+when+"天");
+        OnDateDelayAdapter adapter = (OnDateDelayAdapter) mTimetableView.onDateBuildListener();
+        long when = adapter.whenBeginSchool();
+        if (when > 0) {
+            titleTextView.setText("距离开学还有" + when + "天");
         }
     }
-
-
 
 
     /**
@@ -137,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //设置周次选择属性
         mWeekView.source(mySubjects)
-           //     .curWeek(1)
+                //     .curWeek(1)
                 .callback(new IWeekView.OnWeekItemClickedListener() {
                     @Override
                     public void onWeekClicked(int week) {
@@ -158,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .showView();
 
         mTimetableView.source(mySubjects)
-          //      .curWeek(1)
+                //      .curWeek(1)
                 .curTerm(null)
                 .maxSlideItem(12)
                 .monthWidthDp(30)
@@ -172,15 +170,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .callback(new ISchedule.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, List<Schedule> scheduleList) {
-                       // display(scheduleList);
+                        // display(scheduleList);
                         showCourseDetail(scheduleList);
                     }
                 })
                 .callback(new ISchedule.OnItemLongClickListener() {
                     @Override
-                    public void onLongClick(View v, int day, int start,int id) {
+                    public void onLongClick(View v, int day, int start, int id) {
                         Toast.makeText(MainActivity.this,
-                                "长按:周" + day  + ",第" + start + "节"+",id: "+id,
+                                "长按:周" + day + ",第" + start + "节" + ",id: " + id,
                                 Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -188,12 +186,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .callback(new ISchedule.OnWeekChangedListener() {
                     @Override
                     public void onWeekChanged(int curWeek) {
-                        if(mTimetableView.onDateBuildListener() instanceof  OnDateDelayAdapter){
-                            OnDateDelayAdapter adapter= (OnDateDelayAdapter) mTimetableView.onDateBuildListener();
-                            long when=adapter.whenBeginSchool();
-                            if(when>0){
-                                titleTextView.setText("距离开学还有"+when+"天");
-                            }else{
+                        if (mTimetableView.onDateBuildListener() instanceof OnDateDelayAdapter) {
+                            OnDateDelayAdapter adapter = (OnDateDelayAdapter) mTimetableView.onDateBuildListener();
+                            long when = adapter.whenBeginSchool();
+                            if (when > 0) {
+                                titleTextView.setText("距离开学还有" + when + "天");
+                            } else {
                                 titleTextView.setText("第" + curWeek + "周");
                             }
                         }
@@ -224,33 +222,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     /**
      * 配置OnDateDelayAdapter
      */
-    public OnDateDelayAdapter getDateDelayAdapter(){
-        OnDateDelayAdapter onDateDelayAdapter=new OnDateDelayAdapter();
+    public OnDateDelayAdapter getDateDelayAdapter() {
+        OnDateDelayAdapter onDateDelayAdapter = new OnDateDelayAdapter();
 
         //计算开学时间戳
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        long startTime=0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        long startTime = 0;
         try {
-            startTime=sdf.parse("2021-04-05 00:00").getTime();
+            startTime = sdf.parse("2021-04-05 00:00").getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         //计算开学时的一周日期，我这里模拟一下
-        List<String> dateList= Arrays.asList("9","03","04","05","06","07","08","09");
+        List<String> dateList = Arrays.asList("9", "03", "04", "05", "06", "07", "08", "09");
 
         //设置
         onDateDelayAdapter.setStartTime(startTime);
         onDateDelayAdapter.setDateList(dateList);
         return onDateDelayAdapter;
     }
-
-
-
 
 
     /**
@@ -287,23 +281,90 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    protected  void showCourseDetail(List<Schedule> beans){
-        View courseDetail = getLayoutInflater().inflate(R.layout.fragment_course_detail,null);
+    protected void showCourseDetail(List<Schedule> beans) {
 
+        View courseDetail = getLayoutInflater().inflate(R.layout.fragment_course_detail, null);
+        RelativeLayout rl_indlude_detail = courseDetail.findViewById(R.id.include_detail);
+        // 课程名
+        TextView tv_item = rl_indlude_detail.findViewById(R.id.tv_item);
+        tv_item.setText(beans.get(0).getName());
+        // 周数
+        TextView et_weeks = rl_indlude_detail.findViewById(R.id.et_weeks);
+        String str_weeks = "第" + beans.get(0).getWeekList().get(0) + "-" + beans.get(0).getWeekList().get(beans.get(0).getWeekList().size() - 1) + "周";
+        et_weeks.setText(str_weeks);
+        // 节数
+        TextView et_time = rl_indlude_detail.findViewById(R.id.et_time);
+        String str_time = "周" + beans.get(0).getDay() + "   第" + beans.get(0).getStart() + "-" + (beans.get(0).getStart() + beans.get(0).getStep() - 1) + "节";
+        et_time.setText(str_time);
+        // 老师
+        TextView et_teacher = rl_indlude_detail.findViewById(R.id.et_teacher);
+        et_teacher.setText(beans.get(0).getTeacher());
+        // 教室
+        TextView et_room = rl_indlude_detail.findViewById(R.id.et_room);
+        et_room.setText(beans.get(0).getRoom());
+
+        // 设置自定义布局
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(courseDetail);
-//        builder.setPositiveButton("设置为当前周", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                if (target != -1) {
-//                    mWeekView.curWeek(target + 1).updateView();
-//                    mTimetableView.changeWeekForce(target + 1);
-//                }
-//            }
-//        });
-//        builder.setNegativeButton("取消", null);
-        builder.create().show();
+        final AlertDialog dialog = builder.show();
 
+        // 关闭dialog
+        TextView tv_ib_delete = rl_indlude_detail.findViewById(R.id.ib_delete);
+        tv_ib_delete.setClickable(true);
+        tv_ib_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        // 删除课程
+        TextView tv_delete_course = courseDetail.findViewById(R.id.ib_delete_course);
+        tv_delete_course.setClickable(true);
+        tv_delete_course.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int delete_id = (int)beans.get(0).getExtras().get("extras_id");
+                List<Schedule> ds = mTimetableView.dataSource();
+                Iterator<Schedule> it = ds.iterator();
+                while (it.hasNext()) {
+                    Schedule next = it.next();
+                    int id = (int) next.getExtras().get("extras_id");
+                    if (id == delete_id) {
+                        it.remove();
+                        break;
+                    }
+                }
+                mTimetableView.updateView();
+
+                List<MySubject> ms = mySubjects;
+                Iterator<MySubject> iterator = ms.iterator();
+                while (iterator.hasNext()) {
+                    MySubject next = iterator.next();
+                    int id = next.getId();
+                    if (id == delete_id) {
+                        iterator.remove();
+                        break;
+                    }
+                }
+                toSaveSubjects(mySubjects);
+                dialog.dismiss();
+
+            }
+        });
+
+        // 编辑课程
+        TextView tv_edit_course = courseDetail.findViewById(R.id.ib_edit);
+        tv_edit_course.setClickable(true);
+        tv_edit_course.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str = "编辑课程";
+                Toast.makeText(MainActivity.this,str,Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
     }
 
     /**
@@ -314,7 +375,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void display(List<Schedule> beans) {
         String str = "";
         for (Schedule bean : beans) {
-            str += bean.getName() + ","+bean.getWeekList().toString()+","+bean.getStart()+","+bean.getStep()+","+bean.getExtras()+"\n";
+            str += bean.getName() + "," + bean.getWeekList().toString() + "," + bean.getStart() + "," + bean.getStep() + "," + bean.getExtras() + "\n";
         }
         Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
     }
@@ -330,8 +391,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-
-
 
 
     /**
@@ -427,10 +486,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        }
         List<Schedule> ds = mTimetableView.dataSource();
         Iterator<Schedule> it = ds.iterator();
-        while (it.hasNext()){
+        while (it.hasNext()) {
             Schedule next = it.next();
-            int id = (int)next.getExtras().get("extras_id");
-            if(id==18312){
+            int id = (int) next.getExtras().get("extras_id");
+            if (id == 18312) {
                 it.remove();
                 break;
             }
@@ -439,10 +498,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         List<MySubject> ms = mySubjects;
         Iterator<MySubject> iterator = ms.iterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             MySubject next = iterator.next();
             int id = next.getId();
-            if(id == 18312){
+            if (id == 18312) {
                 iterator.remove();
                 break;
             }
@@ -464,9 +523,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            dataSource.add(schedule);
 //            mTimetableView.updateView();
 //        }
-        List<Integer> weeks = Arrays.asList(1,2,3,4);
-        MySubject mysubject = new MySubject(null,"Test","寝室","张三",weeks,1,2,1,-1,null);
-        Schedule schedule = new Schedule("Test","寝室","张三",weeks,1,2,1,-1);
+        List<Integer> weeks = Arrays.asList(1, 2, 3, 4);
+        MySubject mysubject = new MySubject(null, "Test", "寝室", "张三", weeks, 1, 2, 1, -1, null);
+        Schedule schedule = new Schedule("Test", "寝室", "张三", weeks, 1, 2, 1, -1);
         mySubjects.add(mysubject);
 
 
@@ -534,7 +593,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 隐藏周次选择，此时需要将课表的日期恢复到本周并将课表切换到当前周
      */
-    public void hideWeekView(){
+    public void hideWeekView() {
         mWeekView.isShow(false);
         titleTextView.setTextColor(getResources().getColor(R.color.app_course_textcolor_blue));
         int cur = mTimetableView.curWeek();
@@ -546,7 +605,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 隐藏WeekView
      */
-    public void showWeekView(){
+    public void showWeekView() {
         mWeekView.isShow(true);
         titleTextView.setTextColor(getResources().getColor(R.color.app_red));
     }
@@ -580,9 +639,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-
-
     /**
      * 设置间距以及弧度
      * 该方法只能同时设置四个角的弧度，设置单个角的弧度可参考下文
@@ -593,7 +649,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .marLeft(10)
                 .updateView();
     }
-
 
 
     /**
@@ -615,10 +670,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-
-
-    public void toSaveSubjects(List<MySubject> course){
+    public void toSaveSubjects(List<MySubject> course) {
 
         Gson gson = new Gson();
         String str = gson.toJson(course);
@@ -626,17 +678,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("KEY_Data_List_DATA", str); //存入json串
         editor.commit();//提交
-        Log.e(TAG, "toSaveSubjects: "+ str);//peopleListJson便是取出的数据了
+        Log.e(TAG, "toSaveSubjects: " + str);//peopleListJson便是取出的数据了
 
     }
-    public  List<MySubject> toGetSubjects(){
+
+    public List<MySubject> toGetSubjects() {
 
         SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
-        String subjectJSON = sp.getString("KEY_Data_List_DATA",null);  //取出key为"KEY_PEOPLE_DATA"的值，如果值为空，则将第二个参数作为默认值赋值
-        Log.e(TAG, "toGetSubjects: "+ subjectJSON);//peopleListJson便是取出的数据了
+        String subjectJSON = sp.getString("KEY_Data_List_DATA", null);  //取出key为"KEY_PEOPLE_DATA"的值，如果值为空，则将第二个参数作为默认值赋值
+        Log.e(TAG, "toGetSubjects: " + subjectJSON);//peopleListJson便是取出的数据了
         Gson gson = new Gson();
-        List<MySubject> subjectList = gson.fromJson(subjectJSON,new TypeToken<List<MySubject>>(){}.getType());
-        return  subjectList;
+        List<MySubject> subjectList = gson.fromJson(subjectJSON, new TypeToken<List<MySubject>>() {
+        }.getType());
+        return subjectList;
     }
 
 }
