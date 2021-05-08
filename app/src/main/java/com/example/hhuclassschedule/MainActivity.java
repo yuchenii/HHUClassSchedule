@@ -343,9 +343,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tv_edit_course.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = "编辑课程";
-                Toast.makeText(MainActivity.this,str,Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+//                String str = "编辑课程";
+//                Toast.makeText(MainActivity.this,str,Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, addCourseActivity.class);
+                startActivity(intent);
+
+         //       dialog.dismiss();
             }
         });
     }

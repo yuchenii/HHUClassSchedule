@@ -2,16 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.hhuclassschedule">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name=".util.ContextApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HHU课程表"
-        android:usesCleartextTraffic="true"
-        android:name=".util.ContextApplication">
-        <activity android:name=".parseHtmlActivity"></activity>
+        android:usesCleartextTraffic="true">
+        <activity android:name=".addCourseActivity"></activity>
+        <activity android:name=".parseHtmlActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,5 +23,5 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>
