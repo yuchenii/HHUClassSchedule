@@ -293,8 +293,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String str_weeks = "第" + beans.get(0).getWeekList().get(0) + "-" + beans.get(0).getWeekList().get(beans.get(0).getWeekList().size() - 1) + "周";
         et_weeks.setText(str_weeks);
         // 节数
+        String[] arrayday = {"一","二","三","四","五","六","日"};
         TextView et_time = rl_indlude_detail.findViewById(R.id.et_time);
-        String str_time = "周" + beans.get(0).getDay() + "   第" + beans.get(0).getStart() + "-" + (beans.get(0).getStart() + beans.get(0).getStep() - 1) + "节";
+        String str_time = "周" + arrayday[beans.get(0).getDay()-1] + "   第" + beans.get(0).getStart() + "-" + (beans.get(0).getStart() + beans.get(0).getStep() - 1) + "节";
         et_time.setText(str_time);
         // 老师
         TextView et_teacher = rl_indlude_detail.findViewById(R.id.et_teacher);
@@ -332,7 +333,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     int delete_id = (int)beans.get(0).getExtras().get("extras_id");
                     deleteSubject(delete_id);
                     dialog.dismiss();
-
                 }
             }
         });
@@ -347,8 +347,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                Toast.makeText(MainActivity.this,str,Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, addCourseActivity.class);
                 startActivity(intent);
-
-         //       dialog.dismiss();
+                dialog.dismiss();
             }
         });
     }
