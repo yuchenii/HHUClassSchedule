@@ -13,8 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HHU课程表"
         android:usesCleartextTraffic="true">
-        <activity android:name=".addCourseActivity"></activity>
-        <activity android:name=".parseHtmlActivity" />
+        <activity android:name=".AddCourseActivity"></activity>
+        <activity android:name=".ParseHtmlActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -21,17 +21,15 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class parseHtmlActivity extends AppCompatActivity {
+public class ParseHtmlActivity extends AppCompatActivity {
 
-    private static final String TAG = "parseHtmlActivity";
+    private static final String TAG = "ParseHtmlActivity";
 
     WebView webview;
     TextView tv_btn;
@@ -49,7 +47,6 @@ public class parseHtmlActivity extends AppCompatActivity {
         }
 
     }
-
 
     @SuppressLint("SetJavaScriptEnabled")
     public void btn_openWeb() throws IOException {
@@ -145,7 +142,7 @@ public class parseHtmlActivity extends AppCompatActivity {
         webview.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
-                AlertDialog.Builder b = new AlertDialog.Builder(parseHtmlActivity.this);
+                AlertDialog.Builder b = new AlertDialog.Builder(ParseHtmlActivity.this);
                 b.setTitle("Alert");
                 b.setMessage(message);
                 b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -191,7 +188,7 @@ public class parseHtmlActivity extends AppCompatActivity {
 //                                MainActivity mainActivity = new MainActivity();
 //                                mainActivity.mySubjects = SubjectRepertory.loadDefaultSubjects();
 //                                mainActivity.initTimetableView();
-                                Intent intent = new Intent(parseHtmlActivity.this,MainActivity.class);
+                                Intent intent = new Intent(ParseHtmlActivity.this,MainActivity.class);
                                 startActivity(intent);
                                 finish();
                             }

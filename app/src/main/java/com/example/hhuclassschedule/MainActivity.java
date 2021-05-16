@@ -7,7 +7,6 @@ import androidx.appcompat.widget.PopupMenu;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,13 +18,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.hhuclassschedule.adapter.OnDateDelayAdapter;
 import com.example.hhuclassschedule.adapter.OnDateDelayAdapter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -37,12 +34,8 @@ import com.zhuangfei.timetable.listener.OnSlideBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.view.WeekView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -345,7 +338,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
 //                String str = "编辑课程";
 //                Toast.makeText(MainActivity.this,str,Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, addCourseActivity.class);
+                Intent intent = new Intent(MainActivity.this, AddCourseActivity.class);
                 startActivity(intent);
                 dialog.dismiss();
             }
@@ -441,7 +434,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         modifyOverlayStyle();
                         break;
                     case R.id.top19:
-                        Intent intent = new Intent(MainActivity.this, parseHtmlActivity.class);
+                        Intent intent = new Intent(MainActivity.this, ParseHtmlActivity.class);
                         startActivity(intent);
                         break;
 
