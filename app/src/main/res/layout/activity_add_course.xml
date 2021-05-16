@@ -6,25 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".AddCourseActivity">
 
-    <include
-        android:id="@+id/include_add_course_toolbar"
-        layout="@layout/toolbar" />
+    <include layout="@layout/toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/include_add_course_toolbar">
+        android:layout_below="@id/toolbar">
+
         <LinearLayout
             android:id="@+id/ll_add_course_detail"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
+            android:orientation="vertical">
+
             <include
                 android:id="@+id/include_add_course_base"
                 layout="@layout/item_add_course_base" />
+
+            <include
+                android:id="@+id/include_add_course_detail"
+                layout="@layout/item_add_course_detail" />
+
             <include layout="@layout/item_add_course_detail" />
-            <include layout="@layout/item_add_course_detail" />
+
             <include layout="@layout/item_add_course_detail" />
         </LinearLayout>
     </ScrollView>

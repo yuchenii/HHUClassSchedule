@@ -34,6 +34,7 @@ import com.zhuangfei.timetable.listener.OnSlideBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.view.WeekView;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -344,6 +345,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                String str = "编辑课程";
 //                Toast.makeText(MainActivity.this,str,Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, AddCourseActivity.class);
+                intent.putExtra("title","编辑课程");
+                intent.putExtra("scheduleList",(Serializable) beans);
                 startActivity(intent);
                 dialog.dismiss();
             }
