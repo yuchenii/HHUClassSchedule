@@ -180,9 +180,9 @@ public class ParseHtmlActivity extends AppCompatActivity {
                                 //此处为 js 返回的结果
                                 SharedPreferences sp = getSharedPreferences("SP_Data_List", Context.MODE_PRIVATE);//创建sp对象
                                 SharedPreferences.Editor editor = sp.edit();
-                                editor.putString("htmlToString", value); //存入json串
+                                editor.putString("HTML_TO_SUBJECT", value); //存入json串
                                 editor.commit();//提交
-                                Log.e(TAG, "htmlToString: " + value);
+                                Log.e(TAG, "HTML_TO_SUBJECT: " + value);
 
 //                                // 更新课表
 //                                MainActivity mainActivity = new MainActivity();

@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //       mySubjects.addAll(SubjectRepertory.loadDefaultSubjects());
 
         SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
-        String peopleListJson = sp.getString("KEY_Data_List_DATA", null);
-        if (peopleListJson == null) {
+        String subjectListJson = sp.getString("SUBJECT_LIST", null);
+        if (subjectListJson == null) {
             mySubjects = SubjectRepertory.loadDefaultSubjects();
             if (!mySubjects.isEmpty()) {
                 toSaveSubjects(mySubjects);
@@ -274,6 +274,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    /**
+     * 显示课程详细信息
+     *
+     * @param beans
+     */
     protected void showCourseDetail(List<Schedule> beans) {
 
         View courseDetail = getLayoutInflater().inflate(R.layout.fragment_course_detail, null);
@@ -648,25 +653,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    public void toSaveSubjects(List<MySubject> course) {
+    public void toSaveSubjects(List<MySubject> subject) {
 
         Gson gson = new Gson();
-        String str = gson.toJson(course);
+        String str_subjectJSON = gson.toJson(subject);
         SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString("KEY_Data_List_DATA", str); //存入json串
+        editor.putString("SUBJECT_LIST", str_subjectJSON); //存入json串
         editor.commit();//提交
-        Log.e(TAG, "toSaveSubjects: " + str);//peopleListJson便是取出的数据了
+        Log.e(TAG, "toSaveSubjects: " + str_subjectJSON);
 
     }
 
     public List<MySubject> toGetSubjects() {
 
         SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
-        String subjectJSON = sp.getString("KEY_Data_List_DATA", null);  //取出key为"KEY_PEOPLE_DATA"的值，如果值为空，则将第二个参数作为默认值赋值
-        Log.e(TAG, "toGetSubjects: " + subjectJSON);//peopleListJson便是取出的数据了
+        String str_subjectJSON = sp.getString("SUBJECT_LIST", null);  //取出key为"SUBJECT_LIST"的值，如果值为空，则将第二个参数作为默认值赋值
+        Log.e(TAG, "toGetSubjects: " + str_subjectJSON);//str_subjectJSON便是取出的数据了
         Gson gson = new Gson();
-        List<MySubject> subjectList = gson.fromJson(subjectJSON, new TypeToken<List<MySubject>>() {
+        List<MySubject> subjectList = gson.fromJson(str_subjectJSON, new TypeToken<List<MySubject>>() {
         }.getType());
         return subjectList;
     }
