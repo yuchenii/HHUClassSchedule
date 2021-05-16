@@ -199,6 +199,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Toast.makeText(MainActivity.this,
                                 "点击了旗标:周" + (day + 1) + ",第" + start + "节",
                                 Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MainActivity.this, AddCourseActivity.class);
+                        intent.putExtra("title","添加课程");
+                        intent.putExtra("day",day);
+                        intent.putExtra("start",start);
+                        startActivity(intent);
                     }
                 })
                 .callback(new OnItemBuildAdapter() {

@@ -29,11 +29,15 @@ public class AddCourseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_course);
 
         title = (String)getIntent().getExtras().get("title");
-        scheduletList = (List<Schedule>)getIntent().getSerializableExtra("scheduleList");
-
         initTollbar(title);
-
-        editSubject(scheduletList);
+        if(title.equals("编辑课程")){
+            scheduletList = (List<Schedule>)getIntent().getSerializableExtra("scheduleList");
+            editSubject(scheduletList);
+        }else {
+            int day = (int)getIntent().getExtras().get("day");
+            int start = (int)getIntent().getExtras().get("start");
+            addSubject(day,start);
+        }
     }
 
     protected void initTollbar(String title){
@@ -84,5 +88,9 @@ public class AddCourseActivity extends AppCompatActivity {
                 Toast.makeText(AddCourseActivity.this,str,Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    protected void addSubject(int day,int start){
+
     }
 }
