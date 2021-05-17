@@ -27,9 +27,6 @@
                 android:id="@+id/include_add_course_detail"
                 layout="@layout/item_add_course_detail" />
 
-            <include layout="@layout/item_add_course_detail" />
-
-            <include layout="@layout/item_add_course_detail" />
         </LinearLayout>
     </ScrollView>
 

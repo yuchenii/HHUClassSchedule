@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -302,10 +303,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String str_time = "周" + arrayday[beans.get(0).getDay()-1] + "   第" + beans.get(0).getStart() + "-" + (beans.get(0).getStart() + beans.get(0).getStep() - 1) + "节";
         et_time.setText(str_time);
         // 老师
-        TextView et_teacher = rl_indlude_detail.findViewById(R.id.et_teacher);
+        EditText et_teacher = rl_indlude_detail.findViewById(R.id.et_teacher);
+        et_teacher.setEnabled(false);
         et_teacher.setText(beans.get(0).getTeacher());
         // 教室
-        TextView et_room = rl_indlude_detail.findViewById(R.id.et_room);
+        EditText et_room = rl_indlude_detail.findViewById(R.id.et_room);
+        et_room.setEnabled(false);
         et_room.setText(beans.get(0).getRoom());
 
         // 设置自定义布局
