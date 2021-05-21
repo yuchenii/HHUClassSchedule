@@ -4,6 +4,7 @@ package com.example.hhuclassschedule;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hhuclassschedule.adapter.OnDateDelayAdapter;
+import com.example.hhuclassschedule.util.ContextApplication;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhuangfei.timetable.TimetableView;
@@ -207,17 +209,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startActivity(intent);
                     }
                 })
-                .callback(new OnItemBuildAdapter() {
-                    @Override
-                    public void onItemUpdate(FrameLayout layout, TextView textView, TextView countTextView, Schedule schedule, GradientDrawable gd) {
-                        super.onItemUpdate(layout, textView, countTextView, schedule, gd);
-                        //可见说明重叠，取消角标，添加角度
-                        if (countTextView.getVisibility() == View.VISIBLE) {
-                            countTextView.setVisibility(View.GONE);
-                            //       gd.setCornerRadii(new float[]{0, 0, 20, 20, 0, 0, 0, 0});
-                        }
-                    }
-                })
                 .showView();
     }
 
@@ -354,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                Toast.makeText(MainActivity.this,str,Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, AddCourseActivity.class);
                 intent.putExtra("title","编辑课程");
-                intent.putExtra("scheduleList",(Serializable) beans);
+                intent.putExtra("scheduleList",new Gson().toJson(beans));
                 startActivity(intent);
                 dialog.dismiss();
             }
@@ -589,7 +580,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     public void hideWeekView() {
         mWeekView.isShow(false);
-        titleTextView.setTextColor(getResources().getColor(R.color.app_course_textcolor_blue));
+        // titleTextView.setTextColor(getResources().getColor(R.color.app_course_textcolor_blue));
+        titleTextView.setTextColor(ContextCompat.getColor(ContextApplication.getAppContext(),R.color.app_course_textcolor_blue));
         int cur = mTimetableView.curWeek();
         mTimetableView.onDateBuildListener()
                 .onUpdateDate(cur, cur);
@@ -601,7 +593,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     public void showWeekView() {
         mWeekView.isShow(true);
-        titleTextView.setTextColor(getResources().getColor(R.color.app_red));
+       // titleTextView.setTextColor(getResources().getColor(R.color.app_red));
+        titleTextView.setTextColor(ContextCompat.getColor(ContextApplication.getAppContext(),R.color.app_red));
     }
 
     /**
@@ -656,7 +649,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //可见说明重叠，取消角标，添加角度
                 if (countTextView.getVisibility() == View.VISIBLE) {
                     countTextView.setVisibility(View.GONE);
-                    //       gd.setCornerRadii(new float[]{0, 0, 20, 20, 0, 0, 0, 0});
+                    // 设置弧度
+                    // gd.setCornerRadii(new float[]{0, 0, 20, 20, 0, 0, 0, 0});
                 }
             }
         });

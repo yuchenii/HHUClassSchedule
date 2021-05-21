@@ -62,7 +62,8 @@ public class AddCourseActivity extends AppCompatActivity {
         title = (String) getIntent().getExtras().get("title");
         initToolbar(title);
         if (title.equals("编辑课程")) {
-            scheduletList = (List<Schedule>) getIntent().getSerializableExtra("scheduleList");
+            String scheduleJson = getIntent().getStringExtra("scheduleList");
+            scheduletList = new Gson().fromJson(scheduleJson,new TypeToken<List<Schedule>>(){}.getType());
             editSubject(scheduletList);
         } else {
             int i_day = (int) getIntent().getExtras().get("day");
@@ -115,7 +116,7 @@ public class AddCourseActivity extends AppCompatActivity {
 
             List<MySubject> mySubjects = toGetSubjects();
             if (title.equals("编辑课程")) {
-                int delete_id = (int)scheduletList.get(0).getExtras().get("extras_id");
+                int delete_id = Double.valueOf(String.valueOf(scheduletList.get(0).getExtras().get("extras_id"))).intValue();
                 Iterator<MySubject> iterator = mySubjects.iterator();
                 while (iterator.hasNext()) {
                     MySubject next = iterator.next();
@@ -133,6 +134,7 @@ public class AddCourseActivity extends AppCompatActivity {
             toSaveSubjects(mySubjects);
             Intent intent = new Intent(AddCourseActivity.this, MainActivity.class);
             startActivity(intent);
+            finish(); // 销毁当前activity
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -195,7 +197,7 @@ public class AddCourseActivity extends AppCompatActivity {
     // 添加课程
     protected void addSubject(int i_day, int i_start) {
 
-        day = i_day;
+        day = i_day+1;
         start = i_start;
         step = 2;
         weeks = new ArrayList<>();
@@ -251,6 +253,14 @@ public class AddCourseActivity extends AppCompatActivity {
         builder.setView(selectTimeDetail);
         final AlertDialog dialog = builder.show();
 
+        Button btn_cancel = selectTimeDetail.findViewById(R.id.btn_cancel);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
         Button btn_savetime = selectTimeDetail.findViewById(R.id.btn_save_time);
         btn_savetime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -275,16 +285,9 @@ public class AddCourseActivity extends AppCompatActivity {
         //设置最小值
         dayPicker.setMinValue(0);
         //设置当前值
-        dayPicker.setValue(0);
+        dayPicker.setValue(day-1);
         //设置滑动监听
-        dayPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
-            //当NunberPicker的值发生改变时，将会激发该方法
-            @Override
-            public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
-                String toast = "oldVal：" + oldVal + "   newVal：" + newVal;
-                //   Toast.makeText(AddCourseActivity.this, toast, Toast.LENGTH_SHORT).show();
-            }
-        });
+
 
         sectionStartPicker = selectTimeDetail.findViewById(R.id.time_start);
         String[] sectionStart = {"第1节", "第2节", "第3节", "第4节", "第5节", "第6节", "第7节", "第8节", "第9节", "第10节", "第11节", "第12节", "第13节", "第14节", "第15节"};
@@ -294,7 +297,8 @@ public class AddCourseActivity extends AppCompatActivity {
         //设置最小值
         sectionStartPicker.setMinValue(0);
         //设置当前值
-        sectionStartPicker.setValue(0);
+        sectionStartPicker.setValue(start-1);
+
 
         sectionEndPicker = selectTimeDetail.findViewById(R.id.time_end);
         String[] sectionEnd = {"第1节", "第2节", "第3节", "第4节", "第5节", "第6节", "第7节", "第8节", "第9节", "第10节", "第11节", "第12节", "第13节", "第14节", "第15节"};
@@ -304,7 +308,32 @@ public class AddCourseActivity extends AppCompatActivity {
         //设置最小值
         sectionEndPicker.setMinValue(0);
         //设置当前值
-        sectionEndPicker.setValue(0);
+        sectionEndPicker.setValue(start+step-2);
+
+        sectionStartPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
+            //当NunberPicker的值发生改变时，将会激发该方法
+            @Override
+            public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
+                if(newVal>sectionEndPicker.getValue()){
+                    sectionEndPicker.setValue(sectionStartPicker.getValue());
+                    sectionEndPicker.smoothScrollToValue(sectionStartPicker.getValue(),false);
+                }
+                String toast = oldVal + " " + newVal;
+                Toast.makeText(AddCourseActivity.this, toast, Toast.LENGTH_SHORT).show();
+            }
+        });
+        sectionEndPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
+            //当NunberPicker的值发生改变时，将会激发该方法
+            @Override
+            public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
+                if(newVal<sectionStartPicker.getValue()){
+                    sectionStartPicker.setValue(sectionEndPicker.getValue());
+                    sectionStartPicker.smoothScrollToValue(sectionEndPicker.getValue(),false);
+                }
+                String toast = oldVal + " " + newVal;
+                  Toast.makeText(AddCourseActivity.this, toast, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // 选择周数
@@ -315,6 +344,14 @@ public class AddCourseActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(selectWeekDetail);
         final AlertDialog dialog = builder.show();
+
+        Button btn_cancel = selectWeekDetail.findViewById(R.id.btn_cancel);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
 
         Button btn_saveWeek = selectWeekDetail.findViewById(R.id.btn_save_week);
         btn_saveWeek.setOnClickListener(new View.OnClickListener() {
@@ -338,25 +375,56 @@ public class AddCourseActivity extends AppCompatActivity {
 
         weekStartPicker = selectWeekDetail.findViewById(R.id.week_start);
         String[] weekStart = {"第1周", "第2周", "第3周", "第4周", "第5周", "第6周", "第7周", "第8周", "第9周", "第10周", "第11周", "第12周", "第13周", "第14周", "第15周",
-                "第16周", "第17周", "第18周", "第19周", "第20周", "第21周", "第22周", "第23周", "第24周", "第25周", "第26周", "第27周", "第28周", "第29周", "第30周"};
+                "第16周", "第17周", "第18周", "第19周", "第20周", "第21周", "第22周", "第23周", "第24周", "第25周"};
         weekStartPicker.setDisplayedValues(weekStart);
         //设置最大值
         weekStartPicker.setMaxValue(weekStart.length - 1);
         //设置最小值
         weekStartPicker.setMinValue(0);
         //设置当前值
-        weekStartPicker.setValue(0);
+        if(weeks.isEmpty()){
+            weekStartPicker.setValue(0);
+        }else {
+            weekStartPicker.setValue(weeks.get(0)-1);
+        }
+
 
         weekEndPicker = selectWeekDetail.findViewById(R.id.week_end);
         String[] weekEnd = {"第1周", "第2周", "第3周", "第4周", "第5周", "第6周", "第7周", "第8周", "第9周", "第10周", "第11周", "第12周", "第13周", "第14周", "第15周",
-                "第16周", "第17周", "第18周", "第19周", "第20周", "第21周", "第22周", "第23周", "第24周", "第25周", "第26周", "第27周", "第28周", "第29周", "第30周"};
+                "第16周", "第17周", "第18周", "第19周", "第20周", "第21周", "第22周", "第23周", "第24周", "第25周"};
         weekEndPicker.setDisplayedValues(weekEnd);
         //设置最大值
         weekEndPicker.setMaxValue(weekEnd.length - 1);
         //设置最小值
         weekEndPicker.setMinValue(0);
         //设置当前值
-        weekEndPicker.setValue(0);
+        if(weeks.isEmpty()){
+            weekEndPicker.setValue(0);
+        }else {
+            weekEndPicker.setValue(weeks.get(weeks.size()-1)-1);
+        }
+
+        weekStartPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
+            //当NunberPicker的值发生改变时，将会激发该方法
+            @Override
+            public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
+                if(newVal>weekEndPicker.getValue()){
+                    weekEndPicker.setValue(weekStartPicker.getValue());
+                    weekEndPicker.smoothScrollToValue(weekStartPicker.getValue(),false);
+                }
+            }
+        });
+
+        weekEndPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
+            //当NunberPicker的值发生改变时，将会激发该方法
+            @Override
+            public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
+                if(newVal<weekStartPicker.getValue()){
+                    weekStartPicker.setValue(weekEndPicker.getValue());
+                    weekStartPicker.smoothScrollToValue(weekEndPicker.getValue(),false);
+                }
+            }
+        });
     }
 
 

@@ -18,6 +18,7 @@ import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -55,14 +56,13 @@ public class ParseHtmlActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
-     //   getActionBar().setTitle("登录");
+        //   getActionBar().setTitle("登录");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
 
 
         webview = (WebView) findViewById(R.id.classWeb);
@@ -88,11 +88,16 @@ public class ParseHtmlActivity extends AppCompatActivity {
 
         webview.setWebViewClient(new WebViewClient() {
 
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String Url) {
-                view.loadUrl(Url);
-                return true;
-            }
+// android 6.0 以下使用
+//            public boolean shouldOverrideUrlLoading(WebView view, String Url) {
+//                view.loadUrl(Url);
+//                return true;
+//            }
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+//                view.loadUrl(String.valueOf(request.getUrl()));
+//                return true;
+//            }
 
             // js 注入
             @Override
@@ -116,7 +121,7 @@ public class ParseHtmlActivity extends AppCompatActivity {
                     TextView textView = findViewById(R.id.toolbar_title);
                     textView.setText(title);
 
-                    Log.e(TAG,"title"+title);
+                    Log.e(TAG, "title" + title);
                 }
             }
 
@@ -137,27 +142,26 @@ public class ParseHtmlActivity extends AppCompatActivity {
         });
 
 
-
-        // alert 弹窗
-        webview.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
-                AlertDialog.Builder b = new AlertDialog.Builder(ParseHtmlActivity.this);
-                b.setTitle("Alert");
-                b.setMessage(message);
-                b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        result.confirm();
-                    }
-                });
-                b.setCancelable(false);
-                b.create().show();
-                return true;
-
-            }
-
-        });
+//        // alert 弹窗
+//        webview.setWebChromeClient(new WebChromeClient() {
+//            @Override
+//            public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
+//                AlertDialog.Builder b = new AlertDialog.Builder(ParseHtmlActivity.this);
+//                b.setTitle("Alert");
+//                b.setMessage(message);
+//                b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        result.confirm();
+//                    }
+//                });
+//                b.setCancelable(false);
+//                b.create().show();
+//                return true;
+//
+//            }
+//
+//        });
 
 
         tv_btn = (TextView) findViewById(R.id.tv_button);
@@ -180,15 +184,12 @@ public class ParseHtmlActivity extends AppCompatActivity {
                                 //此处为 js 返回的结果
                                 SharedPreferences sp = getSharedPreferences("SP_Data_List", Context.MODE_PRIVATE);//创建sp对象
                                 SharedPreferences.Editor editor = sp.edit();
+                                editor.clear();
                                 editor.putString("HTML_TO_SUBJECT", value); //存入json串
                                 editor.commit();//提交
                                 Log.e(TAG, "HTML_TO_SUBJECT: " + value);
 
-//                                // 更新课表
-//                                MainActivity mainActivity = new MainActivity();
-//                                mainActivity.mySubjects = SubjectRepertory.loadDefaultSubjects();
-//                                mainActivity.initTimetableView();
-                                Intent intent = new Intent(ParseHtmlActivity.this,MainActivity.class);
+                                Intent intent = new Intent(ParseHtmlActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 finish();
                             }
