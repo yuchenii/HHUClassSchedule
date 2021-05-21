@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -215,7 +216,9 @@ public class SimpleOperater extends AbsOperater{
             gd.setCornerRadius(mView.corner(false));
         }
 
-        textView.setBackgroundDrawable(gd);
+      //textView.setBackgroundDrawable(gd);
+        textView.setBackground(gd);
+
         mView.onItemBuildListener().onItemUpdate(layout, textView, countTextView, subject, gd);
 
         textView.setOnClickListener(new View.OnClickListener() {

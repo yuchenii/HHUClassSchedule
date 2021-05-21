@@ -3,6 +3,8 @@ package com.zhuangfei.timetable.model;
 import android.content.Context;
 import android.graphics.Color;
 
+import androidx.core.content.ContextCompat;
+
 import com.zhuangfei.android_timetableview.sample.R;
 import com.zhuangfei.timetable.utils.ColorUtils;
 
@@ -31,7 +33,8 @@ public class ScheduleColorPool{
 
     public ScheduleColorPool(Context context){
         this.context=context;
-        setUselessColor(context.getResources().getColor(R.color.useless));
+        // setUselessColor(context.getResources().getColor(R.color.useless));
+        setUselessColor(ContextCompat.getColor(context,R.color.useless));
         colorMap=new HashMap<>();
         reset();
     }
@@ -202,7 +205,8 @@ public class ScheduleColorPool{
         clear();
 
         for(int i=0;i<colors.length;i++){
-            add(context.getResources().getColor(colors[i]));
+          //  add(context.getResources().getColor(colors[i]));
+            add(ContextCompat.getColor(context,colors[i]));
         }
         return this;
     }
