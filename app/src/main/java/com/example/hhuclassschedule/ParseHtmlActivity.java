@@ -1,24 +1,16 @@
 package com.example.hhuclassschedule;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.webkit.JsResult;
 import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -60,7 +52,6 @@ public class ParseHtmlActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
-        //   getActionBar().setTitle("登录");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,24 +59,35 @@ public class ParseHtmlActivity extends AppCompatActivity {
             }
         });
 
-
-        webview = (WebView) findViewById(R.id.classWeb);
-        WebSettings ws = webview.getSettings();
-        ws.setJavaScriptEnabled(true);
-        ws.setJavaScriptCanOpenWindowsAutomatically(true);
-        ws.setBuiltInZoomControls(true);  // 开启缩放
-        ws.setDisplayZoomControls(false);  // 隐藏原生的缩放控件
-        ws.setAllowFileAccess(true);
-
-
         InputStreamReader inputReader = new InputStreamReader(getResources().getAssets().open("parseHtml.js"));
         BufferedReader bufReader = new BufferedReader(inputReader);
-        String line = "";
+        String line;
         parseHtmlJS = "";
         while ((line = bufReader.readLine()) != null)
             parseHtmlJS += line;
-
         Log.e(TAG, "parseHtmlJS: " + parseHtmlJS);
+
+
+        webview = findViewById(R.id.classWeb);
+        WebSettings ws = webview.getSettings();
+        // 支持js
+        ws.setJavaScriptEnabled(true);    // 允许js
+        ws.setJavaScriptCanOpenWindowsAutomatically(true);  // 允许js打开新窗口
+
+        // 缩放操作
+        ws.setSupportZoom(true);
+        ws.setBuiltInZoomControls(true);   // 开启缩放
+        ws.setDisplayZoomControls(false);  // 隐藏原生的缩放控件
+
+        // 自适应屏幕
+        ws.setUseWideViewPort(true);       // 自适应屏幕
+        ws.setLoadWithOverviewMode(true);  // 缩放至屏幕的大小
+
+        // 设置浏览器标识，以pc模式打开网页
+        ws.setUserAgentString("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36");
+
+        ws.setAllowFileAccess(true);       // 可以访问文件
+
 
         webview.loadUrl(parseHtmlJS);
         webview.loadUrl(URL);
@@ -106,14 +108,7 @@ public class ParseHtmlActivity extends AppCompatActivity {
             // js 注入
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                webview.evaluateJavascript(parseHtmlJS, new ValueCallback<String>() {
-                    @Override
-                    public void onReceiveValue(String value) {//js与native交互的回调函数
-                        Log.e(TAG, "insertJs: " + value);
-                    }
-                });
-                String str = "PageStarted";
-                Log.e(TAG, "onPageStarted: " + str);
+                webview.evaluateJavascript(parseHtmlJS, null);
             }
 
 
@@ -122,9 +117,9 @@ public class ParseHtmlActivity extends AppCompatActivity {
                 String title = view.getTitle();
                 if (!TextUtils.isEmpty(title)) {
                     // 设置标题
+                    // getSupportActionBar().setTitle(title);
                     TextView textView = findViewById(R.id.toolbar_title);
                     textView.setText(title);
-
                     Log.e(TAG, "title" + title);
                 }
             }
@@ -146,30 +141,8 @@ public class ParseHtmlActivity extends AppCompatActivity {
         });
 
 
-//        // alert 弹窗
-//        webview.setWebChromeClient(new WebChromeClient() {
-//            @Override
-//            public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
-//                AlertDialog.Builder b = new AlertDialog.Builder(ParseHtmlActivity.this);
-//                b.setTitle("Alert");
-//                b.setMessage(message);
-//                b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        result.confirm();
-//                    }
-//                });
-//                b.setCancelable(false);
-//                b.create().show();
-//                return true;
-//
-//            }
-//
-//        });
 
-
-        tv_btn = (TextView) findViewById(R.id.tv_button);
-
+        tv_btn = findViewById(R.id.tv_button);
         tv_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,7 +164,7 @@ public class ParseHtmlActivity extends AppCompatActivity {
 //                                editor.clear();
 //                                editor.putString("HTML_TO_SUBJECT", value); //存入json串
 //                                editor.commit();//提交
-                              //  SharedPreferencesUtil.init(getAppContext(),"SP_Data_List").remove("HTML_TO_SUBJECT");
+                                //  SharedPreferencesUtil.init(getAppContext(),"SP_Data_List").remove("HTML_TO_SUBJECT");
                                 SharedPreferencesUtil.init(ContextApplication.getAppContext(),"SP_Data_List").putString("HTML_TO_SUBJECT", value);
                                 SharedPreferencesUtil.init(ContextApplication.getAppContext(),"SP_Data_List").remove("SUBJECT_LIST");
                                 Log.e(TAG, "HTML_TO_SUBJECT: " + value);
@@ -201,24 +174,12 @@ public class ParseHtmlActivity extends AppCompatActivity {
                                 finish();
                             }
                         });
-
                     }
                 });
-
             }
         });
 
-
     }
 
-
-//    public void btn_getClass(View view) {
-//        webview.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                webview.loadUrl("javascript:callJS()");
-//            }
-//        });
-//    }
 
 }

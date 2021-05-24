@@ -191,11 +191,6 @@ public class MySubject implements ScheduleEnable {
     }
 
     public int getId() {
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ssSSS");
-//        String timeStamp = simpleDateFormat.format(new Date());
-//      //  id = (int) System.currentTimeMillis();
-//        long timestamp = System.currentTimeMillis() * 1000000L + System.nanoTime() % 1000000L;
-//        id = timestamp % 1000000000L;
         String str = ""+getWeekList().get(0)+getWeekList().get(getWeekList().size()-1)+getDay()+getStart()+getStep();
         id = Integer.parseInt(str);
         return id;

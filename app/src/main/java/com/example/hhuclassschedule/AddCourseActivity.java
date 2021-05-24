@@ -2,12 +2,12 @@ package com.example.hhuclassschedule;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
-import android.app.Activity;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
+
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -77,14 +77,18 @@ public class AddCourseActivity extends AppCompatActivity {
 
     protected void initToolbar(String title) {
 
-        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // 设置title
+        // getSupportActionBar().setTitle(title);
         TextView textView = findViewById(R.id.toolbar_title);
+        Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) textView.getLayoutParams();
+        layoutParams.setMarginStart(160);
+        textView.setLayoutParams(layoutParams);
         textView.setText(title);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
-        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);// 添加默认的返回图标
+        getSupportActionBar().setHomeButtonEnabled(true);     // 设置返回键可用
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +97,7 @@ public class AddCourseActivity extends AppCompatActivity {
         });
     }
 
+    // 保存菜单
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.savemenu, menu);
@@ -255,7 +260,7 @@ public class AddCourseActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(selectTimeDetail);
         final AlertDialog dialog = builder.show();
-
+        // 关闭dialog
         Button btn_cancel = selectTimeDetail.findViewById(R.id.btn_cancel);
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,7 +268,7 @@ public class AddCourseActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-
+        // 保存
         Button btn_savetime = selectTimeDetail.findViewById(R.id.btn_save_time);
         btn_savetime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -289,8 +294,6 @@ public class AddCourseActivity extends AppCompatActivity {
         dayPicker.setMinValue(0);
         //设置当前值
         dayPicker.setValue(day-1);
-        //设置滑动监听
-
 
         sectionStartPicker = selectTimeDetail.findViewById(R.id.time_start);
         String[] sectionStart = {"第1节", "第2节", "第3节", "第4节", "第5节", "第6节", "第7节", "第8节", "第9节", "第10节", "第11节", "第12节", "第13节", "第14节", "第15节"};
@@ -321,8 +324,8 @@ public class AddCourseActivity extends AppCompatActivity {
                     sectionEndPicker.setValue(sectionStartPicker.getValue());
                     sectionEndPicker.smoothScrollToValue(sectionStartPicker.getValue(),false);
                 }
-                String toast = oldVal + " " + newVal;
-                Toast.makeText(AddCourseActivity.this, toast, Toast.LENGTH_SHORT).show();
+                // String toast = oldVal + " " + newVal;
+                // Toast.makeText(AddCourseActivity.this, toast, Toast.LENGTH_SHORT).show();
             }
         });
         sectionEndPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
@@ -333,8 +336,8 @@ public class AddCourseActivity extends AppCompatActivity {
                     sectionStartPicker.setValue(sectionEndPicker.getValue());
                     sectionStartPicker.smoothScrollToValue(sectionEndPicker.getValue(),false);
                 }
-                String toast = oldVal + " " + newVal;
-                  Toast.makeText(AddCourseActivity.this, toast, Toast.LENGTH_SHORT).show();
+                // String toast = oldVal + " " + newVal;
+                // Toast.makeText(AddCourseActivity.this, toast, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -347,7 +350,7 @@ public class AddCourseActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(selectWeekDetail);
         final AlertDialog dialog = builder.show();
-
+        // 关闭dialog
         Button btn_cancel = selectWeekDetail.findViewById(R.id.btn_cancel);
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -355,14 +358,14 @@ public class AddCourseActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-
+        // 保存
         Button btn_saveWeek = selectWeekDetail.findViewById(R.id.btn_save_week);
         btn_saveWeek.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int start = weekStartPicker.getValue() + 1;
                 int end = weekEndPicker.getValue() + 1;
-                weeks = new ArrayList<Integer>();
+                weeks = new ArrayList<>();
                 for (int i = start; i <= end; i++) {
                     weeks.add(i);
                 }
@@ -390,7 +393,6 @@ public class AddCourseActivity extends AppCompatActivity {
         }else {
             weekStartPicker.setValue(weeks.get(0)-1);
         }
-
 
         weekEndPicker = selectWeekDetail.findViewById(R.id.week_end);
         String[] weekEnd = {"第1周", "第2周", "第3周", "第4周", "第5周", "第6周", "第7周", "第8周", "第9周", "第10周", "第11周", "第12周", "第13周", "第14周", "第15周",
@@ -429,28 +431,4 @@ public class AddCourseActivity extends AppCompatActivity {
             }
         });
     }
-
-
-//    public void toSaveSubjects(List<MySubject> subject) {
-//
-//        Gson gson = new Gson();
-//        String str_subjectJSON = gson.toJson(subject);
-//        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
-//        SharedPreferences.Editor editor = sp.edit();
-//        editor.putString("SUBJECT_LIST", str_subjectJSON); //存入json串
-//        editor.commit();//提交
-//        Log.e(TAG, "toSaveSubjects: " + str_subjectJSON);
-//
-//    }
-//
-//    public List<MySubject> toGetSubjects() {
-//
-//        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
-//        String str_subjectJSON = sp.getString("SUBJECT_LIST", null);  //取出key为"SUBJECT_LIST"的值，如果值为空，则将第二个参数作为默认值赋值
-//        Log.e(TAG, "toGetSubjects: " + str_subjectJSON);//str_subjectJSON便是取出的数据了
-//        Gson gson = new Gson();
-//        List<MySubject> subjectList = gson.fromJson(str_subjectJSON, new TypeToken<List<MySubject>>() {
-//        }.getType());
-//        return subjectList;
-//    }
 }

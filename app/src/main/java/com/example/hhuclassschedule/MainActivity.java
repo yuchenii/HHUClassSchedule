@@ -7,10 +7,8 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -38,7 +36,6 @@ import com.zhuangfei.timetable.listener.OnSlideBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.view.WeekView;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -59,10 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView titleTextView;
     List<MySubject> mySubjects;
 
-
     //记录切换的周次，不一定是当前周
     int target = -1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mySubjects = toGetSubjects();
         }
 
-
         titleTextView = findViewById(R.id.id_title);
         layout = findViewById(R.id.id_layout);
         layout.setOnClickListener(this);
@@ -117,7 +111,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         OnDateDelayAdapter adapter = (OnDateDelayAdapter) mTimetableView.onDateBuildListener();
         long when = adapter.whenBeginSchool();
         if (when > 0) {
-            titleTextView.setText("距离开学还有" + when + "天");
+            String str = "距离开学还有" + when + "天";
+            titleTextView.setText(str);
         }
     }
 
@@ -199,9 +194,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onFlaglayoutClick(int day, int start) {
                         mTimetableView.hideFlaglayout();
-                        Toast.makeText(MainActivity.this,
-                                "点击了旗标:周" + (day + 1) + ",第" + start + "节",
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MainActivity.this,
+//                                "点击了旗标:周" + (day + 1) + ",第" + start + "节",
+//                                Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, AddCourseActivity.class);
                         intent.putExtra("title","添加课程");
                         intent.putExtra("day",day);
@@ -243,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 对话框修改当前周次
      */
     protected void onWeekLeftLayoutClicked() {
-        final String items[] = new String[20];
+        final String[] items = new String[25];
         int itemCount = mWeekView.itemCount();
         for (int i = 0; i < itemCount; i++) {
             items[i] = "第" + (i + 1) + "周";
@@ -352,18 +347,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    /**
-     * 显示内容
-     *
-     * @param beans
-     */
-    protected void display(List<Schedule> beans) {
-        String str = "";
-        for (Schedule bean : beans) {
-            str += bean.getName() + "," + bean.getWeekList().toString() + "," + bean.getStart() + "," + bean.getStep() + "," + bean.getExtras() + "\n";
-        }
-        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void onClick(View view) {
@@ -394,7 +377,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case R.id.top2:
                         deleteSubject(18312);
                         break;
-
                     case R.id.top4:
                         hideNonThisWeek();
                         break;
