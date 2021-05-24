@@ -11,14 +11,27 @@ function getSectionTimes(str_sectionTimes, index) {
 
 function getWeeks(str_weeks) {
     let weeks = [];
+    let flag = 0;
+    if (str_weeks.search("单") != -1) {
+        flag = 1;
+        str_weeks = str_weeks.replace("单", "");
+    } else if (str_weeks.search("双") != -1) {
+        flag = 2;
+        str_weeks = str_weeks.replace("双", "");
+    }
     str_weeks = str_weeks.replace("周", "");
     let startWeek = Number(str_weeks.split('-')[0]);
     let endWeek = Number(str_weeks.split('-')[1]);
     for (let i = startWeek; i <= endWeek; i++) {
-        weeks.push(i);
+        if (flag == 0) {
+            weeks.push(i);
+        } else if (flag == 1 && i % 2 == 1) {
+            weeks.push[i];
+        } else if (flag == 2 && i % 2 == 0) {
+            weeks.push(i);
+        }
     }
     return weeks;
-
 }
 
 function getSections(str_sections) {

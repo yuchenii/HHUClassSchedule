@@ -24,9 +24,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
+import com.example.hhuclassschedule.util.ContextApplication;
+import com.example.hhuclassschedule.util.SharedPreferencesUtil;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 
 public class ParseHtmlActivity extends AppCompatActivity {
 
@@ -182,11 +186,14 @@ public class ParseHtmlActivity extends AppCompatActivity {
                             @Override
                             public void onReceiveValue(String value) {
                                 //此处为 js 返回的结果
-                                SharedPreferences sp = getSharedPreferences("SP_Data_List", Context.MODE_PRIVATE);//创建sp对象
-                                SharedPreferences.Editor editor = sp.edit();
-                                editor.clear();
-                                editor.putString("HTML_TO_SUBJECT", value); //存入json串
-                                editor.commit();//提交
+//                                SharedPreferences sp = getSharedPreferences("SP_Data_List", Context.MODE_PRIVATE);//创建sp对象
+//                                SharedPreferences.Editor editor = sp.edit();
+//                                editor.clear();
+//                                editor.putString("HTML_TO_SUBJECT", value); //存入json串
+//                                editor.commit();//提交
+                              //  SharedPreferencesUtil.init(getAppContext(),"SP_Data_List").remove("HTML_TO_SUBJECT");
+                                SharedPreferencesUtil.init(ContextApplication.getAppContext(),"SP_Data_List").putString("HTML_TO_SUBJECT", value);
+                                SharedPreferencesUtil.init(ContextApplication.getAppContext(),"SP_Data_List").remove("SUBJECT_LIST");
                                 Log.e(TAG, "HTML_TO_SUBJECT: " + value);
 
                                 Intent intent = new Intent(ParseHtmlActivity.this, MainActivity.class);

@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.hhuclassschedule.adapter.OnDateDelayAdapter;
 import com.example.hhuclassschedule.util.ContextApplication;
+import com.example.hhuclassschedule.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhuangfei.timetable.TimetableView;
@@ -76,11 +77,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-//       mySubjects = SubjectRepertory.loadDefaultSubjects2();
-//       mySubjects.addAll(SubjectRepertory.loadDefaultSubjects());
 
-        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
-        String subjectListJson = sp.getString("SUBJECT_LIST", null);
+//        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
+//        String subjectListJson = sp.getString("SUBJECT_LIST", null);
+        String subjectListJson = SharedPreferencesUtil.init(ContextApplication.getAppContext(),"SP_Data_List").getString("SUBJECT_LIST", null);
         if (subjectListJson == null) {
             mySubjects = SubjectRepertory.loadDefaultSubjects();
             if (!mySubjects.isEmpty()) {
@@ -658,23 +658,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    public void toSaveSubjects(List<MySubject> subject) {
+    public static void toSaveSubjects(List<MySubject> subject) {
 
         Gson gson = new Gson();
         String str_subjectJSON = gson.toJson(subject);
-        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString("SUBJECT_LIST", str_subjectJSON); //存入json串
-        editor.commit();//提交
+//        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
+//        SharedPreferences.Editor editor = sp.edit();
+//        editor.putString("SUBJECT_LIST", str_subjectJSON); //存入json串
+//        editor.commit();//提交
+        SharedPreferencesUtil.init(ContextApplication.getAppContext(),"SP_Data_List").putString("SUBJECT_LIST", str_subjectJSON); //存入json串
         Log.e(TAG, "toSaveSubjects: " + str_subjectJSON);
 
     }
 
-    public List<MySubject> toGetSubjects() {
+    public static List<MySubject> toGetSubjects() {
 
-        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
-        String str_subjectJSON = sp.getString("SUBJECT_LIST", null);  //取出key为"SUBJECT_LIST"的值，如果值为空，则将第二个参数作为默认值赋值
-        Log.e(TAG, "toGetSubjects: " + str_subjectJSON);//str_subjectJSON便是取出的数据了
+//        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
+//        String str_subjectJSON = sp.getString("SUBJECT_LIST", null);  //取出key为"SUBJECT_LIST"的值，如果值为空，则将第二个参数作为默认值赋值
+//        Log.e(TAG, "toGetSubjects: " + str_subjectJSON);//str_subjectJSON便是取出的数据了
+        String str_subjectJSON = SharedPreferencesUtil.init(ContextApplication.getAppContext(),"SP_Data_List").getString("SUBJECT_LIST", null);
         Gson gson = new Gson();
         List<MySubject> subjectList = gson.fromJson(str_subjectJSON, new TypeToken<List<MySubject>>() {
         }.getType());

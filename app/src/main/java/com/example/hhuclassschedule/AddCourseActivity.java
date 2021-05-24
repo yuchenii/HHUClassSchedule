@@ -28,6 +28,9 @@ import java.util.List;
 
 import cn.carbswang.android.numberpickerview.library.NumberPickerView;
 
+import static com.example.hhuclassschedule.MainActivity.toGetSubjects;
+import static com.example.hhuclassschedule.MainActivity.toSaveSubjects;
+
 public class AddCourseActivity extends AppCompatActivity {
 
     private static final String TAG = "AddCourseActivity";
@@ -428,26 +431,26 @@ public class AddCourseActivity extends AppCompatActivity {
     }
 
 
-    public void toSaveSubjects(List<MySubject> subject) {
-
-        Gson gson = new Gson();
-        String str_subjectJSON = gson.toJson(subject);
-        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString("SUBJECT_LIST", str_subjectJSON); //存入json串
-        editor.commit();//提交
-        Log.e(TAG, "toSaveSubjects: " + str_subjectJSON);
-
-    }
-
-    public List<MySubject> toGetSubjects() {
-
-        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
-        String str_subjectJSON = sp.getString("SUBJECT_LIST", null);  //取出key为"SUBJECT_LIST"的值，如果值为空，则将第二个参数作为默认值赋值
-        Log.e(TAG, "toGetSubjects: " + str_subjectJSON);//str_subjectJSON便是取出的数据了
-        Gson gson = new Gson();
-        List<MySubject> subjectList = gson.fromJson(str_subjectJSON, new TypeToken<List<MySubject>>() {
-        }.getType());
-        return subjectList;
-    }
+//    public void toSaveSubjects(List<MySubject> subject) {
+//
+//        Gson gson = new Gson();
+//        String str_subjectJSON = gson.toJson(subject);
+//        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
+//        SharedPreferences.Editor editor = sp.edit();
+//        editor.putString("SUBJECT_LIST", str_subjectJSON); //存入json串
+//        editor.commit();//提交
+//        Log.e(TAG, "toSaveSubjects: " + str_subjectJSON);
+//
+//    }
+//
+//    public List<MySubject> toGetSubjects() {
+//
+//        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
+//        String str_subjectJSON = sp.getString("SUBJECT_LIST", null);  //取出key为"SUBJECT_LIST"的值，如果值为空，则将第二个参数作为默认值赋值
+//        Log.e(TAG, "toGetSubjects: " + str_subjectJSON);//str_subjectJSON便是取出的数据了
+//        Gson gson = new Gson();
+//        List<MySubject> subjectList = gson.fromJson(str_subjectJSON, new TypeToken<List<MySubject>>() {
+//        }.getType());
+//        return subjectList;
+//    }
 }
