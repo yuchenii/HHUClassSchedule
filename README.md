@@ -9,6 +9,12 @@
 - 支持新URP教务系统课表的导入
 - 纯java开发，适合新手学习，二次开发
 
+
+
+# 开发流程
+
+- fork本项目
+
 # 感谢
 
 - [com.zhuangfei.timetable](https://github.com/zfman/TimetableView)
