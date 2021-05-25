@@ -18,6 +18,12 @@
 3. push到自己的远程仓库
 4. pr提交到dev分支
 
+
+
+# 注意事项
+
+- pr提交到dev分支，不是mian分支
+
 # 感谢
 
 - [com.zhuangfei.timetable](https://github.com/zfman/TimetableView)
