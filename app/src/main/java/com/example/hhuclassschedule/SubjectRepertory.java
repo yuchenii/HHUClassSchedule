@@ -2,8 +2,6 @@ package com.example.hhuclassschedule;
 
 import android.util.Log;
 
-import com.example.hhuclassschedule.MySubject.root;
-import com.example.hhuclassschedule.MySubject.root.CourseInfosDTO;
 import com.example.hhuclassschedule.util.ContextApplication;
 import com.example.hhuclassschedule.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
@@ -44,9 +42,9 @@ public class SubjectRepertory  {
     public static List<MySubject> parse(String parseString){
         List<MySubject> course = new ArrayList<>();
         Gson gson = new Gson();
-        root jsonObject = gson.fromJson(parseString,root.class);
+        MysubjectDTO jsonObject = gson.fromJson(parseString, MysubjectDTO.class);
         try {
-            List<CourseInfosDTO> courseinfo = jsonObject.getCourseInfos();
+            List<MysubjectDTO.CourseInfosDTO> courseinfo = jsonObject.getCourseInfos();
             for(int i=0; i<courseinfo.size(); i++){
                 int day = courseinfo.get(i).getDay();
                 String name = courseinfo.get(i).getName();
@@ -61,5 +59,127 @@ public class SubjectRepertory  {
             e.printStackTrace();
         }
         return  course;
+    }
+
+
+    public class MysubjectDTO {
+        private List<CourseInfosDTO> courseInfos;
+        private List<SectionTimesDTO> sectionTimes;
+
+        public List<CourseInfosDTO> getCourseInfos() {
+            return courseInfos;
+        }
+
+        public void setCourseInfos(List<CourseInfosDTO> courseInfos) {
+            this.courseInfos = courseInfos;
+        }
+
+        public List<SectionTimesDTO> getSectionTimes() {
+            return sectionTimes;
+        }
+
+        public void setSectionTimes(List<SectionTimesDTO> sectionTimes) {
+            this.sectionTimes = sectionTimes;
+        }
+
+        public class CourseInfosDTO {
+            private Integer day;
+            private String name;
+            private String position;
+            private List<SectionsDTO> sections;
+            private String teacher;
+            private List<Integer> weeks;
+
+            public Integer getDay() {
+                return day;
+            }
+
+            public void setDay(Integer day) {
+                this.day = day;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getPosition() {
+                return position;
+            }
+
+            public void setPosition(String position) {
+                this.position = position;
+            }
+
+            public List<SectionsDTO> getSections() {
+                return sections;
+            }
+
+            public void setSections(List<SectionsDTO> sections) {
+                this.sections = sections;
+            }
+
+            public String getTeacher() {
+                return teacher;
+            }
+
+            public void setTeacher(String teacher) {
+                this.teacher = teacher;
+            }
+
+            public List<Integer> getWeeks() {
+                return weeks;
+            }
+
+            public void setWeeks(List<Integer> weeks) {
+                this.weeks = weeks;
+            }
+
+            public class SectionsDTO {
+                private Integer section;
+
+                public Integer getSection() {
+                    return section;
+                }
+
+                public void setSection(Integer section) {
+                    this.section = section;
+                }
+            }
+
+        }
+
+        public  class SectionTimesDTO {
+            private String endTime;
+            private Integer section;
+            private String startTime;
+
+            public String getEndTime() {
+                return endTime;
+            }
+
+            public void setEndTime(String endTime) {
+                this.endTime = endTime;
+            }
+
+            public Integer getSection() {
+                return section;
+            }
+
+            public void setSection(Integer section) {
+                this.section = section;
+            }
+
+            public String getStartTime() {
+                return startTime;
+            }
+
+            public void setStartTime(String startTime) {
+                this.startTime = startTime;
+            }
+        }
     }
 }

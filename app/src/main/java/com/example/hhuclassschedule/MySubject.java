@@ -22,7 +22,9 @@ public class MySubject implements ScheduleEnable {
      */
     private String name;
 
-    //无用数据
+    /**
+     * 时间
+     */
     private String time;
 
     /**
@@ -72,10 +74,6 @@ public class MySubject implements ScheduleEnable {
         return url;
     }
 
-    public MySubject() {
-        // TODO Auto-generated constructor stub
-    }
-
     public void setTime(String time) {
         this.time = time;
     }
@@ -90,20 +88,6 @@ public class MySubject implements ScheduleEnable {
 
     public String getTerm() {
         return term;
-    }
-
-    public MySubject(String term, String name, String room, String teacher, List<Integer> weekList, int start, int step, int day, int colorRandom, String time) {
-        super();
-        this.term=term;
-        this.name = name;
-        this.room = room;
-        this.teacher = teacher;
-        this.weekList=weekList;
-        this.start = start;
-        this.step = step;
-        this.day = day;
-        this.colorRandom = colorRandom;
-        this.time=time;
     }
 
     public String getName() {
@@ -170,6 +154,30 @@ public class MySubject implements ScheduleEnable {
         this.colorRandom = colorRandom;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        String str = ""+getWeekList().get(0)+getWeekList().get(getWeekList().size()-1)+getDay()+getStart()+getStep();
+        id = Integer.parseInt(str);
+        return id;
+    }
+
+    public MySubject(String term, String name, String room, String teacher, List<Integer> weekList, int start, int step, int day, int colorRandom, String time) {
+        super();
+        this.term=term;
+        this.name = name;
+        this.room = room;
+        this.teacher = teacher;
+        this.weekList=weekList;
+        this.start = start;
+        this.step = step;
+        this.day = day;
+        this.colorRandom = colorRandom;
+        this.time=time;
+    }
+
     @Override
     public Schedule getSchedule() {
         Schedule schedule=new Schedule();
@@ -186,134 +194,4 @@ public class MySubject implements ScheduleEnable {
         return schedule;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        String str = ""+getWeekList().get(0)+getWeekList().get(getWeekList().size()-1)+getDay()+getStart()+getStep();
-        id = Integer.parseInt(str);
-        return id;
-    }
-
-    public class root {
-        private List<CourseInfosDTO> courseInfos;
-        private List<SectionTimesDTO> sectionTimes;
-
-        public List<CourseInfosDTO> getCourseInfos() {
-            return courseInfos;
-        }
-
-        public void setCourseInfos(List<CourseInfosDTO> courseInfos) {
-            this.courseInfos = courseInfos;
-        }
-
-        public List<SectionTimesDTO> getSectionTimes() {
-            return sectionTimes;
-        }
-
-        public void setSectionTimes(List<SectionTimesDTO> sectionTimes) {
-            this.sectionTimes = sectionTimes;
-        }
-
-        public class CourseInfosDTO {
-            private Integer day;
-            private String name;
-            private String position;
-            private List<SectionsDTO> sections;
-            private String teacher;
-            private List<Integer> weeks;
-
-            public Integer getDay() {
-                return day;
-            }
-
-            public void setDay(Integer day) {
-                this.day = day;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            public String getPosition() {
-                return position;
-            }
-
-            public void setPosition(String position) {
-                this.position = position;
-            }
-
-            public List<SectionsDTO> getSections() {
-                return sections;
-            }
-
-            public void setSections(List<SectionsDTO> sections) {
-                this.sections = sections;
-            }
-
-            public String getTeacher() {
-                return teacher;
-            }
-
-            public void setTeacher(String teacher) {
-                this.teacher = teacher;
-            }
-
-            public List<Integer> getWeeks() {
-                return weeks;
-            }
-
-            public void setWeeks(List<Integer> weeks) {
-                this.weeks = weeks;
-            }
-
-            public class SectionsDTO {
-                private Integer section;
-
-                public Integer getSection() {
-                    return section;
-                }
-
-                public void setSection(Integer section) {
-                    this.section = section;
-                }
-            }
-
-        }
-
-        public  class SectionTimesDTO {
-            private String endTime;
-            private Integer section;
-            private String startTime;
-
-            public String getEndTime() {
-                return endTime;
-            }
-
-            public void setEndTime(String endTime) {
-                this.endTime = endTime;
-            }
-
-            public Integer getSection() {
-                return section;
-            }
-
-            public void setSection(Integer section) {
-                this.section = section;
-            }
-
-            public String getStartTime() {
-                return startTime;
-            }
-
-            public void setStartTime(String startTime) {
-                this.startTime = startTime;
-            }
-        }
-    }
 }
