@@ -11,6 +11,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 封装SharePreferences
+ * 读取保存数据
+ */
 public class SharedPreferencesUtil {
 
     private static final String TAG = "SharedPreferencesUtil";

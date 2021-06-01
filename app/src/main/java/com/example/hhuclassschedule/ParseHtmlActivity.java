@@ -23,7 +23,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-
+/**
+ * 抓取课程信息并保存为json字符串
+ */
 public class ParseHtmlActivity extends AppCompatActivity {
 
     private static final String TAG = "ParseHtmlActivity";
@@ -45,13 +47,16 @@ public class ParseHtmlActivity extends AppCompatActivity {
 
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    /**
+     * 打开网页，爬取课程信息并保存
+     * @throws IOException
+     */
     public void btn_openWeb() throws IOException {
-
+        // toolbar
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//添加默认的返回图标
-        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);// 添加默认的返回图标
+        getSupportActionBar().setHomeButtonEnabled(true); // 设置返回键可用
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,15 +64,7 @@ public class ParseHtmlActivity extends AppCompatActivity {
             }
         });
 
-        InputStreamReader inputReader = new InputStreamReader(getResources().getAssets().open("parseHtml.js"));
-        BufferedReader bufReader = new BufferedReader(inputReader);
-        String line;
-        parseHtmlJS = "";
-        while ((line = bufReader.readLine()) != null)
-            parseHtmlJS += line;
-        Log.e(TAG, "parseHtmlJS: " + parseHtmlJS);
-
-
+        // webView 设置
         webview = findViewById(R.id.classWeb);
         WebSettings ws = webview.getSettings();
         // 支持js
@@ -88,13 +85,21 @@ public class ParseHtmlActivity extends AppCompatActivity {
 
         ws.setAllowFileAccess(true);       // 可以访问文件
 
+        // 读取 assets 里的js文件
+        InputStreamReader inputReader = new InputStreamReader(getResources().getAssets().open("parseHtml.js"));
+        BufferedReader bufReader = new BufferedReader(inputReader);
+        String line;
+        parseHtmlJS = "";
+        while ((line = bufReader.readLine()) != null)
+            parseHtmlJS += line;
+        Log.e(TAG, "parseHtmlJS: " + parseHtmlJS);
 
+        // 加载网页
         webview.loadUrl(parseHtmlJS);
         webview.loadUrl(URL);
-
         webview.setWebViewClient(new WebViewClient() {
 
-// android 6.0 以下使用
+//            // android 6.0 以下使用
 //            public boolean shouldOverrideUrlLoading(WebView view, String Url) {
 //                view.loadUrl(Url);
 //                return true;
@@ -111,7 +116,6 @@ public class ParseHtmlActivity extends AppCompatActivity {
                 webview.evaluateJavascript(parseHtmlJS, null);
             }
 
-
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 String title = view.getTitle();
@@ -123,25 +127,9 @@ public class ParseHtmlActivity extends AppCompatActivity {
                     Log.e(TAG, "title" + title);
                 }
             }
-
-
-//            @Override
-//            public void onPageFinished(WebView view, String url){
-//                if (Build.VERSION.SDK_INT >= 19) {
-//                    webview.evaluateJavascript(Result, new ValueCallback<String>() {
-//                        @Override public void onReceiveValue(String value) {//js与native交互的回调函数
-//                            Log.e("myout: ", "value2=" + value);
-//                        }
-//                    });
-//                    String str = "nihao";
-//                    Log.e("myout: ", "value3=" + str);
-//                }
-//            }
-
         });
 
-
-
+        // 导入课程
         tv_btn = findViewById(R.id.tv_button);
         tv_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,12 +141,12 @@ public class ParseHtmlActivity extends AppCompatActivity {
                     public void run() {
 
                         // 注意调用的JS方法名要对应上
-                        // 调用javascript的callJS()方法
-                        // webview.loadUrl("javascript:callJS()");
+                        // 调用javascript的parseHtml()方法
+                        // webview.loadUrl("javascript:parseHtml()");
                         webview.evaluateJavascript("javascript:parseHtml()", new ValueCallback<String>() {
                             @Override
                             public void onReceiveValue(String value) {
-                                //此处为 js 返回的结果
+                                // 此处为 js 返回的结果
 //                                SharedPreferences sp = getSharedPreferences("SP_Data_List", Context.MODE_PRIVATE);//创建sp对象
 //                                SharedPreferences.Editor editor = sp.edit();
 //                                editor.clear();

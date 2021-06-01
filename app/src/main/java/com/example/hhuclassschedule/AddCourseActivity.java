@@ -34,6 +34,9 @@ import cn.carbswang.android.numberpickerview.library.NumberPickerView;
 import static com.example.hhuclassschedule.MainActivity.toGetSubjects;
 import static com.example.hhuclassschedule.MainActivity.toSaveSubjects;
 
+/**
+ * 课程的编辑与添加
+ */
 public class AddCourseActivity extends AppCompatActivity {
 
     private static final String TAG = "AddCourseActivity";
@@ -78,6 +81,10 @@ public class AddCourseActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 初始化 toolbar
+     * @param title toolbar标题
+     */
     protected void initToolbar(String title) {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -100,7 +107,6 @@ public class AddCourseActivity extends AppCompatActivity {
         });
     }
 
-    // 保存菜单
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.savemenu, menu);
@@ -142,7 +148,7 @@ public class AddCourseActivity extends AppCompatActivity {
                 mySubjects = new ArrayList<>();
             }
             mySubjects.add(new MySubject(null, name, position, teacher, weeks, start, step, day, -1, null));
-            toSaveSubjects(mySubjects);
+            toSaveSubjects(mySubjects);  // 保存课程
             Intent intent = new Intent(AddCourseActivity.this, MainActivity.class);
             startActivity(intent);
             finish(); // 销毁当前activity
@@ -151,7 +157,10 @@ public class AddCourseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // 编辑课程
+    /**
+     * 编辑课程
+     * @param beans 课程列表
+     */
     protected void editSubject(List<Schedule> beans) {
         ll_addCourse = findViewById(R.id.ll_add_course_detail);
         // 课程名
@@ -192,7 +201,6 @@ public class AddCourseActivity extends AppCompatActivity {
         // 教室
         et_room = rl_indlude_detail.findViewById(R.id.et_room);
         et_room.setText(beans.get(0).getRoom());
-
         // 删除时间段
         tv_ib_delete = rl_indlude_detail.findViewById(R.id.ib_delete);
         tv_ib_delete.setClickable(true);
@@ -205,7 +213,11 @@ public class AddCourseActivity extends AppCompatActivity {
         });
     }
 
-    // 添加课程
+    /**
+     * 添加课程
+     * @param i_day 星期
+     * @param i_start 开始节次
+     */
     protected void addSubject(int i_day, int i_start) {
 
         day = i_day+1;
@@ -255,7 +267,9 @@ public class AddCourseActivity extends AppCompatActivity {
         });
     }
 
-    // 选择时间
+    /**
+     * 选择星期节次
+     */
     protected void selectTime() {
         View selectTimeDetail = getLayoutInflater().inflate(R.layout.fragment_select_time, null);
         initTimePicker(selectTimeDetail);
@@ -291,38 +305,45 @@ public class AddCourseActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 初始化TimePicker
+     * @param selectTimeDetail TimePickerView
+     */
     protected void initTimePicker(View selectTimeDetail) {
+        // 星期
         dayPicker = selectTimeDetail.findViewById(R.id.time_day);
         String[] week = {"周一", "周二", "周三", "周四", "周五", "周六", "周日"};
         dayPicker.setDisplayedValues(week);
-        //设置最大值
+        // 设置最大值
         dayPicker.setMaxValue(week.length - 1);
-        //设置最小值
+        // 设置最小值
         dayPicker.setMinValue(0);
-        //设置当前值
+        // 设置当前值
         dayPicker.setValue(day-1);
 
+        // 开始节次
         sectionStartPicker = selectTimeDetail.findViewById(R.id.time_start);
         String[] sectionStart = {"第1节", "第2节", "第3节", "第4节", "第5节", "第6节", "第7节", "第8节", "第9节", "第10节", "第11节", "第12节", "第13节", "第14节", "第15节"};
         sectionStartPicker.setDisplayedValues(sectionStart);
-        //设置最大值
+        // 设置最大值
         sectionStartPicker.setMaxValue(sectionStart.length - 1);
-        //设置最小值
+        // 设置最小值
         sectionStartPicker.setMinValue(0);
-        //设置当前值
+        // 设置当前值
         sectionStartPicker.setValue(start-1);
 
-
+        // 结束节次
         sectionEndPicker = selectTimeDetail.findViewById(R.id.time_end);
         String[] sectionEnd = {"第1节", "第2节", "第3节", "第4节", "第5节", "第6节", "第7节", "第8节", "第9节", "第10节", "第11节", "第12节", "第13节", "第14节", "第15节"};
         sectionEndPicker.setDisplayedValues(sectionEnd);
-        //设置最大值
+        // 设置最大值
         sectionEndPicker.setMaxValue(sectionEnd.length - 1);
-        //设置最小值
+        // 设置最小值
         sectionEndPicker.setMinValue(0);
-        //设置当前值
+        // 设置当前值
         sectionEndPicker.setValue(start+step-2);
 
+        // 始终使 sectionStartPicker <= sectionEndPicker
         sectionStartPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
             //当NunberPicker的值发生改变时，将会激发该方法
             @Override
@@ -331,8 +352,6 @@ public class AddCourseActivity extends AppCompatActivity {
                     sectionEndPicker.setValue(sectionStartPicker.getValue());
                     sectionEndPicker.smoothScrollToValue(sectionStartPicker.getValue(),false);
                 }
-                // String toast = oldVal + " " + newVal;
-                // Toast.makeText(AddCourseActivity.this, toast, Toast.LENGTH_SHORT).show();
             }
         });
         sectionEndPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
@@ -343,13 +362,13 @@ public class AddCourseActivity extends AppCompatActivity {
                     sectionStartPicker.setValue(sectionEndPicker.getValue());
                     sectionStartPicker.smoothScrollToValue(sectionEndPicker.getValue(),false);
                 }
-                // String toast = oldVal + " " + newVal;
-                // Toast.makeText(AddCourseActivity.this, toast, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    // 选择周数
+    /**
+     * 选择周数
+     */
     protected void selectWeek() {
         View selectWeekDetail = getLayoutInflater().inflate(R.layout.fragment_select_week, null);
         initWeekPicker(selectWeekDetail);
@@ -388,38 +407,44 @@ public class AddCourseActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 初始化WeekPicker
+     * @param selectWeekDetail weekPickerView
+     */
     protected void initWeekPicker(View selectWeekDetail) {
-
+        // 开始周数
         weekStartPicker = selectWeekDetail.findViewById(R.id.week_start);
         String[] weekStart = {"第1周", "第2周", "第3周", "第4周", "第5周", "第6周", "第7周", "第8周", "第9周", "第10周", "第11周", "第12周", "第13周", "第14周", "第15周",
                 "第16周", "第17周", "第18周", "第19周", "第20周", "第21周", "第22周", "第23周", "第24周", "第25周"};
         weekStartPicker.setDisplayedValues(weekStart);
-        //设置最大值
+        // 设置最大值
         weekStartPicker.setMaxValue(weekStart.length - 1);
-        //设置最小值
+        // 设置最小值
         weekStartPicker.setMinValue(0);
-        //设置当前值
+        // 设置当前值
         if(weeks.isEmpty()){
             weekStartPicker.setValue(0);
         }else {
             weekStartPicker.setValue(weeks.get(0)-1);
         }
 
+        // 结束周数
         weekEndPicker = selectWeekDetail.findViewById(R.id.week_end);
         String[] weekEnd = {"第1周", "第2周", "第3周", "第4周", "第5周", "第6周", "第7周", "第8周", "第9周", "第10周", "第11周", "第12周", "第13周", "第14周", "第15周",
                 "第16周", "第17周", "第18周", "第19周", "第20周", "第21周", "第22周", "第23周", "第24周", "第25周"};
         weekEndPicker.setDisplayedValues(weekEnd);
-        //设置最大值
+        // 设置最大值
         weekEndPicker.setMaxValue(weekEnd.length - 1);
-        //设置最小值
+        // 设置最小值
         weekEndPicker.setMinValue(0);
-        //设置当前值
+        // 设置当前值
         if(weeks.isEmpty()){
             weekEndPicker.setValue(0);
         }else {
             weekEndPicker.setValue(weeks.get(weeks.size()-1)-1);
         }
 
+        // 始终使 weekStartPicker <= weekEndPicker
         weekStartPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
             //当NunberPicker的值发生改变时，将会激发该方法
             @Override
@@ -430,7 +455,6 @@ public class AddCourseActivity extends AppCompatActivity {
                 }
             }
         });
-
         weekEndPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
             //当NunberPicker的值发生改变时，将会激发该方法
             @Override

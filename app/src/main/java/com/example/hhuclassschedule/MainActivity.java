@@ -44,7 +44,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 
@@ -91,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         titleTextView = findViewById(R.id.id_title);
         layout = findViewById(R.id.id_layout);
         layout.setOnClickListener(this);
-        initTimetableView();
+        initTimetableView();  // 初始化界面
     }
 
 
@@ -131,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //设置周次选择属性
         mWeekView.source(mySubjects)
                 //     .curWeek(1)
+                .itemCount(25)  // 周数
                 .callback(new IWeekView.OnWeekItemClickedListener() {
                     @Override
                     public void onWeekClicked(int week) {
@@ -161,20 +161,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //透明度
                 //日期栏0.1f、侧边栏0.1f，周次选择栏0.6f
                 //透明度范围为0->1，0为全透明，1为不透明
-//                .alpha(0.1f, 0.1f, 0.6f)
+                //.alpha(0.1f, 0.1f, 0.6f)
                 .callback(new ISchedule.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, List<Schedule> scheduleList) {
-                        // display(scheduleList);
+                        // 显示课程信息
                         showCourseDetail(scheduleList);
                     }
                 })
                 .callback(new ISchedule.OnItemLongClickListener() {
                     @Override
                     public void onLongClick(View v, int day, int start, int id) {
-                        Toast.makeText(MainActivity.this,
-                                "长按:周" + day + ",第" + start + "节" + ",id: " + id,
-                                Toast.LENGTH_SHORT).show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setMessage("确认删除")
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        deleteSubject(id);
+                                        Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                });
+                        builder.create().show();
                     }
                 })
                 .callback(getDateDelayAdapter())//这行要放在下行的前边
@@ -237,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     /**
-     * 周次选择布局的左侧被点击时回调<br/>
+     * 周次选择布局的左侧被点击时回调
      * 对话框修改当前周次
      */
     protected void onWeekLeftLayoutClicked() {
@@ -272,8 +284,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * 显示课程详细信息
-     *
-     * @param beans
+     * @param beans 课程列表
      */
     protected void showCourseDetail(List<Schedule> beans) {
 
@@ -299,14 +310,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         EditText et_room = rl_indlude_detail.findViewById(R.id.et_room);
         et_room.setEnabled(false);
         et_room.setText(beans.get(0).getRoom());
-
         // 设置自定义布局
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(courseDetail);
         final AlertDialog dialog = builder.show();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().setLayout(900,WindowManager.LayoutParams.WRAP_CONTENT);
-
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));  // 背景设置透明
+        dialog.getWindow().setLayout(900,WindowManager.LayoutParams.WRAP_CONTENT); // 设置宽高
         // 关闭dialog
         TextView tv_ib_delete = rl_indlude_detail.findViewById(R.id.ib_delete);
         tv_ib_delete.setClickable(true);
@@ -320,7 +329,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // 删除课程
         TextView tv_delete_course = courseDetail.findViewById(R.id.ib_delete_course);
         tv_delete_course.setClickable(true);
-
         tv_delete_course.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -431,14 +439,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Intent intent = new Intent(MainActivity.this, ParseHtmlActivity.class);
                         startActivity(intent);
                         break;
-
                     default:
                         break;
                 }
                 return true;
             }
         });
-
         popup.show();
     }
 
@@ -447,15 +453,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 删除课程
      * 内部使用集合维护课程数据，操作集合的方法来操作它即可
      * 最后更新一下视图（全局更新）
+     * @param delete_id 待删除的课程 id
      */
     protected void deleteSubject(int delete_id) {
-//        int size = mTimetableView.dataSource().size();
-//        int pos = (int) (Math.random() * size);
-//        if (size > 0) {
-//            mTimetableView.dataSource().remove(pos);
-//            mTimetableView.updateView();
-//            Log.e("MainActivity","delteDataSource: "+mTimetableView.dataSource().toString());
-//        }
+        // 从 dataSource 删除
         List<Schedule> ds = mTimetableView.dataSource();
         Iterator<Schedule> it = ds.iterator();
         while (it.hasNext()) {
@@ -466,8 +467,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
         }
-        mTimetableView.updateView();
+        mTimetableView.updateView();  // 更新视图
 
+        // 从保存的课程中删除
         List<MySubject> ms = mySubjects;
         Iterator<MySubject> iterator = ms.iterator();
         while (iterator.hasNext()) {
@@ -478,7 +480,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
         }
-        toSaveSubjects(mySubjects);
+        toSaveSubjects(mySubjects); // 保存课程
 
     }
 
@@ -528,8 +530,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * 设置侧边栏最大节次，只影响侧边栏的绘制，对课程内容无影响
-     *
-     * @param num
+     * @param num 最大节次
      */
     protected void setMaxItem(int num) {
         mTimetableView.maxSlideItem(num).updateSlideView();
@@ -541,9 +542,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     protected void showTime() {
         String[] times = new String[]{
-                "8:00", "9:00", "10:10", "11:00",
-                "15:00", "16:00", "17:00", "18:00",
-                "19:30", "20:30", "21:30", "22:30"
+                "8:00", "8:50", "9:50", "10:40",
+                "11:30", "14:00", "14:50", "15:50",
+                "16:40", "18:30", "19:20", "20:10"
         };
         OnSlideBuildAdapter listener = (OnSlideBuildAdapter) mTimetableView.onSlideBuildListener();
         listener.setTimes(times)
@@ -612,7 +613,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTimetableView.isShowWeekends(true).updateView();
     }
 
-
     /**
      * 设置间距以及弧度
      * 该方法只能同时设置四个角的弧度，设置单个角的弧度可参考下文
@@ -623,7 +623,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .marLeft(10)
                 .updateView();
     }
-
 
     /**
      * 修改课程重叠的样式，在该接口中，你可以自定义出很多的效果
@@ -644,7 +643,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTimetableView.updateView();
     }
 
-
+    /**
+     * 保存课程
+     * @param subject 课程列表
+     */
     public static void toSaveSubjects(List<MySubject> subject) {
 
         Gson gson = new Gson();
@@ -658,6 +660,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    /**
+     * 获取保存的课程
+     * @return 保存的课程列表
+     */
     public static List<MySubject> toGetSubjects() {
 
 //        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象

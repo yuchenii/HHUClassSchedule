@@ -178,6 +178,10 @@ public class MySubject implements ScheduleEnable {
         this.time=time;
     }
 
+    /**
+     * 实现 getSchedule()
+     * @return Schedule列表
+     */
     @Override
     public Schedule getSchedule() {
         Schedule schedule=new Schedule();
