@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TimetableView mTimetableView;
     WeekView mWeekView;
 
-    Button moreButton;
+    TextView tv_more;
     LinearLayout layout;
     TextView titleTextView;
     List<MySubject> mySubjects;
@@ -64,8 +64,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        moreButton = findViewById(R.id.id_more);
-        moreButton.setOnClickListener(new View.OnClickListener() {
+        tv_more = findViewById(R.id.id_more);
+        tv_more.setClickable(true);
+        tv_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showPopmenu();
@@ -365,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 显示弹出菜单
      */
     public void showPopmenu() {
-        PopupMenu popup = new PopupMenu(this, moreButton);
+        PopupMenu popup = new PopupMenu(this, tv_more);
         popup.getMenuInflater().inflate(R.menu.popmenu_base_func, popup.getMenu());
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @SuppressLint("NonConstantResourceId")

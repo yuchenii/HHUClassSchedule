@@ -261,7 +261,8 @@ public class AddCourseActivity extends AppCompatActivity {
         builder.setView(selectTimeDetail);
         final AlertDialog dialog = builder.show();
         // 关闭dialog
-        Button btn_cancel = selectTimeDetail.findViewById(R.id.btn_cancel);
+        TextView btn_cancel = selectTimeDetail.findViewById(R.id.btn_cancel);
+        btn_cancel.setClickable(true);
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -269,7 +270,8 @@ public class AddCourseActivity extends AppCompatActivity {
             }
         });
         // 保存
-        Button btn_savetime = selectTimeDetail.findViewById(R.id.btn_save_time);
+        TextView btn_savetime = selectTimeDetail.findViewById(R.id.btn_save_time);
+        btn_savetime.setClickable(true);
         btn_savetime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -351,7 +353,8 @@ public class AddCourseActivity extends AppCompatActivity {
         builder.setView(selectWeekDetail);
         final AlertDialog dialog = builder.show();
         // 关闭dialog
-        Button btn_cancel = selectWeekDetail.findViewById(R.id.btn_cancel);
+        TextView btn_cancel = selectWeekDetail.findViewById(R.id.btn_cancel);
+        btn_cancel.setClickable(true);
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -359,7 +362,8 @@ public class AddCourseActivity extends AppCompatActivity {
             }
         });
         // 保存
-        Button btn_saveWeek = selectWeekDetail.findViewById(R.id.btn_save_week);
+        TextView btn_saveWeek = selectWeekDetail.findViewById(R.id.btn_save_week);
+        btn_saveWeek.setClickable(true);
         btn_saveWeek.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
