@@ -7,10 +7,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -260,6 +263,8 @@ public class AddCourseActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(selectTimeDetail);
         final AlertDialog dialog = builder.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(900, WindowManager.LayoutParams.WRAP_CONTENT);
         // 关闭dialog
         TextView btn_cancel = selectTimeDetail.findViewById(R.id.btn_cancel);
         btn_cancel.setClickable(true);
@@ -352,6 +357,8 @@ public class AddCourseActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(selectWeekDetail);
         final AlertDialog dialog = builder.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(900,WindowManager.LayoutParams.WRAP_CONTENT);
         // 关闭dialog
         TextView btn_cancel = selectWeekDetail.findViewById(R.id.btn_cancel);
         btn_cancel.setClickable(true);

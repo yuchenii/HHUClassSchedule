@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="280dp"
     android:layout_height="wrap_content"
+    android:background="@drawable/dialog_radius_bg"
     android:layout_gravity="center"
     android:orientation="vertical">
 
@@ -59,29 +60,29 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp">
 
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/btn_cancel"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="取消"-->
-<!--            android:textColor="@color/colorAccent"-->
-<!--            android:textStyle="bold"-->
-<!--            app:cornerRadius="8dp" />-->
+        <!--        <com.google.android.material.button.MaterialButton-->
+        <!--            android:id="@+id/btn_cancel"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="8dp"-->
+        <!--            android:layout_marginEnd="8dp"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:text="取消"-->
+        <!--            android:textColor="@color/colorAccent"-->
+        <!--            android:textStyle="bold"-->
+        <!--            app:cornerRadius="8dp" />-->
 
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/btn_save_week"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="保存"-->
-<!--            android:textColor="@color/colorAccent"-->
-<!--            android:textStyle="bold"-->
-<!--            app:cornerRadius="8dp" />-->
+        <!--        <com.google.android.material.button.MaterialButton-->
+        <!--            android:id="@+id/btn_save_week"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="8dp"-->
+        <!--            android:layout_marginEnd="8dp"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:text="保存"-->
+        <!--            android:textColor="@color/colorAccent"-->
+        <!--            android:textStyle="bold"-->
+        <!--            app:cornerRadius="8dp" />-->
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_cancel"
             android:layout_width="0dp"
@@ -89,12 +90,11 @@
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:layout_weight="1"
-            android:gravity="center"
             android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
             android:text="取消"
             android:textColor="@color/app_red"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_save_week"
@@ -103,8 +103,8 @@
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:layout_weight="1"
-            android:gravity="center"
             android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
             android:text="保存"
             android:textColor="@color/app_blue1"
             android:textStyle="bold" />
