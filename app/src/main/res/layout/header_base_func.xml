@@ -26,13 +26,27 @@
             android:textSize="10sp" />
     </LinearLayout>
 
-    <Button
+<!--    <Button-->
+<!--        android:id="@+id/id_more"-->
+<!--        android:text="功能"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:textColor="@color/app_gold"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"/>-->
+
+    <TextView
         android:id="@+id/id_more"
-        android:text="功能"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:textColor="@color/app_gold"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:fontFamily="@font/iconfont"
+        android:includeFontPadding="false"
+        android:text="@string/icon_more"
+        android:textColor="@color/app_black"
+        android:textSize="23sp"/>
 
 </RelativeLayout>
