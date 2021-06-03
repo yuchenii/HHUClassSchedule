@@ -158,6 +158,9 @@ public class ParseHtmlActivity extends AppCompatActivity {
                                 Log.e(TAG, "HTML_TO_SUBJECT: " + value);
 
                                 Intent intent = new Intent(ParseHtmlActivity.this, MainActivity.class);
+                                if(MainActivity.mainActivity != null){
+                                    MainActivity.mainActivity.finish(); // 销毁MainActivity
+                                }
                                 startActivity(intent);
                                 finish();
                             }

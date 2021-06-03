@@ -150,6 +150,9 @@ public class AddCourseActivity extends AppCompatActivity {
             mySubjects.add(new MySubject(null, name, position, teacher, weeks, start, step, day, -1, null));
             toSaveSubjects(mySubjects);  // 保存课程
             Intent intent = new Intent(AddCourseActivity.this, MainActivity.class);
+            if(MainActivity.mainActivity != null){
+                MainActivity.mainActivity.finish(); // 销毁MainActivity
+            }
             startActivity(intent);
             finish(); // 销毁当前activity
             return true;

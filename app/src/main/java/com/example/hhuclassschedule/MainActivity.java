@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private static final String TAG = "MainActivity";
+    public  static MainActivity mainActivity;
 
     TimetableView mTimetableView;
     WeekView mWeekView;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mainActivity = this;
 
         tv_more = findViewById(R.id.id_more);
         tv_more.setClickable(true);
