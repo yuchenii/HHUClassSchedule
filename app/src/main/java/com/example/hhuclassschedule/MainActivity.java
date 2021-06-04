@@ -174,21 +174,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .callback(new ISchedule.OnItemLongClickListener() {
                     @Override
                     public void onLongClick(View v, int day, int start, int id) {
+                        View view = getLayoutInflater().inflate(R.layout.fragment_confirm, null);
+                        TextView text = view.findViewById(R.id.text);
+                        text.setText("确认删除？");
+                        TextView confirm = view.findViewById(R.id.confirm);
+                        TextView cancel = view.findViewById(R.id.cancel);
+
+                        // 创建dialog
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setMessage("确认删除")
-                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        deleteSubject(id);
-                                        Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .setNeutralButton("取消", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                });
-                        builder.create().show();
+                        builder.setView(view);
+                        final AlertDialog dialog = builder.show();
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        dialog.getWindow().setLayout(900,WindowManager.LayoutParams.WRAP_CONTENT);
+
+                        // 确定
+                        confirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                                deleteSubject(id);
+                                Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        // 取消
+                        cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
                     }
                 })
                 .callback(getDateDelayAdapter())//这行要放在下行的前边
@@ -291,25 +305,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void showCourseDetail(List<Schedule> beans) {
 
         View courseDetail = getLayoutInflater().inflate(R.layout.fragment_course_detail, null);
-        RelativeLayout rl_indlude_detail = courseDetail.findViewById(R.id.include_detail);
+        RelativeLayout rl_include_detail = courseDetail.findViewById(R.id.include_detail);
         // 课程名
-        TextView tv_item = rl_indlude_detail.findViewById(R.id.tv_item);
+        TextView tv_item = rl_include_detail.findViewById(R.id.tv_item);
         tv_item.setText(beans.get(0).getName());
         // 周数
-        TextView et_weeks = rl_indlude_detail.findViewById(R.id.et_weeks);
+        TextView et_weeks = rl_include_detail.findViewById(R.id.et_weeks);
         String str_weeks = "第" + beans.get(0).getWeekList().get(0) + "-" + beans.get(0).getWeekList().get(beans.get(0).getWeekList().size() - 1) + "周";
         et_weeks.setText(str_weeks);
         // 节数
         String[] arrayday = {"一","二","三","四","五","六","日"};
-        TextView et_time = rl_indlude_detail.findViewById(R.id.et_time);
+        TextView et_time = rl_include_detail.findViewById(R.id.et_time);
         String str_time = "周" + arrayday[beans.get(0).getDay()-1] + "   第" + beans.get(0).getStart() + "-" + (beans.get(0).getStart() + beans.get(0).getStep() - 1) + "节";
         et_time.setText(str_time);
         // 老师
-        EditText et_teacher = rl_indlude_detail.findViewById(R.id.et_teacher);
+        EditText et_teacher = rl_include_detail.findViewById(R.id.et_teacher);
         et_teacher.setEnabled(false);
         et_teacher.setText(beans.get(0).getTeacher());
         // 教室
-        EditText et_room = rl_indlude_detail.findViewById(R.id.et_room);
+        EditText et_room = rl_include_detail.findViewById(R.id.et_room);
         et_room.setEnabled(false);
         et_room.setText(beans.get(0).getRoom());
         // 设置自定义布局
@@ -319,7 +333,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));  // 背景设置透明
         dialog.getWindow().setLayout(900,WindowManager.LayoutParams.WRAP_CONTENT); // 设置宽高
         // 关闭dialog
-        TextView tv_ib_delete = rl_indlude_detail.findViewById(R.id.ib_delete);
+        TextView tv_ib_delete = rl_include_detail.findViewById(R.id.ib_delete);
         tv_ib_delete.setClickable(true);
         tv_ib_delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -338,7 +352,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(tv_tips.getVisibility()==View.GONE){
                     tv_tips.setVisibility(View.VISIBLE);
                 }else{
-                    int delete_id = (int)beans.get(0).getExtras().get("extras_id");
+                    //  int delete_id = (int)beans.get(0).getExtras().get("extras_id");
+                    int delete_id = Integer.parseInt(String.valueOf(beans.get(0).getExtras().get("extras_id")));
                     deleteSubject(delete_id);
                     dialog.dismiss();
                 }
@@ -463,7 +478,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Iterator<Schedule> it = ds.iterator();
         while (it.hasNext()) {
             Schedule next = it.next();
-            int id = (int) next.getExtras().get("extras_id");
+           // int id = (int) next.getExtras().get("extras_id");
+            int id = Integer.parseInt(String.valueOf(next.getExtras().get("extras_id")));
             if (id == delete_id) {
                 it.remove();
                 break;

@@ -42,11 +42,11 @@ public class AddCourseActivity extends AppCompatActivity {
     private static final String TAG = "AddCourseActivity";
 
     String title;
-    List<Schedule> scheduletList;
+    List<Schedule> scheduleList;
 
     LinearLayout ll_addCourse;
     EditText et_courseName;
-    RelativeLayout rl_indlude_detail;
+    RelativeLayout rl_include_detail;
     TextView et_weeks;
     TextView et_time;
     EditText et_teacher;
@@ -72,8 +72,8 @@ public class AddCourseActivity extends AppCompatActivity {
         initToolbar(title);
         if (title.equals("编辑课程")) {
             String scheduleJson = getIntent().getStringExtra("scheduleList");
-            scheduletList = new Gson().fromJson(scheduleJson,new TypeToken<List<Schedule>>(){}.getType());
-            editSubject(scheduletList);
+            scheduleList = new Gson().fromJson(scheduleJson,new TypeToken<List<Schedule>>(){}.getType());
+            editSubject(scheduleList);
         } else {
             int i_day = (int) getIntent().getExtras().get("day");
             int i_start = (int) getIntent().getExtras().get("start");
@@ -133,7 +133,7 @@ public class AddCourseActivity extends AppCompatActivity {
 
             List<MySubject> mySubjects = toGetSubjects();
             if (title.equals("编辑课程")) {
-                int delete_id = Double.valueOf(String.valueOf(scheduletList.get(0).getExtras().get("extras_id"))).intValue();
+                int delete_id = Double.valueOf(String.valueOf(scheduleList.get(0).getExtras().get("extras_id"))).intValue();
                 Iterator<MySubject> iterator = mySubjects.iterator();
                 while (iterator.hasNext()) {
                     MySubject next = iterator.next();
@@ -170,9 +170,9 @@ public class AddCourseActivity extends AppCompatActivity {
         et_courseName = findViewById(R.id.et_name);
         et_courseName.setText(beans.get(0).getName());
 
-        rl_indlude_detail = ll_addCourse.findViewById(R.id.include_add_course_detail);
+        rl_include_detail = ll_addCourse.findViewById(R.id.include_add_course_detail);
         // 周数
-        et_weeks = rl_indlude_detail.findViewById(R.id.et_weeks);
+        et_weeks = rl_include_detail.findViewById(R.id.et_weeks);
         weeks = beans.get(0).getWeekList();
         String str_weeks = "第" + beans.get(0).getWeekList().get(0) + "-" + beans.get(0).getWeekList().get(beans.get(0).getWeekList().size() - 1) + "周";
         et_weeks.setText(str_weeks);
@@ -185,7 +185,7 @@ public class AddCourseActivity extends AppCompatActivity {
         });
         // 节数
         String[] arrayday = {"一", "二", "三", "四", "五", "六", "日"};
-        et_time = rl_indlude_detail.findViewById(R.id.et_time);
+        et_time = rl_include_detail.findViewById(R.id.et_time);
         day = beans.get(0).getDay();
         start = beans.get(0).getStart();
         step = beans.get(0).getStep();
@@ -199,13 +199,13 @@ public class AddCourseActivity extends AppCompatActivity {
             }
         });
         // 老师
-        et_teacher = rl_indlude_detail.findViewById(R.id.et_teacher);
+        et_teacher = rl_include_detail.findViewById(R.id.et_teacher);
         et_teacher.setText(beans.get(0).getTeacher());
         // 教室
-        et_room = rl_indlude_detail.findViewById(R.id.et_room);
+        et_room = rl_include_detail.findViewById(R.id.et_room);
         et_room.setText(beans.get(0).getRoom());
         // 删除时间段
-        tv_ib_delete = rl_indlude_detail.findViewById(R.id.ib_delete);
+        tv_ib_delete = rl_include_detail.findViewById(R.id.ib_delete);
         tv_ib_delete.setClickable(true);
         tv_ib_delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,9 +231,9 @@ public class AddCourseActivity extends AppCompatActivity {
         ll_addCourse = findViewById(R.id.ll_add_course_detail);
         // 课程名
         et_courseName = findViewById(R.id.et_name);
-        rl_indlude_detail = ll_addCourse.findViewById(R.id.include_add_course_detail);
+        rl_include_detail = ll_addCourse.findViewById(R.id.include_add_course_detail);
         // 周数
-        et_weeks = rl_indlude_detail.findViewById(R.id.et_weeks);
+        et_weeks = rl_include_detail.findViewById(R.id.et_weeks);
         et_weeks.setClickable(true);
         et_weeks.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,7 +242,7 @@ public class AddCourseActivity extends AppCompatActivity {
             }
         });
         // 节数
-        et_time = rl_indlude_detail.findViewById(R.id.et_time);
+        et_time = rl_include_detail.findViewById(R.id.et_time);
         String[] arrayday = {"一", "二", "三", "四", "五", "六", "日"};
         i_start = i_start % 2 == 0 ? i_start - 1 : i_start;
         String str_time = "周" + arrayday[i_day] + "   第" + i_start + "-" + (i_start + 1) + "节";
@@ -255,11 +255,11 @@ public class AddCourseActivity extends AppCompatActivity {
             }
         });
         // 老师
-        et_teacher = rl_indlude_detail.findViewById(R.id.et_teacher);
+        et_teacher = rl_include_detail.findViewById(R.id.et_teacher);
         // 教室
-        et_room = rl_indlude_detail.findViewById(R.id.et_room);
+        et_room = rl_include_detail.findViewById(R.id.et_room);
         // 删除时间段
-        tv_ib_delete = rl_indlude_detail.findViewById(R.id.ib_delete);
+        tv_ib_delete = rl_include_detail.findViewById(R.id.ib_delete);
         tv_ib_delete.setClickable(true);
         tv_ib_delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -348,7 +348,7 @@ public class AddCourseActivity extends AppCompatActivity {
 
         // 始终使 sectionStartPicker <= sectionEndPicker
         sectionStartPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
-            //当NunberPicker的值发生改变时，将会激发该方法
+            //当NumberPicker的值发生改变时，将会激发该方法
             @Override
             public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
                 if(newVal>sectionEndPicker.getValue()){
@@ -358,7 +358,7 @@ public class AddCourseActivity extends AppCompatActivity {
             }
         });
         sectionEndPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
-            //当NunberPicker的值发生改变时，将会激发该方法
+            //当NumberPicker的值发生改变时，将会激发该方法
             @Override
             public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
                 if(newVal<sectionStartPicker.getValue()){
@@ -449,7 +449,7 @@ public class AddCourseActivity extends AppCompatActivity {
 
         // 始终使 weekStartPicker <= weekEndPicker
         weekStartPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
-            //当NunberPicker的值发生改变时，将会激发该方法
+            //当NumberPicker的值发生改变时，将会激发该方法
             @Override
             public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
                 if(newVal>weekEndPicker.getValue()){
@@ -459,7 +459,7 @@ public class AddCourseActivity extends AppCompatActivity {
             }
         });
         weekEndPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
-            //当NunberPicker的值发生改变时，将会激发该方法
+            //当NumberPicker的值发生改变时，将会激发该方法
             @Override
             public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
                 if(newVal<weekStartPicker.getValue()){
