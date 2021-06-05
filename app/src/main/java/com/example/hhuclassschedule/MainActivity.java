@@ -44,6 +44,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 
@@ -194,7 +196,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             public void onClick(View v) {
                                 dialog.dismiss();
                                 deleteSubject(id);
-                                Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                Toasty.success(MainActivity.this, "删除成功!", Toast.LENGTH_SHORT, true).show();
                             }
                         });
                         // 取消
