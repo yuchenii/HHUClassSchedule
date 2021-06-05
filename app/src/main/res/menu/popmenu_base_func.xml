@@ -2,61 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/top19"
+        android:id="@+id/import_class"
         android:title="导入课表" />
     <item
-        android:id="@+id/top13"
-        android:title="月份宽度增大" />
-    <item
-        android:id="@+id/top16"
-        android:title="月份宽度恢复" />
-    <item
-        android:id="@+id/top14"
+        android:id="@+id/hide_weekends"
         android:title="隐藏周末" />
     <item
-        android:id="@+id/top15"
+        android:id="@+id/show_weekends"
         android:title="显示周末" />
-
     <item
-        android:id="@+id/top1"
-        android:title="添加一门课程" />
-    <item
-        android:id="@+id/top2"
-        android:title="删除一门课程" />
-
-    <item
-        android:id="@+id/top4"
+        android:id="@+id/hide_not_tish_week"
         android:title="隐藏非本周课程" />
     <item
-        android:id="@+id/top5"
+        android:id="@+id/show_not_this_week"
         android:title="显示非本周课程" />
     <item
-        android:id="@+id/top6"
-        android:title="最大节次8节" />
-    <item
-        android:id="@+id/top7"
-        android:title="最大节次10节" />
-    <item
-        android:id="@+id/top8"
-        android:title="最大节次12节" />
-    <item
-        android:id="@+id/top9"
+        android:id="@+id/show_time"
         android:title="显示节次时间" />
     <item
-        android:id="@+id/top10"
+        android:id="@+id/hide_time"
         android:title="隐藏节次时间" />
-    <item
-        android:id="@+id/top11"
-        android:title="显示周次选择" />
-    <item
-        android:id="@+id/top12"
-        android:title="隐藏周次选择" />
-
-
-
-    <item android:id="@+id/top17"
-        android:title="边距与弧度设置"/>
-    <item android:id="@+id/top18"
-        android:title="修改课程重叠的样式"/>
 
 </menu>

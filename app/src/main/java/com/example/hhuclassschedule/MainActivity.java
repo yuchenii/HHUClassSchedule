@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //      .curWeek(1)
                 .curTerm(null)
                 .maxSlideItem(12)
-                .monthWidthDp(30)
+                .monthWidthDp(40)
                 .cornerAll(20)
                 .marTop(10)
                 .marLeft(10)
@@ -401,60 +401,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @SuppressLint("NonConstantResourceId")
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.top1:
-                        addSubject();
-                        break;
-                    case R.id.top2:
-                        deleteSubject(18312);
-                        break;
-                    case R.id.top4:
-                        hideNonThisWeek();
-                        break;
-                    case R.id.top5:
-                        showNonThisWeek();
-                        break;
-                    case R.id.top6:
-                        setMaxItem(8);
-                        break;
-                    case R.id.top7:
-                        setMaxItem(10);
-                        break;
-                    case R.id.top8:
-                        setMaxItem(12);
-                        break;
-                    case R.id.top9:
-                        showTime();
-                        break;
-                    case R.id.top10:
-                        hideTime();
-                        break;
-                    case R.id.top11:
-                        showWeekView();
-                        break;
-                    case R.id.top12:
-                        hideWeekView();
-                        break;
-                    case R.id.top13:
-                        setMonthWidth();
-                        break;
-                    case R.id.top16:
-                        resetMonthWidth();
-                        break;
-                    case R.id.top14:
-                        hideWeekends();
-                        break;
-                    case R.id.top15:
-                        showWeekends();
-                        break;
-                    case R.id.top17:
-                        setMarginAndCorner();
-                        break;
-                    case R.id.top18:
-                        modifyOverlayStyle();
-                        break;
-                    case R.id.top19:
+                    case R.id.import_class:
                         Intent intent = new Intent(MainActivity.this, ParseHtmlActivity.class);
                         startActivity(intent);
+                        break;
+                    case R.id.hide_not_tish_week:
+                        hideNonThisWeek();
+                        break;
+                    case R.id.show_not_this_week:
+                        showNonThisWeek();
+                        break;
+                    case R.id.show_time:
+                        showTime();
+                        break;
+                    case R.id.hide_time:
+                        hideTime();
+                        break;
+                    case R.id.hide_weekends:
+                        hideWeekends();
+                        break;
+                    case R.id.show_weekends:
+                        showWeekends();
                         break;
                     default:
                         break;
@@ -478,7 +445,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Iterator<Schedule> it = ds.iterator();
         while (it.hasNext()) {
             Schedule next = it.next();
-           // int id = (int) next.getExtras().get("extras_id");
+            // int id = (int) next.getExtras().get("extras_id");
             int id = Integer.parseInt(String.valueOf(next.getExtras().get("extras_id")));
             if (id == delete_id) {
                 it.remove();
@@ -546,13 +513,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTimetableView.isShowNotCurWeek(true).updateView();
     }
 
-    /**
-     * 设置侧边栏最大节次，只影响侧边栏的绘制，对课程内容无影响
-     * @param num 最大节次
-     */
-    protected void setMaxItem(int num) {
-        mTimetableView.maxSlideItem(num).updateSlideView();
-    }
 
     /**
      * 显示时间
@@ -599,23 +559,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     public void showWeekView() {
         mWeekView.isShow(true);
-       // titleTextView.setTextColor(getResources().getColor(R.color.app_red));
+        // titleTextView.setTextColor(getResources().getColor(R.color.app_red));
         titleTextView.setTextColor(ContextCompat.getColor(ContextApplication.getAppContext(),R.color.app_red));
     }
 
-    /**
-     * 设置月份宽度
-     */
-    private void setMonthWidth() {
-        mTimetableView.monthWidthDp(50).updateView();
-    }
-
-    /**
-     * 设置月份宽度,默认40dp
-     */
-    private void resetMonthWidth() {
-        mTimetableView.monthWidthDp(40).updateView();
-    }
 
     /**
      * 隐藏周末
@@ -631,16 +578,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTimetableView.isShowWeekends(true).updateView();
     }
 
-    /**
-     * 设置间距以及弧度
-     * 该方法只能同时设置四个角的弧度，设置单个角的弧度可参考下文
-     */
-    protected void setMarginAndCorner() {
-        mTimetableView.cornerAll(20)
-                .marTop(10)
-                .marLeft(10)
-                .updateView();
-    }
+
 
     /**
      * 修改课程重叠的样式，在该接口中，你可以自定义出很多的效果
