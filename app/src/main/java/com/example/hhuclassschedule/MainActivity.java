@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //记录切换的周次，不一定是当前周
     int target = -1;
+    String dateDelay = "2021-03-01"; // 开学时间
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         });
                     }
                 })
-                .callback(getDateDelayAdapter())//这行要放在下行的前边
+                .callback(getDateDelayAdapter(dateDelay))//这行要放在下行的前边
                 .callback(new ISchedule.OnWeekChangedListener() {
                     @Override
                     public void onWeekChanged(int curWeek) {
@@ -242,20 +243,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 配置OnDateDelayAdapter
      */
-    public OnDateDelayAdapter getDateDelayAdapter() {
+    public OnDateDelayAdapter getDateDelayAdapter(String date) {
         OnDateDelayAdapter onDateDelayAdapter = new OnDateDelayAdapter();
 
         //计算开学时间戳
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         long startTime = 0;
         try {
-            startTime = sdf.parse("2021-04-05 00:00").getTime();
+            startTime = sdf.parse(date).getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
+        // 第一个是月份，后面七个第一周的日期
         //计算开学时的一周日期，我这里模拟一下
-        List<String> dateList = Arrays.asList("9", "03", "04", "05", "06", "07", "08", "09");
+        List<String> dateList = Arrays.asList("9", "3", "4", "5", "6", "7", "8", "9");
 
         //设置
         onDateDelayAdapter.setStartTime(startTime);

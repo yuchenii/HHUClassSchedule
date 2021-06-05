@@ -30,7 +30,7 @@ public class OnDateDelayAdapter extends OnDateBuildAapter {
     List<String> initDates=null;
 
     public OnDateDelayAdapter(){
-        sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        sdf=new SimpleDateFormat("yyyy-MM-dd");
     }
 
     /**
