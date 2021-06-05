@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import cn.carbswang.android.numberpickerview.library.NumberPickerView;
+import es.dmoral.toasty.Toasty;
 
 import static com.example.hhuclassschedule.MainActivity.toGetSubjects;
 import static com.example.hhuclassschedule.MainActivity.toSaveSubjects;
@@ -123,11 +124,13 @@ public class AddCourseActivity extends AppCompatActivity {
             teacher = et_teacher.getText().toString();
 
             if (name == null || name.length() == 0) {
-                Toast.makeText(AddCourseActivity.this, "请输入课程名！"+name, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(AddCourseActivity.this, "请输入课程名！", Toast.LENGTH_SHORT).show();
+                Toasty.error(AddCourseActivity.this, "请输入课程名！", Toast.LENGTH_SHORT, true).show();
                 return false;
             }
             if (weeks == null || weeks.isEmpty()) {
-                Toast.makeText(AddCourseActivity.this, "请选择周数！", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(AddCourseActivity.this, "请选择周数！", Toast.LENGTH_SHORT).show();
+                Toasty.error(AddCourseActivity.this, "请选择周数！", Toast.LENGTH_SHORT, true).show();
                 return false;
             }
 
@@ -211,7 +214,8 @@ public class AddCourseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String str = "至少要保留一个时间段";
-                Toast.makeText(AddCourseActivity.this, str, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(AddCourseActivity.this, str, Toast.LENGTH_SHORT).show();
+                Toasty.error(AddCourseActivity.this, str, Toast.LENGTH_SHORT, true).show();
             }
         });
     }
@@ -265,7 +269,8 @@ public class AddCourseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String str = "至少要保留一个时间段";
-                Toast.makeText(AddCourseActivity.this, str, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(AddCourseActivity.this, str, Toast.LENGTH_SHORT).show();
+                Toasty.error(AddCourseActivity.this, str, Toast.LENGTH_SHORT, true).show();
             }
         });
     }
