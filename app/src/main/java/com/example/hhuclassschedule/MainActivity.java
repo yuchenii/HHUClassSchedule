@@ -14,11 +14,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hhuclassschedule.adapter.OnMyConfigHandleAdapter;
 import com.example.hhuclassschedule.adapter.OnDateDelayAdapter;
 import com.example.hhuclassschedule.util.ContextApplication;
 import com.example.hhuclassschedule.util.SharedPreferencesUtil;
@@ -44,12 +45,13 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-
+    public static final String CONFIG_FILENAME = "myConfig";//本地配置文件 文件名称
     private static final String TAG = "MainActivity";
     public  static MainActivity mainActivity;
 
@@ -60,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayout layout;
     TextView titleTextView;
     List<MySubject> mySubjects;
+    MyConfig mMyConfig;
+    Map<String, String> mConfigMap;
 
     //记录切换的周次，不一定是当前周
     int target = -1;
@@ -96,7 +100,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         titleTextView = findViewById(R.id.id_title);
         layout = findViewById(R.id.id_layout);
         layout.setOnClickListener(this);
+
         initTimetableView();  // 初始化界面
+        loadLocalConfig();    //读取本地配置文件
     }
 
 
@@ -296,6 +302,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (target != -1) {
                     mWeekView.curWeek(target + 1).updateView();
                     mTimetableView.changeWeekForce(target + 1);
+                    //保存当前周至本地配置文件
+                    mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_CUR_WEEK, Integer.toString(target + 1));
+                    mMyConfig.saveConfig(mConfigMap);
                 }
             }
         });
@@ -413,21 +422,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     case R.id.hide_not_tish_week:
                         hideNonThisWeek();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_NOT_CUR_WEEK, OnMyConfigHandleAdapter.VALUE_FALSE);
                         break;
                     case R.id.show_not_this_week:
                         showNonThisWeek();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_NOT_CUR_WEEK, OnMyConfigHandleAdapter.VALUE_TRUE);
                         break;
                     case R.id.show_time:
                         showTime();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_TIME, OnMyConfigHandleAdapter.VALUE_TRUE);
                         break;
                     case R.id.hide_time:
                         hideTime();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_TIME, OnMyConfigHandleAdapter.VALUE_FALSE);
                         break;
                     case R.id.hide_weekends:
                         hideWeekends();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_WEEKENDS, OnMyConfigHandleAdapter.VALUE_FALSE);
                         break;
                     case R.id.show_weekends:
                         showWeekends();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_WEEKENDS, OnMyConfigHandleAdapter.VALUE_TRUE);
                         break;
                     case R.id.about_activity:
                         Intent intent1 = new Intent(MainActivity.this, AboutActivity.class);
@@ -436,6 +451,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     default:
                         break;
                 }
+                mMyConfig.saveConfig(mConfigMap);//保存设置信息至本地配置文件
                 return true;
             }
         });
@@ -640,6 +656,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         List<MySubject> subjectList = gson.fromJson(str_subjectJSON, new TypeToken<List<MySubject>>() {
         }.getType());
         return subjectList;
+    }
+
+    //从本地配置文件中读取信息并应用
+    public void loadLocalConfig(){
+        mMyConfig = new MyConfig(MainActivity.this);
+        mConfigMap = mMyConfig.loadConfig();
+        OnMyConfigHandleAdapter onMyConfigHandleAdapter = new OnMyConfigHandleAdapter();
+        for(String key : mConfigMap.keySet()){
+            String value = mConfigMap.get(key);
+            if(key.equals(OnMyConfigHandleAdapter.CONFIG_SHOW_TIME)){
+                if(value.equals(OnMyConfigHandleAdapter.VALUE_TRUE))
+                    showTime();
+                else
+                    hideTime();
+            }else
+            onMyConfigHandleAdapter.onParseConfig(key, value, mTimetableView);
+        }
     }
 
 }
