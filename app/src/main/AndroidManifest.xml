@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HHU课程表"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".AboutActivity"/>
         <activity android:name=".AddCourseActivity" />
         <activity android:name=".ParseHtmlActivity" />
         <activity android:name=".SplashActivity">
@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
