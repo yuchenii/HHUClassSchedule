@@ -7,6 +7,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -427,6 +428,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     case R.id.show_weekends:
                         showWeekends();
+                        break;
+                    case R.id.about_activity:
+                        Intent intent1 = new Intent(MainActivity.this, AboutActivity.class);
+                        startActivity(intent1);
                         break;
                     default:
                         break;
