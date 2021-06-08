@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">HHU课程表</string>
+    <string name="app_version">1.0.0</string>
+
+
+    <string name="github_lib">com.zhuangfei.timetable
+        \ncn.carbswang.android:NumberPickerView
+        \ncom.github.GrenderG:Toasty
+        \nAIschedule-HHU-URP
+        \ncom.google.code.gson:gson
+    </string>
+    <string name="yuchenii">https://github.com/yuchenii/HHUClassSchedule</string>
 
     <string name="icon_location" translatable="false"></string>
     <string name="icon_back" translatable="false"></string>
