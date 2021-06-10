@@ -1,5 +1,24 @@
 <resources>
     <string name="app_name">HHU课程表</string>
+    <string name="app_version">1.0.0</string>
+
+
+    <string name="github_lib">com.zhuangfei.timetable
+        \ncn.carbswang.android:NumberPickerView
+        \ncom.github.GrenderG:Toasty
+        \nAIschedule-HHU-URP
+        \ncom.google.code.gson:gson
+    </string>
+
+    <string name="github">https://github.com/yuchenii/HHUClassSchedule</string>
+    <string name="yuchenii">https://github.com/yuchenii</string>
+    <string name="chlcoder">https://github.com/Chl-coder</string>
+    <string name="xuanipvp">https://github.com/xuanipvp</string>
+    <string name="cqg">https://github.com/yuchenii</string>
+    <string name="fudi2000">https://github.com/Fudi2000</string>
+    <string name="scandy316">https://github.com/Scandy316</string>
+    <string name="hhuzyp">https://github.com/HHU-ZYP</string>
+
 
     <string name="icon_location" translatable="false"></string>
     <string name="icon_back" translatable="false"></string>
@@ -24,5 +43,6 @@
     <string name="icon_star" translatable="false"></string>
     <string name="icon_person" translatable="false"></string>
     <string name="icon_nav" translatable="false"></string>
+    <string name="icon_color" translatable="false"></string>
 
 </resources>

@@ -7,6 +7,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -443,6 +444,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         showWeekends();
                         mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_WEEKENDS, OnMyConfigHandleAdapter.VALUE_TRUE);
                         break;
+                    case R.id.about_activity:
+                        Intent intent1 = new Intent(MainActivity.this, AboutActivity.class);
+                        startActivity(intent1);
+                        break;
+                    case R.id.about_activity:
+                        Intent intent1 = new Intent(MainActivity.this, AboutActivity.class);
+                        startActivity(intent1);
+                        break;
                     default:
                         break;
                 }
@@ -655,7 +664,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //从本地配置文件中读取信息并应用
     public void loadLocalConfig(){
-        mMyConfig = new MyConfig(MainActivity.this);
+     //   mMyConfig = new MyConfig(MainActivity.this);
+        mMyConfig = new MyConfig();
         mConfigMap = mMyConfig.loadConfig();
         OnMyConfigHandleAdapter onMyConfigHandleAdapter = new OnMyConfigHandleAdapter();
         for(String key : mConfigMap.keySet()){
