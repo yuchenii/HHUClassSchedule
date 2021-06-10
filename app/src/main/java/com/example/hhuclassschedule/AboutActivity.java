@@ -39,6 +39,9 @@ public class AboutActivity extends AppCompatActivity {
         textView.setText(title);
     }
 
+    /**
+     * 超链接添加点击事件
+     */
     private void initLinkTextView() {
         TextView tv_github = findViewById(R.id.tv_github);
         tv_github.setOnClickListener(new View.OnClickListener() {
@@ -110,9 +113,5 @@ public class AboutActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
-    }
-
 }
