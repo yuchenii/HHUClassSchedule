@@ -1,23 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawyer_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-
-    <include layout="@layout/header_base_func"/>
-    <com.zhuangfei.timetable.view.WeekView
-        android:id="@+id/id_weekview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <com.zhuangfei.timetable.TimetableView
-        android:id="@+id/id_timetableView"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/app_white">
-    </com.zhuangfei.timetable.TimetableView>
+        android:orientation="vertical"
+        >
+        <include layout="@layout/header_base_func"/>
+        <com.zhuangfei.timetable.view.WeekView
+            android:id="@+id/id_weekview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-</LinearLayout>
+        <com.zhuangfei.timetable.TimetableView
+            android:id="@+id/id_timetableView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/app_white">
+        </com.zhuangfei.timetable.TimetableView>
+
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nave_view"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        app:menu="@menu/popmenu_base_func"
+        android:layout_gravity="start"
+        />
+
+</androidx.drawerlayout.widget.DrawerLayout>
