@@ -664,7 +664,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //从本地配置文件中读取信息并应用
     public void loadLocalConfig(){
-        mMyConfig = new MyConfig(MainActivity.this);
+     //   mMyConfig = new MyConfig(MainActivity.this);
+        mMyConfig = new MyConfig();
         mConfigMap = mMyConfig.loadConfig();
         OnMyConfigHandleAdapter onMyConfigHandleAdapter = new OnMyConfigHandleAdapter();
         for(String key : mConfigMap.keySet()){
