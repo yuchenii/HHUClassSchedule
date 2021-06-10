@@ -44,14 +44,15 @@ public class AboutActivity extends AppCompatActivity {
         tv_github.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse("https://github.com/yuchenii/HHUClassSchedule");
+                Uri uri = Uri.parse(getString(R.string.github));
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
 
             }
         });
 
-        findViewById(R.id.tv_yuchenii).setOnClickListener(new View.OnClickListener() {
+        TextView tv_yuchenii = findViewById(R.id.tv_yuchenii);
+        tv_yuchenii.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Uri uri = Uri.parse(getString(R.string.yuchenii));
@@ -59,6 +60,59 @@ public class AboutActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        TextView tv_fudi2000 = findViewById(R.id.tv_fudi2000);
+        tv_fudi2000.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse(getString(R.string.fudi2000));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
+
+        TextView tv_scandy316 = findViewById(R.id.tv_scandy316);
+        tv_scandy316.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse(getString(R.string.scandy316));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
+
+        TextView tv_chlcoder = findViewById(R.id.tv_chlcoder);
+        tv_chlcoder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse(getString(R.string.chlcoder));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
+
+        TextView tv_hhuzyp = findViewById(R.id.tv_hhuzyp);
+        tv_hhuzyp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse(getString(R.string.hhuzyp));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
+
+        TextView tv_xuanipvp = findViewById(R.id.tv_xuanipvp);
+        tv_xuanipvp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse(getString(R.string.xuanipvp));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
+
+
+
     }
 
 }
