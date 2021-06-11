@@ -35,13 +35,11 @@
     <!--        android:layout_width="wrap_content"-->
     <!--        android:layout_height="wrap_content"/>-->
 
-    <ImageButton
-        android:id="@+id/menn"
-        android:layout_width="40dp"
-        android:layout_height="match_parent"
-        android:src="@drawable/iiicon"
-        android:padding="0dp"
-        android:background="#ffffff"
-        />
+    <ImageView
+        android:id="@+id/menu"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_menu"
+        android:padding="10dp" />
 
 </RelativeLayout>

@@ -24,7 +24,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -55,6 +55,7 @@ import java.util.Map;
 import es.dmoral.toasty.Toasty;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
     private DrawerLayout mDrawerlayout;
     public static final String CONFIG_FILENAME = "myConfig";//本地配置文件 文件名称
     private static final String TAG = "MainActivity";
@@ -63,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TimetableView mTimetableView;
     WeekView mWeekView;
 
-    TextView tv_more;
     LinearLayout layout;
     TextView titleTextView;
     List<MySubject> mySubjects;
@@ -79,64 +79,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainActivity = this;
-
-        mDrawerlayout=findViewById(R.id.drawyer_layout);
-        ImageButton b=findViewById(R.id.menn);
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDrawerlayout.openDrawer(GravityCompat.START);
-            }
-        });
-
-        NavigationView navView=(NavigationView) findViewById(R.id.nave_view);
-        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.import_class:
-                        Intent intent = new Intent(MainActivity.this, ParseHtmlActivity.class);
-                        startActivity(intent);
-                        break;
-                    case R.id.hide_not_tish_week:
-                        hideNonThisWeek();
-                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_NOT_CUR_WEEK, OnMyConfigHandleAdapter.VALUE_FALSE);
-                        break;
-                    case R.id.show_not_this_week:
-                        showNonThisWeek();
-                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_NOT_CUR_WEEK, OnMyConfigHandleAdapter.VALUE_TRUE);
-                        break;
-                    case R.id.show_time:
-                        showTime();
-                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_TIME, OnMyConfigHandleAdapter.VALUE_TRUE);
-                        break;
-                    case R.id.hide_time:
-                        hideTime();
-                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_TIME, OnMyConfigHandleAdapter.VALUE_FALSE);
-                        break;
-                    case R.id.hide_weekends:
-                        hideWeekends();
-                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_WEEKENDS, OnMyConfigHandleAdapter.VALUE_FALSE);
-                        break;
-                    case R.id.show_weekends:
-                        showWeekends();
-                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_WEEKENDS, OnMyConfigHandleAdapter.VALUE_TRUE);
-                        break;
-                    case R.id.about_activity:
-                        Intent intent1 = new Intent(MainActivity.this, AboutActivity.class);
-                        startActivity(intent1);
-                        break;
-
-                    default:
-                        break;
-                }
-                mMyConfig.saveConfig(mConfigMap);//保存设置信息至本地配置文件
-                return true;
-            }
-        });
-
-
-
 
 //        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
 //        String subjectListJson = sp.getString("SUBJECT_LIST", null);
@@ -154,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         layout = findViewById(R.id.id_layout);
         layout.setOnClickListener(this);
 
+        initNavView();     // 侧滑菜单
         initTimetableView();  // 初始化界面
         loadLocalConfig();    //读取本地配置文件
     }
@@ -676,6 +619,62 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }else
             onMyConfigHandleAdapter.onParseConfig(key, value, mTimetableView);
         }
+    }
+
+    private void initNavView(){
+        mDrawerlayout=findViewById(R.id.drawyer_layout);
+        ImageView b=findViewById(R.id.menu);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerlayout.openDrawer(GravityCompat.START);
+            }
+        });
+        NavigationView navView=(NavigationView) findViewById(R.id.nave_view);
+        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.import_class:
+                        Intent intent = new Intent(MainActivity.this, ParseHtmlActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.hide_not_tish_week:
+                        hideNonThisWeek();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_NOT_CUR_WEEK, OnMyConfigHandleAdapter.VALUE_FALSE);
+                        break;
+                    case R.id.show_not_this_week:
+                        showNonThisWeek();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_NOT_CUR_WEEK, OnMyConfigHandleAdapter.VALUE_TRUE);
+                        break;
+                    case R.id.show_time:
+                        showTime();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_TIME, OnMyConfigHandleAdapter.VALUE_TRUE);
+                        break;
+                    case R.id.hide_time:
+                        hideTime();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_TIME, OnMyConfigHandleAdapter.VALUE_FALSE);
+                        break;
+                    case R.id.hide_weekends:
+                        hideWeekends();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_WEEKENDS, OnMyConfigHandleAdapter.VALUE_FALSE);
+                        break;
+                    case R.id.show_weekends:
+                        showWeekends();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_WEEKENDS, OnMyConfigHandleAdapter.VALUE_TRUE);
+                        break;
+                    case R.id.about_activity:
+                        Intent intent1 = new Intent(MainActivity.this, AboutActivity.class);
+                        startActivity(intent1);
+                        break;
+
+                    default:
+                        break;
+                }
+                mMyConfig.saveConfig(mConfigMap);//保存设置信息至本地配置文件
+                return true;
+            }
+        });
     }
 
 }
