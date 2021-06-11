@@ -20,7 +20,12 @@ public class OnMyConfigHandleAdapter {
     public static final String VALUE_TRUE = "config_value_true";
     public static final String VALUE_FALSE = "config_value_false";
 
-    //应用配置信息
+    /**
+     * 应用配置信息
+     * @param key 信息的键
+     * @param value 信息的值
+     * @param mView 待设置的view
+     */
     public void onParseConfig(String key, String value, TimetableView mView) {
         if (mView == null || key == null || value == null) return;
         switch (key) {
@@ -33,7 +38,7 @@ public class OnMyConfigHandleAdapter {
                 else mView.isShowNotCurWeek(false);
                 break;
             case CONFIG_CUR_WEEK:
-                mView.changeWeekForce(Integer.parseInt(value));
+                mView.curWeek(value);//value为开学周的时间
                 break;
             default:
                 break;

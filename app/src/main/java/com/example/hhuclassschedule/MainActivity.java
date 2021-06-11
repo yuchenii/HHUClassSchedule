@@ -30,6 +30,7 @@ import com.example.hhuclassschedule.adapter.OnMyConfigHandleAdapter;
 import com.example.hhuclassschedule.adapter.OnDateDelayAdapter;
 import com.example.hhuclassschedule.util.ContextApplication;
 import com.example.hhuclassschedule.util.SharedPreferencesUtil;
+import com.example.hhuclassschedule.util.TimeCalUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhuangfei.timetable.TimetableView;
@@ -43,6 +44,7 @@ import com.zhuangfei.timetable.view.WeekView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -302,8 +304,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (target != -1) {
                     mWeekView.curWeek(target + 1).updateView();
                     mTimetableView.changeWeekForce(target + 1);
-                    //保存当前周至本地配置文件
-                    mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_CUR_WEEK, Integer.toString(target + 1));
+                    Date curDate = new Date();
+                    String startTime;//(注意！)存放开学日期！形式"yy-MM-dd HH:mm:ss"
+                    startTime = TimeCalUtil.date2Str(TimeCalUtil.calWeeksAgo(curDate, target));
+                    mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_CUR_WEEK, startTime);
                     mMyConfig.saveConfig(mConfigMap);
                 }
             }
@@ -445,12 +449,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_WEEKENDS, OnMyConfigHandleAdapter.VALUE_TRUE);
                         break;
                     case R.id.about_activity:
-                        Intent intent1 = new Intent(MainActivity.this, AboutActivity.class);
-                        startActivity(intent1);
+                        Intent intentAbout = new Intent(MainActivity.this, AboutActivity.class);
+                        startActivity(intentAbout);
                         break;
-                    case R.id.about_activity:
-                        Intent intent1 = new Intent(MainActivity.this, AboutActivity.class);
-                        startActivity(intent1);
+                    case R.id.notification_activity:
+                        Intent intentNotConfig = new Intent(MainActivity.this, NotificationConfigActivity.class);
+                        startActivity(intentNotConfig);
                         break;
                     default:
                         break;
@@ -662,7 +666,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return subjectList;
     }
 
-    //从本地配置文件中读取信息并应用
+    /**
+     * 从本地配置文件中读取信息并应用
+     */
     public void loadLocalConfig(){
      //   mMyConfig = new MyConfig(MainActivity.this);
         mMyConfig = new MyConfig();
