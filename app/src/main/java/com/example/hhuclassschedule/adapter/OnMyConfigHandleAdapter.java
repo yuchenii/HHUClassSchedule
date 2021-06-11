@@ -1,14 +1,14 @@
 package com.example.hhuclassschedule.adapter;
 
-import android.util.Log;
-
 import com.zhuangfei.timetable.TimetableView;
 
+/**
+ * 处理配置信息
+ */
 public class OnMyConfigHandleAdapter {
 
     public OnMyConfigHandleAdapter() {
     }
-
 
     private static final String TAG = "OnMyConfigHandleAdapter";
 
@@ -25,12 +25,10 @@ public class OnMyConfigHandleAdapter {
         if (mView == null || key == null || value == null) return;
         switch (key) {
             case CONFIG_SHOW_WEEKENDS:
-                if (value.equals(VALUE_TRUE)) mView.isShowWeekends(true);
-                else mView.isShowWeekends(false);
+                mView.isShowWeekends(value.equals(VALUE_TRUE));
                 break;
             case CONFIG_SHOW_NOT_CUR_WEEK:
-                if (value.equals(VALUE_TRUE)) mView.isShowNotCurWeek(true);
-                else mView.isShowNotCurWeek(false);
+                mView.isShowNotCurWeek(value.equals(VALUE_TRUE));
                 break;
             case CONFIG_CUR_WEEK:
                 mView.changeWeekForce(Integer.parseInt(value));
