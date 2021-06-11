@@ -62,7 +62,7 @@ public class MySubject implements ScheduleEnable {
     /**
      *  一个随机数，用于对应课程的颜色
      */
-    private int colorRandom = 0;
+    private int colorRandom;
 
     private String url;
 

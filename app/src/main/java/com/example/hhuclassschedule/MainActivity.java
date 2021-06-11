@@ -1,29 +1,21 @@
 package com.example.hhuclassschedule;
 
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -40,7 +32,6 @@ import com.google.gson.reflect.TypeToken;
 import com.zhuangfei.timetable.TimetableView;
 import com.zhuangfei.timetable.listener.ISchedule;
 import com.zhuangfei.timetable.listener.IWeekView;
-import com.zhuangfei.timetable.listener.OnItemBuildAdapter;
 import com.zhuangfei.timetable.listener.OnSlideBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.view.WeekView;
@@ -56,7 +47,7 @@ import es.dmoral.toasty.Toasty;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private DrawerLayout mDrawerlayout;
+    private DrawerLayout mDrawerLayout;
     public static final String CONFIG_FILENAME = "myConfig";//本地配置文件 文件名称
     private static final String TAG = "MainActivity";
     public  static MainActivity mainActivity;
@@ -80,9 +71,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         mainActivity = this;
 
-//        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
+//        SharedPreferences sp = getSharedPreferences("COURSE_DATA", Activity.MODE_PRIVATE);//创建sp对象
 //        String subjectListJson = sp.getString("SUBJECT_LIST", null);
-        String subjectListJson = SharedPreferencesUtil.init(ContextApplication.getAppContext(),"SP_Data_List").getString("SUBJECT_LIST", null);
+        String subjectListJson = SharedPreferencesUtil.init(ContextApplication.getAppContext(),"COURSE_DATA").getString("SUBJECT_LIST", null);
         if (subjectListJson == null) {
             mySubjects = SubjectRepertory.loadDefaultSubjects();
             if (!mySubjects.isEmpty()) {
@@ -180,36 +171,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .callback(new ISchedule.OnItemLongClickListener() {
                     @Override
                     public void onLongClick(View v, int day, int start, int id) {
-                        View view = getLayoutInflater().inflate(R.layout.fragment_confirm, null);
-                        TextView text = view.findViewById(R.id.text);
-                        text.setText("确认删除？");
-                        TextView confirm = view.findViewById(R.id.confirm);
-                        TextView cancel = view.findViewById(R.id.cancel);
-
-                        // 创建dialog
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setView(view);
-                        final AlertDialog dialog = builder.show();
-                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                        dialog.getWindow().setLayout(900,WindowManager.LayoutParams.WRAP_CONTENT);
-
-                        // 确定
-                        confirm.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                                deleteSubject(id);
-                                // Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                                Toasty.success(MainActivity.this, "删除成功!", Toast.LENGTH_SHORT, true).show();
-                            }
-                        });
-                        // 取消
-                        cancel.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
+                        // 显示确认对话框
+                        showConfirmDialog(id);
                     }
                 })
                 .callback(getDateDelayAdapter(dateDelay))//这行要放在下行的前边
@@ -388,6 +351,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    /**
+     * 长按显示确认对话框
+     * @param id 课程id
+     */
+    protected void showConfirmDialog(int id){
+        View view = getLayoutInflater().inflate(R.layout.fragment_confirm, null);
+        TextView text = view.findViewById(R.id.text);
+        text.setText("确认删除？");
+        TextView confirm = view.findViewById(R.id.confirm);
+        TextView cancel = view.findViewById(R.id.cancel);
+
+        // 创建dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setView(view);
+        final AlertDialog dialog = builder.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(900,WindowManager.LayoutParams.WRAP_CONTENT);
+
+        // 确定
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                deleteSubject(id);
+                // Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                Toasty.success(MainActivity.this, "删除成功!", Toast.LENGTH_SHORT, true).show();
+            }
+        });
+        // 取消
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
 
     @Override
     public void onClick(View view) {
@@ -400,8 +399,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-
-
 
 
     /**
@@ -440,30 +437,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    /**
-     * 添加课程
-     * 内部使用集合维护课程数据，操作集合的方法来操作它即可
-     * 最后更新一下视图（全局更新）
-     */
-    protected void addSubject() {
-//        List<Schedule> dataSource = mTimetableView.dataSource();
-//        int size = dataSource.size();
-//        if (size > 0) {
-//            Schedule schedule = dataSource.get(0);
-//            dataSource.add(schedule);
-//            mTimetableView.updateView();
-//        }
-        List<Integer> weeks = Arrays.asList(1, 2, 3, 4);
-        MySubject mysubject = new MySubject(null, "Test", "寝室", "张三", weeks, 1, 2, 1, -1, null);
-        Schedule schedule = new Schedule("Test", "寝室", "张三", weeks, 1, 2, 1, -1);
-        mySubjects.add(mysubject);
-
-
-        mTimetableView.dataSource().add(schedule);
-        mTimetableView.updateView();
-        toSaveSubjects(mySubjects);
-        initTimetableView();
-    }
 
     /**
      * 隐藏非本周课程
@@ -551,24 +524,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-    /**
-     * 修改课程重叠的样式，在该接口中，你可以自定义出很多的效果
-     */
-    protected void modifyOverlayStyle() {
-        mTimetableView.callback(new OnItemBuildAdapter() {
-            @Override
-            public void onItemUpdate(FrameLayout layout, TextView textView, TextView countTextView, Schedule schedule, GradientDrawable gd) {
-                super.onItemUpdate(layout, textView, countTextView, schedule, gd);
-                //可见说明重叠，取消角标，添加角度
-                if (countTextView.getVisibility() == View.VISIBLE) {
-                    countTextView.setVisibility(View.GONE);
-                    // 设置弧度
-                    // gd.setCornerRadii(new float[]{0, 0, 20, 20, 0, 0, 0, 0});
-                }
-            }
-        });
-        mTimetableView.updateView();
-    }
+//    /**
+//     * 修改课程重叠的样式，在该接口中，你可以自定义出很多的效果
+//     */
+//    protected void modifyOverlayStyle() {
+//        mTimetableView.callback(new OnItemBuildAdapter() {
+//            @Override
+//            public void onItemUpdate(FrameLayout layout, TextView textView, TextView countTextView, Schedule schedule, GradientDrawable gd) {
+//                super.onItemUpdate(layout, textView, countTextView, schedule, gd);
+//                //可见说明重叠，取消角标，添加角度
+//                if (countTextView.getVisibility() == View.VISIBLE) {
+//                    countTextView.setVisibility(View.GONE);
+//                    // 设置弧度
+//                    // gd.setCornerRadii(new float[]{0, 0, 20, 20, 0, 0, 0, 0});
+//                }
+//            }
+//        });
+//        mTimetableView.updateView();
+//    }
 
     /**
      * 保存课程
@@ -578,11 +551,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Gson gson = new Gson();
         String str_subjectJSON = gson.toJson(subject);
-//        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
+//        SharedPreferences sp = getSharedPreferences("COURSE_DATA", Activity.MODE_PRIVATE);//创建sp对象
 //        SharedPreferences.Editor editor = sp.edit();
 //        editor.putString("SUBJECT_LIST", str_subjectJSON); //存入json串
 //        editor.commit();//提交
-        SharedPreferencesUtil.init(ContextApplication.getAppContext(),"SP_Data_List").putString("SUBJECT_LIST", str_subjectJSON); //存入json串
+        SharedPreferencesUtil.init(ContextApplication.getAppContext(),"COURSE_DATA").putString("SUBJECT_LIST", str_subjectJSON); //存入json串
         Log.e(TAG, "toSaveSubjects: " + str_subjectJSON);
 
     }
@@ -593,10 +566,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     public static List<MySubject> toGetSubjects() {
 
-//        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
+//        SharedPreferences sp = getSharedPreferences("COURSE_DATA", Activity.MODE_PRIVATE);//创建sp对象
 //        String str_subjectJSON = sp.getString("SUBJECT_LIST", null);  //取出key为"SUBJECT_LIST"的值，如果值为空，则将第二个参数作为默认值赋值
 //        Log.e(TAG, "toGetSubjects: " + str_subjectJSON);//str_subjectJSON便是取出的数据了
-        String str_subjectJSON = SharedPreferencesUtil.init(ContextApplication.getAppContext(),"SP_Data_List").getString("SUBJECT_LIST", null);
+        String str_subjectJSON = SharedPreferencesUtil.init(ContextApplication.getAppContext(),"COURSE_DATA").getString("SUBJECT_LIST", null);
         Gson gson = new Gson();
         List<MySubject> subjectList = gson.fromJson(str_subjectJSON, new TypeToken<List<MySubject>>() {
         }.getType());
@@ -622,15 +595,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initNavView(){
-        mDrawerlayout=findViewById(R.id.drawyer_layout);
+        mDrawerLayout=findViewById(R.id.drawyer_layout);
         ImageView b=findViewById(R.id.menu);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDrawerlayout.openDrawer(GravityCompat.START);
+                mDrawerLayout.openDrawer(GravityCompat.START);
             }
         });
-        NavigationView navView=(NavigationView) findViewById(R.id.nave_view);
+        NavigationView navView= findViewById(R.id.nave_view);
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -667,7 +640,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Intent intent1 = new Intent(MainActivity.this, AboutActivity.class);
                         startActivity(intent1);
                         break;
-
                     default:
                         break;
                 }

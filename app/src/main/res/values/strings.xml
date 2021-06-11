@@ -44,5 +44,6 @@
     <string name="icon_person" translatable="false"></string>
     <string name="icon_nav" translatable="false"></string>
     <string name="icon_color" translatable="false"></string>
+    <string name="icon_edit" translatable="false"></string>
 
 </resources>

@@ -17,12 +17,12 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/ib_delete"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:fontFamily="@font/iconfont"
         android:gravity="center"
         android:includeFontPadding="false"
@@ -37,14 +37,14 @@
         android:background="?android:attr/selectableItemBackground">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:textSize="24sp"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:fontFamily="@font/iconfont"
             android:layout_width="56dp"
             android:layout_height="match_parent"
+            android:fontFamily="@font/iconfont"
+            android:gravity="center"
+            android:includeFontPadding="false"
             android:text="@string/icon_date"
-            android:textColor="#16AD9F" />
+            android:textColor="#16AD9F"
+            android:textSize="24sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/et_weeks"
@@ -66,14 +66,14 @@
         android:background="?android:attr/selectableItemBackground">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:textSize="24sp"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:fontFamily="@font/iconfont"
             android:layout_width="56dp"
             android:layout_height="match_parent"
+            android:fontFamily="@font/iconfont"
+            android:gravity="center"
+            android:includeFontPadding="false"
             android:text="@string/icon_clock"
-            android:textColor="#FFA622" />
+            android:textColor="#FFA622"
+            android:textSize="24sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/et_time"
@@ -99,14 +99,14 @@
         android:background="?android:attr/selectableItemBackground">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:textSize="24sp"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:fontFamily="@font/iconfont"
             android:layout_width="56dp"
             android:layout_height="match_parent"
+            android:fontFamily="@font/iconfont"
+            android:gravity="center"
+            android:includeFontPadding="false"
             android:text="@string/icon_person"
-            android:textColor="#1571D5" />
+            android:textColor="#1571D5"
+            android:textSize="24sp" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_teacher"
@@ -130,14 +130,14 @@
         android:background="?android:attr/selectableItemBackground">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:textSize="24sp"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:fontFamily="@font/iconfont"
             android:layout_width="56dp"
             android:layout_height="match_parent"
+            android:fontFamily="@font/iconfont"
+            android:gravity="center"
+            android:includeFontPadding="false"
             android:text="@string/icon_location"
-            android:textColor="#F63D3E" />
+            android:textColor="#F63D3E"
+            android:textSize="24sp" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_room"
