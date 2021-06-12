@@ -16,6 +16,7 @@ public class OnMyConfigHandleAdapter {
     public static final String CONFIG_SHOW_NOT_CUR_WEEK = "config_show_not_cur_week";
     public static final String CONFIG_CUR_WEEK = "config_current_week";
     public static final String CONFIG_SHOW_TIME = "config_show_time";
+    public static final String CONFIG_START_DATE = "config_start_date";
 
     public static final String VALUE_TRUE = "config_value_true";
     public static final String VALUE_FALSE = "config_value_false";
