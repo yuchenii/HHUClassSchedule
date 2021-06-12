@@ -38,11 +38,14 @@ import com.zhuangfei.timetable.view.WeekView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import cn.carbswang.android.numberpickerview.library.NumberPickerView;
 import es.dmoral.toasty.Toasty;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -61,9 +64,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     MyConfig mMyConfig;
     Map<String, String> mConfigMap;
 
+    NumberPickerView yearPicker;
+    NumberPickerView monthPicker;
+    NumberPickerView dayPicker;
+
     //记录切换的周次，不一定是当前周
     int target = -1;
-    String dateDelay = "2021-03-01"; // 开学时间
+    String startDate = "2021-3-1"; // 开学时间
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         titleTextView = findViewById(R.id.id_title);
         layout = findViewById(R.id.id_layout);
         layout.setOnClickListener(this);
+        startDate = SharedPreferencesUtil.init(ContextApplication.getAppContext(), CONFIG_FILENAME).getString(OnMyConfigHandleAdapter.CONFIG_START_DATE,startDate);
 
         initNavView();     // 侧滑菜单
         initTimetableView();  // 初始化界面
@@ -175,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         showConfirmDialog(id);
                     }
                 })
-                .callback(getDateDelayAdapter(dateDelay))//这行要放在下行的前边
+                .callback(getDateDelayAdapter(startDate))//这行要放在下行的前边
                 .callback(new ISchedule.OnWeekChangedListener() {
                     @Override
                     public void onWeekChanged(int curWeek) {
@@ -212,22 +220,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 配置OnDateDelayAdapter
      */
-    public OnDateDelayAdapter getDateDelayAdapter(String date) {
+    public OnDateDelayAdapter getDateDelayAdapter(String str_date) {
         OnDateDelayAdapter onDateDelayAdapter = new OnDateDelayAdapter();
 
         //计算开学时间戳
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         long startTime = 0;
+        Date date = null;
         try {
-            startTime = sdf.parse(date).getTime();
+            startTime = sdf.parse(str_date).getTime();
+            date = sdf.parse(str_date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        // 星期与Date类是同：1代表星期日、2代表星期1、3代表星期二，以此类推
+        // 不是星期一就往后面推
+        int[] addDays = {1, 0, -1, -2, -3, -4, 2};   // 往后(前)推的天数
+        c.add(Calendar.DATE, addDays[c.get(Calendar.DAY_OF_WEEK) - 1]);
+
+        int month = c.get(Calendar.MONTH) + 1;
+        int day = c.get(Calendar.DATE);
+        Log.e(TAG, "month: " + month);
+        Log.e(TAG, "day: " + day);
         // 第一个是月份，后面七个第一周的日期
         //计算开学时的一周日期，我这里模拟一下
-        List<String> dateList = Arrays.asList("9", "3", "4", "5", "6", "7", "8", "9");
-
+        //List<String> dateList = Arrays.asList("9", "3", "4", "5", "6", "7", "8", "9");
+        List<String> dateList = new ArrayList<String>();
+        dateList.add(String.valueOf(month));
+        for (int i = 0; i < 7; i++) {
+            dateList.add(String.valueOf(c.get(Calendar.DATE)));
+            c.add(Calendar.DATE, 1);
+        }
         //设置
         onDateDelayAdapter.setStartTime(startTime);
         onDateDelayAdapter.setDateList(dateList);
@@ -399,6 +425,135 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
+
+    /**
+     * 选择开学日期
+     * 年，月，日
+     */
+    protected void selectDate() {
+        View selectDateDetail = getLayoutInflater().inflate(R.layout.fragment_select_date, null);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = sdf.parse(startDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        initDatePicker(selectDateDetail,c);
+
+        // 设置自定义布局
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(selectDateDetail);
+        final AlertDialog dialog = builder.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(900, WindowManager.LayoutParams.WRAP_CONTENT);
+        // 关闭dialog
+        TextView btn_cancel = selectDateDetail.findViewById(R.id.btn_cancel);
+        btn_cancel.setClickable(true);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        // 保存
+        TextView btn_saveDate = selectDateDetail.findViewById(R.id.btn_save_date);
+        btn_saveDate.setClickable(true);
+        btn_saveDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDate = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DATE);
+                Log.e(TAG,"savedDate:"+startDate);
+                mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_START_DATE,startDate);
+                mMyConfig.saveConfig(mConfigMap);//保存设置信息至本地配置文件
+                Toasty.success(MainActivity.this,"保存成功！重启生效！").show();
+                dialog.dismiss();
+            }
+        });
+    }
+
+
+    /**
+     * 初始化DatePicker
+     * @param selectDateDetail DatePickerView
+     */
+    protected void initDatePicker(View selectDateDetail,Calendar calendar) {
+
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DATE);
+
+        // 年
+        yearPicker = selectDateDetail.findViewById(R.id.date_year);
+        String[] displayYear = {String.valueOf(calendar.get(Calendar.YEAR)-1),String.valueOf(calendar.get(Calendar.YEAR)), String.valueOf(calendar.get(Calendar.YEAR)+1)};
+        yearPicker.setDisplayedValues(displayYear);
+        // 设置最大值
+        yearPicker.setMaxValue(displayYear.length - 1);
+        // 设置最小值
+        yearPicker.setMinValue(0);
+        // 设置当前值
+        yearPicker.setValue(1);
+
+        // 月
+        monthPicker = selectDateDetail.findViewById(R.id.date_month);
+        String[] displayMonth = {"1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"};
+        monthPicker.setDisplayedValues(displayMonth);
+        // 设置最大值
+        monthPicker.setMaxValue(displayMonth.length - 1);
+        // 设置最小值
+        monthPicker.setMinValue(0);
+        // 设置当前值
+        monthPicker.setValue(month);
+
+        // 日
+        dayPicker = selectDateDetail.findViewById(R.id.date_day);
+        String[] displayDay = {"1日", "2日", "3日", "4日", "5日", "6日", "7日", "8日", "9日", "10日", "11日", "12日", "13日", "14日", "15日","16日", "17日", "18日", "19日", "20日", "21日","22日", "23日", "24日", "25日","26日", "27日", "28日", "29日", "30日", "31日"};
+        dayPicker.setDisplayedValues(displayDay);
+        // 设置最大值
+        dayPicker.setMaxValue(calendar.getActualMaximum(Calendar.DAY_OF_MONTH) - 1);
+        // 设置最小值
+        dayPicker.setMinValue(0);
+        // 设置当前值
+        dayPicker.setValue(day-1);
+
+        // 年改变，同时改变对应月份的天数
+        yearPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
+                calendar.set(Calendar.YEAR, year + newVal - 1);
+                dayPicker.setMaxValue(calendar.getActualMaximum(Calendar.DAY_OF_MONTH) - 1);
+                dayPicker.setValue(calendar.get(Calendar.DATE) - 1);
+            }
+        });
+        // 月改变，同时改变对应月份的天数
+        monthPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
+                calendar.set(Calendar.MONTH,newVal);
+                if(calendar.get(Calendar.MONTH) != newVal){
+                    calendar.set(Calendar.MONTH,newVal);
+                    calendar.set(Calendar.DATE,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+                }
+                dayPicker.setMaxValue(calendar.getActualMaximum(Calendar.DAY_OF_MONTH) - 1);
+                dayPicker.setValue(calendar.get(Calendar.DATE)-1);
+            }
+        });
+
+        dayPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
+                calendar.set(Calendar.DATE,newVal+1);
+            }
+        });
+
+    }
+
+
+
 
 
     /**
@@ -590,7 +745,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 else
                     hideTime();
             }else
-            onMyConfigHandleAdapter.onParseConfig(key, value, mTimetableView);
+                onMyConfigHandleAdapter.onParseConfig(key, value, mTimetableView);
         }
     }
 
@@ -611,6 +766,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case R.id.import_class:
                         Intent intent = new Intent(MainActivity.this, ParseHtmlActivity.class);
                         startActivity(intent);
+                        break;
+                    case R.id.select_date:
+                        selectDate();
                         break;
                     case R.id.hide_not_tish_week:
                         hideNonThisWeek();
