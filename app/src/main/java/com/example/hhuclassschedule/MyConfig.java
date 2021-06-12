@@ -20,7 +20,7 @@ public class MyConfig {
      * 保存当前配置信息（缓冲map）至本地文件
      * @param configMap 配置缓冲map
      */
-    public void saveConfig(Map<String, String> configMap) {
+    public static void saveConfig(Map<String, String> configMap) {
         SharedPreferencesUtil sharedPreferencesUtil =
                 SharedPreferencesUtil.init(ContextApplication.getAppContext(), MainActivity.CONFIG_FILENAME);
         for (String key : configMap.keySet()) {
@@ -43,7 +43,7 @@ public class MyConfig {
     /**
      * 从本地配置文件中读取信息至缓冲map
      */
-    public Map<String, String> loadConfig() {
+    public static Map<String, String> loadConfig() {
         Map<String, String> configMap;
         SharedPreferencesUtil sharedPreferencesUtil =
                 SharedPreferencesUtil.init(ContextApplication.getAppContext(), MainActivity.CONFIG_FILENAME);
