@@ -42,7 +42,7 @@ public class NotificationConfigActivity extends AppCompatActivity {
     static Boolean notIsShowStep;
 
     int setHour = 22;
-    int setMinute = 1;
+    int setMinute = 0;
 
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     @Override
