@@ -8,9 +8,15 @@
 - 支持教务系统课表的导入
 - 纯java开发，适合新手学习，二次开发
 
+<p align="center">
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908335.jpg"  width="33%" />
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908331.jpg"  width="33%" />
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908311.jpg"  width="33%" />
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908317.jpg"  width="33%" />
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908354.jpg"  width="33%" />
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908305.jpg"  width="33%" />
+</p>
 
-
-<img src="https://cdn.jsdelivr.net/gh/yuchenii/img/1623573908317.jpg" alt="1623573908317" style="zoom:33%;" /><img src="https://cdn.jsdelivr.net/gh/yuchenii/img/1623573908335.jpg" alt="1623573908335" style="zoom:33%;" /><img src="https://cdn.jsdelivr.net/gh/yuchenii/img/1623573908311.jpg" alt="1623573908311" style="zoom:33%;" /><img src="https://cdn.jsdelivr.net/gh/yuchenii/img/1623573908354.jpg" alt="1623573908354" style="zoom:33%;" /><img src="https://cdn.jsdelivr.net/gh/yuchenii/img/1623573908331.jpg" alt="1623573908331" style="zoom:33%;" />
 
 # 开发流程
 
@@ -32,5 +38,6 @@
 
 - [com.zhuangfei.timetable](https://github.com/zfman/TimetableView)
 - [cn.carbswang.android:NumberPickerView](https://github.com/Carbs0126/NumberPickerView)
-- [AIschedule-HHU-URP](https://github.com/yuchenii/AIschedule-HHU-URP)
 - [com.github.GrenderG:Toasty](https://github.com/GrenderG/Toasty)
+- [WakeupSchedule_Kotlin](https://github.com/YZune/WakeupSchedule_Kotlin)
+- [AIschedule-HHU-URP](https://github.com/yuchenii/AIschedule-HHU-URP)
