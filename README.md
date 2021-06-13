@@ -9,14 +9,14 @@
 - 纯java开发，适合新手学习，二次开发
 
 <p align="center">
-  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908335.jpg"  width="33%" />
-  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908331.jpg"  width="33%" />
-  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908311.jpg"  width="33%" />
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908335.jpg"  width="30%" />
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908331.jpg"  width="30%" />
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908311.jpg"  width="30%" />
 </p>
 <p align="center">
-  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908317.jpg"  width="33%" />
-  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908354.jpg"  width="33%" />
-  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908305.jpg"  width="33%" />
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908317.jpg"  width="30%" />
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908354.jpg"  width="30%" />
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908305.jpg"  width="30%" />
 </p>
 
 
