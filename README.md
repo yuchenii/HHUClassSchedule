@@ -36,4 +36,4 @@
 - [com.zhuangfei.timetable](https://github.com/zfman/TimetableView)
 - [cn.carbswang.android:NumberPickerView](https://github.com/Carbs0126/NumberPickerView)
 - [AIschedule-HHU-URP](https://github.com/yuchenii/AIschedule-HHU-URP)
-
+- [com.github.GrenderG:Toasty](https://github.com/GrenderG/Toasty)

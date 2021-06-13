@@ -22,5 +22,11 @@
     <item
         android:id="@+id/hide_time"
         android:title="隐藏节次时间" />
+    <item
+        android:id="@+id/notification_activity"
+        android:title="通知设置"/>
+    <item
+        android:id="@+id/about_activity"
+        android:title="关于" />
 
 </menu>
