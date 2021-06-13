@@ -12,6 +12,8 @@
   <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908335.jpg"  width="33%" />
   <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908331.jpg"  width="33%" />
   <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908311.jpg"  width="33%" />
+</p>
+<p align="center">
   <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908317.jpg"  width="33%" />
   <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908354.jpg"  width="33%" />
   <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908305.jpg"  width="33%" />
