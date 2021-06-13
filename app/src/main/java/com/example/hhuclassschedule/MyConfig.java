@@ -3,9 +3,11 @@ package com.example.hhuclassschedule;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.hhuclassschedule.adapter.OnMyConfigHandleAdapter;
 import com.example.hhuclassschedule.util.ContextApplication;
 import com.example.hhuclassschedule.util.SharedPreferencesUtil;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -58,4 +60,39 @@ public class MyConfig {
 //        configMap = (Map<String, String>) sharedPreferences.getAll();
 //        return configMap;
 //    }
+
+    /**
+     * 从本地配置文件里获取notConfigMap;
+     * 默认value都是false
+     * @return
+     */
+    public static Map<String, Boolean> getNotConfigMap(){
+        Map<String, String> originMap = MyConfig.loadConfig();
+        Map<String, Boolean> notConfigMap = new HashMap<>();
+        //初始化
+        notConfigMap.put(OnMyConfigHandleAdapter.CONFIG_NOT_OPEN, false);
+        notConfigMap.put(OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_WHEN, false);
+        notConfigMap.put(OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_WHERE, false);
+        notConfigMap.put(OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_STEP, false);
+        //从配置文件里读取
+        for(String key : originMap.keySet()){
+            String value = originMap.get(key);
+            if(value == null)
+                continue;
+            switch (key){
+                case OnMyConfigHandleAdapter.CONFIG_NOT_OPEN:
+                case OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_WHEN:
+                case OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_WHERE:
+                case OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_STEP:
+                    if (value.equals(OnMyConfigHandleAdapter.VALUE_TRUE))
+                        notConfigMap.put(key, true);
+                    else
+                        notConfigMap.put(key, false);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return notConfigMap;
+    }
 }
