@@ -821,8 +821,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_WEEKENDS, OnMyConfigHandleAdapter.VALUE_TRUE);
                         break;
                     case R.id.about_activity:
-                        Intent intent1 = new Intent(MainActivity.this, AboutActivity.class);
-                        startActivity(intent1);
+                        Intent intentAbout = new Intent(MainActivity.this, AboutActivity.class);
+                        startActivity(intentAbout);
+                        break;
+                    case R.id.notification_activity:
+                        Intent intentNotConfig = new Intent(MainActivity.this, NotificationConfigActivity.class);
+                        startActivity(intentNotConfig);
                         break;
                     default:
                         break;
