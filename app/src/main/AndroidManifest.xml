@@ -24,6 +24,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
+        <activity android:name=".NotificationConfigActivity"/>
+        <receiver
+            android:name=".receiver.AlarmReceiver"
+            />
     </application>
 
 </manifest>

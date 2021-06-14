@@ -26,6 +26,7 @@ import com.example.hhuclassschedule.adapter.OnMyConfigHandleAdapter;
 import com.example.hhuclassschedule.adapter.OnDateDelayAdapter;
 import com.example.hhuclassschedule.util.ContextApplication;
 import com.example.hhuclassschedule.util.SharedPreferencesUtil;
+import com.example.hhuclassschedule.util.TimeCalUtil;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -38,9 +39,11 @@ import com.zhuangfei.timetable.view.WeekView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView titleTextView;
     List<MySubject> mySubjects;
     MyConfig mMyConfig;
-    Map<String, String> mConfigMap;
+    Map<String, String> mConfigMap;//存放全部配置信息
+    Map<String, Boolean> notConfigMap = new HashMap<>();//存放通知相关的配置信息
 
     NumberPickerView yearPicker;
     NumberPickerView monthPicker;
@@ -74,9 +78,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainActivity = this;
+
 
 //        SharedPreferences sp = getSharedPreferences("COURSE_DATA", Activity.MODE_PRIVATE);//创建sp对象
 //        String subjectListJson = sp.getString("SUBJECT_LIST", null);
@@ -123,6 +129,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String str = "距离开学还有" + when + "天";
             titleTextView.setText(str);
         }
+
+        //更新map
+        mConfigMap = MyConfig.loadConfig();
     }
 
 
@@ -287,8 +296,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (target != -1) {
                     mWeekView.curWeek(target + 1).updateView();
                     mTimetableView.changeWeekForce(target + 1);
-                    //保存当前周至本地配置文件
-                    mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_CUR_WEEK, Integer.toString(target + 1));
+                    Date curDate = new Date();
+                    String startTime;//(注意！)存放开学日期！形式"yyyy-MM-dd HH:mm:ss"
+                    startTime = TimeCalUtil.date2Str(TimeCalUtil.calWeeksAgo(curDate, target));
+                    mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_CUR_WEEK, startTime);
                     mMyConfig.saveConfig(mConfigMap);
                 }
             }
@@ -731,21 +742,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return subjectList;
     }
 
-    //从本地配置文件中读取信息并应用
+    /**
+     * 从本地配置文件中读取信息并应用
+     */
     public void loadLocalConfig(){
      //   mMyConfig = new MyConfig(MainActivity.this);
-        mMyConfig = new MyConfig();
-        mConfigMap = mMyConfig.loadConfig();
+//        mMyConfig = new MyConfig();
+        mConfigMap = MyConfig.loadConfig();
         OnMyConfigHandleAdapter onMyConfigHandleAdapter = new OnMyConfigHandleAdapter();
         for(String key : mConfigMap.keySet()){
             String value = mConfigMap.get(key);
-            if(key.equals(OnMyConfigHandleAdapter.CONFIG_SHOW_TIME)){
-                if(value.equals(OnMyConfigHandleAdapter.VALUE_TRUE))
-                    showTime();
-                else
-                    hideTime();
-            }else
-                onMyConfigHandleAdapter.onParseConfig(key, value, mTimetableView);
+
+            if(value == null)
+                continue;
+            switch (key) {
+                case OnMyConfigHandleAdapter.CONFIG_SHOW_TIME:
+                    if (value.equals(OnMyConfigHandleAdapter.VALUE_TRUE))
+                        showTime();
+                    else
+                        hideTime();
+                    break;
+                default:
+                    onMyConfigHandleAdapter.onParseConfig(key, value, mTimetableView);
+                    break;
+            }
+
+        }
+        //第一周未设定，将当前周设置为第一周
+        if(mConfigMap.get(OnMyConfigHandleAdapter.CONFIG_CUR_WEEK) == null){
+            mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_CUR_WEEK, TimeCalUtil.date2Str(new Date()));
+            mMyConfig.saveConfig(mConfigMap);
         }
     }
 
