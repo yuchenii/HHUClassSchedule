@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import es.dmoral.toasty.Toasty;
 
+/**
+ * 关于界面
+ */
 public class AboutActivity extends AppCompatActivity {
 
     @Override
@@ -33,10 +35,15 @@ public class AboutActivity extends AppCompatActivity {
         // 设置title
         // getSupportActionBar().setTitle(title);
         TextView textView = findViewById(R.id.toolbar_title);
-        Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) textView.getLayoutParams();
-        layoutParams.setMarginStart(160);
-        textView.setLayoutParams(layoutParams);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);// 添加默认的返回图标
+        getSupportActionBar().setHomeButtonEnabled(true); // 设置返回键可用
         textView.setText(title);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     /**

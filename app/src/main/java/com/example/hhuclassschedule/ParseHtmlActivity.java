@@ -1,11 +1,8 @@
 package com.example.hhuclassschedule;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,8 +27,8 @@ public class ParseHtmlActivity extends AppCompatActivity {
 
     private static final String TAG = "ParseHtmlActivity";
 
-    WebView webview;
-    TextView tv_btn;
+    WebView webView;
+    TextView tv_import;
     String parseHtmlJS;
     String URL = "http://jwxs.hhu.edu.cn";
 
@@ -40,18 +37,21 @@ public class ParseHtmlActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parse_html);
         try {
-            btn_openWeb();
+            // 打开网页
+            openWeb();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        // 导入课程
+        importSubject();
 
     }
 
     /**
-     * 打开网页，爬取课程信息并保存
+     * 打开网页
      * @throws IOException
      */
-    public void btn_openWeb() throws IOException {
+    public void openWeb() throws IOException {
         // toolbar
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -65,8 +65,8 @@ public class ParseHtmlActivity extends AppCompatActivity {
         });
 
         // webView 设置
-        webview = findViewById(R.id.classWeb);
-        WebSettings ws = webview.getSettings();
+        webView = findViewById(R.id.classWeb);
+        WebSettings ws = webView.getSettings();
         // 支持js
         ws.setJavaScriptEnabled(true);    // 允许js
         ws.setJavaScriptCanOpenWindowsAutomatically(true);  // 允许js打开新窗口
@@ -95,9 +95,9 @@ public class ParseHtmlActivity extends AppCompatActivity {
         Log.e(TAG, "parseHtmlJS: " + parseHtmlJS);
 
         // 加载网页
-        webview.loadUrl(parseHtmlJS);
-        webview.loadUrl(URL);
-        webview.setWebViewClient(new WebViewClient() {
+        webView.loadUrl(parseHtmlJS);
+        webView.loadUrl(URL);
+        webView.setWebViewClient(new WebViewClient() {
 
 //            // android 6.0 以下使用
 //            public boolean shouldOverrideUrlLoading(WebView view, String Url) {
@@ -113,7 +113,7 @@ public class ParseHtmlActivity extends AppCompatActivity {
             // js 注入
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                webview.evaluateJavascript(parseHtmlJS, null);
+                webView.evaluateJavascript(parseHtmlJS, null);
             }
 
             public void onPageFinished(WebView view, String url) {
@@ -128,33 +128,35 @@ public class ParseHtmlActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    /**
+     * 导入课程保存为json字符串
+     */
+    public void importSubject(){
         // 导入课程
-        tv_btn = findViewById(R.id.tv_button);
-        tv_btn.setOnClickListener(new View.OnClickListener() {
+        tv_import = findViewById(R.id.tv_button);
+        tv_import.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 通过Handler发送消息
-                webview.post(new Runnable() {
-                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                webView.post(new Runnable() {
                     @Override
                     public void run() {
-
                         // 注意调用的JS方法名要对应上
                         // 调用javascript的parseHtml()方法
-                        // webview.loadUrl("javascript:parseHtml()");
-                        webview.evaluateJavascript("javascript:parseHtml()", new ValueCallback<String>() {
+                        // webView.loadUrl("javascript:parseHtml()");
+                        webView.evaluateJavascript("javascript:parseHtml()", new ValueCallback<String>() {
                             @Override
                             public void onReceiveValue(String value) {
                                 // 此处为 js 返回的结果
-//                                SharedPreferences sp = getSharedPreferences("SP_Data_List", Context.MODE_PRIVATE);//创建sp对象
+//                                SharedPreferences sp = getSharedPreferences("COURSE_DATA", Context.MODE_PRIVATE);//创建sp对象
 //                                SharedPreferences.Editor editor = sp.edit();
 //                                editor.clear();
 //                                editor.putString("HTML_TO_SUBJECT", value); //存入json串
 //                                editor.commit();//提交
-                                //  SharedPreferencesUtil.init(getAppContext(),"SP_Data_List").remove("HTML_TO_SUBJECT");
-                                SharedPreferencesUtil.init(ContextApplication.getAppContext(),"SP_Data_List").putString("HTML_TO_SUBJECT", value);
-                                SharedPreferencesUtil.init(ContextApplication.getAppContext(),"SP_Data_List").remove("SUBJECT_LIST");
+                                SharedPreferencesUtil.init(ContextApplication.getAppContext(),"COURSE_DATA").putString("HTML_TO_SUBJECT", value);
+                                SharedPreferencesUtil.init(ContextApplication.getAppContext(),"COURSE_DATA").remove("SUBJECT_LIST");
                                 Log.e(TAG, "HTML_TO_SUBJECT: " + value);
 
                                 Intent intent = new Intent(ParseHtmlActivity.this, MainActivity.class);
@@ -169,7 +171,6 @@ public class ParseHtmlActivity extends AppCompatActivity {
                 });
             }
         });
-
     }
 
 

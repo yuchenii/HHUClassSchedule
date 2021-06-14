@@ -5,15 +5,20 @@
 # 特点
 
 - 简洁，无广告
-- 支持手动添加、导入课程表
-- 支持新URP教务系统课表的导入
+- 支持教务系统课表的导入
 - 纯java开发，适合新手学习，二次开发
 
-# TODO
+<p align="center">
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908335.jpg"  width="30%" />
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908331.jpg"  width="30%" />
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908311.jpg"  width="30%" />
+</p>
+<p align="center">
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908317.jpg"  width="30%" />
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908354.jpg"  width="30%" />
+  <img src="https://cdn.jsdelivr.net/gh/yuchenii/HHUClassSchedule/img/1623573908305.jpg"  width="30%" />
+</p>
 
-- [ ] 设置界面
-- [ ] 关于界面
-- [ ] 背景图片
 
 # 开发流程
 
@@ -35,5 +40,6 @@
 
 - [com.zhuangfei.timetable](https://github.com/zfman/TimetableView)
 - [cn.carbswang.android:NumberPickerView](https://github.com/Carbs0126/NumberPickerView)
-- [AIschedule-HHU-URP](https://github.com/yuchenii/AIschedule-HHU-URP)
 - [com.github.GrenderG:Toasty](https://github.com/GrenderG/Toasty)
+- [WakeupSchedule_Kotlin](https://github.com/YZune/WakeupSchedule_Kotlin)
+- [AIschedule-HHU-URP](https://github.com/yuchenii/AIschedule-HHU-URP)

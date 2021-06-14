@@ -5,6 +5,9 @@
         android:id="@+id/import_class"
         android:title="导入课表" />
     <item
+        android:id="@+id/select_date"
+        android:title="设置开学时间" />
+    <item
         android:id="@+id/hide_weekends"
         android:title="隐藏周末" />
     <item

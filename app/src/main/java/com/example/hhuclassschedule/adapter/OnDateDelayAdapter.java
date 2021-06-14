@@ -11,7 +11,6 @@ import java.util.List;
 
 /**
  * 自定义日期栏
- * Created by Liu ZhuangFei on 2018/8/24.
  */
 public class OnDateDelayAdapter extends OnDateBuildAapter {
 

@@ -18,16 +18,12 @@
     <color name="theme_dark">#2A3033</color>
     <color name="theme_dark2">#787C7E</color>
     <color name="app_white">#ffffff</color>
+    <color name="app_white1">#CFCFCF</color>
+    <color name="app_blue">#3a9be7</color>
 
     <color name="layer_grid_line">#000000</color>
 
-
-
-    <!-- <color name="app_mainclolr">#00BCD4</color> -->
     <color name="app_mainclolr">#FB6A8F</color>
-    <!--<color name="app_mainclolr">#2196F3</color>-->
-    <!--<color name="app_mainclolr">#CE3D3E</color>-->
-    <!--  <color name="app_mainclolr">#3FCAB8</color>-->
 
     <!-- Github上的颜色 -->
     <color name="app_qing2">#31C453</color>

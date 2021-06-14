@@ -1,0 +1,102 @@
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="280dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_radius_bg"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="请选择日期"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="240dp">
+
+        <cn.carbswang.android.numberpickerview.library.NumberPickerView
+            android:id="@+id/date_year"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:npv_RespondChangeOnDetached="false"
+            app:npv_ShownCount="5"
+            app:npv_TextColorNormal="?attr/colorOnBackground"
+            app:npv_TextSizeNormal="14sp"
+            app:npv_TextSizeSelected="14sp"
+            app:npv_WrapSelectorWheel="true" />
+
+        <cn.carbswang.android.numberpickerview.library.NumberPickerView
+            android:id="@+id/date_month"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:npv_RespondChangeOnDetached="false"
+            app:npv_ShownCount="5"
+            app:npv_TextColorNormal="?attr/colorOnBackground"
+            app:npv_TextSizeNormal="14sp"
+            app:npv_TextSizeSelected="14sp"
+            app:npv_WrapSelectorWheel="false" />
+
+        <cn.carbswang.android.numberpickerview.library.NumberPickerView
+            android:id="@+id/date_day"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:npv_RespondChangeOnDetached="false"
+            app:npv_ShownCount="5"
+            app:npv_TextColorNormal="?attr/colorOnBackground"
+            app:npv_TextSizeNormal="14sp"
+            app:npv_TextSizeSelected="14sp"
+            app:npv_WrapSelectorWheel="false" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:alpha="0.5"
+        android:background="@color/grey" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/app_red"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_save_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:text="保存"
+            android:textColor="@color/app_blue1"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

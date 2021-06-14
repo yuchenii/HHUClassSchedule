@@ -2,24 +2,21 @@ package com.example.hhuclassschedule;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,12 +27,12 @@ import com.example.hhuclassschedule.adapter.OnDateDelayAdapter;
 import com.example.hhuclassschedule.util.ContextApplication;
 import com.example.hhuclassschedule.util.SharedPreferencesUtil;
 import com.example.hhuclassschedule.util.TimeCalUtil;
+import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhuangfei.timetable.TimetableView;
 import com.zhuangfei.timetable.listener.ISchedule;
 import com.zhuangfei.timetable.listener.IWeekView;
-import com.zhuangfei.timetable.listener.OnItemBuildAdapter;
 import com.zhuangfei.timetable.listener.OnSlideBuildAdapter;
 import com.zhuangfei.timetable.model.Schedule;
 import com.zhuangfei.timetable.view.WeekView;
@@ -45,14 +42,18 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import cn.carbswang.android.numberpickerview.library.NumberPickerView;
 import es.dmoral.toasty.Toasty;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private DrawerLayout mDrawerLayout;
     public static final String CONFIG_FILENAME = "myConfig";//本地配置文件 文件名称
     private static final String TAG = "MainActivity";
     public  static MainActivity mainActivity;
@@ -60,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TimetableView mTimetableView;
     WeekView mWeekView;
 
-    TextView tv_more;
     LinearLayout layout;
     TextView titleTextView;
     List<MySubject> mySubjects;
@@ -68,9 +68,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Map<String, String> mConfigMap;//存放全部配置信息
     Map<String, Boolean> notConfigMap = new HashMap<>();//存放通知相关的配置信息
 
+    NumberPickerView yearPicker;
+    NumberPickerView monthPicker;
+    NumberPickerView dayPicker;
+
     //记录切换的周次，不一定是当前周
     int target = -1;
-    String dateDelay = "2021-03-01"; // 开学时间
+    String startDate = "2021-3-1"; // 开学时间
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,19 +83,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         mainActivity = this;
 
-        tv_more = findViewById(R.id.id_more);
-        tv_more.setClickable(true);
-        tv_more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopmenu();
-            }
-        });
 
-//        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
+//        SharedPreferences sp = getSharedPreferences("COURSE_DATA", Activity.MODE_PRIVATE);//创建sp对象
 //        String subjectListJson = sp.getString("SUBJECT_LIST", null);
-        String subjectListJson = SharedPreferencesUtil.init(ContextApplication.getAppContext(),
-                "SP_Data_List").getString("SUBJECT_LIST", null);
+        String subjectListJson = SharedPreferencesUtil.init(ContextApplication.getAppContext(),"COURSE_DATA").getString("SUBJECT_LIST", null);
         if (subjectListJson == null) {
             mySubjects = SubjectRepertory.loadDefaultSubjects();
             if (!mySubjects.isEmpty()) {
@@ -104,7 +99,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         titleTextView = findViewById(R.id.id_title);
         layout = findViewById(R.id.id_layout);
         layout.setOnClickListener(this);
+        startDate = SharedPreferencesUtil.init(ContextApplication.getAppContext(), CONFIG_FILENAME).getString(OnMyConfigHandleAdapter.CONFIG_START_DATE,startDate);
 
+        initNavView();     // 侧滑菜单
         initTimetableView();  // 初始化界面
         loadLocalConfig();    //读取本地配置文件
     }
@@ -191,39 +188,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .callback(new ISchedule.OnItemLongClickListener() {
                     @Override
                     public void onLongClick(View v, int day, int start, int id) {
-                        View view = getLayoutInflater().inflate(R.layout.fragment_confirm, null);
-                        TextView text = view.findViewById(R.id.text);
-                        text.setText("确认删除？");
-                        TextView confirm = view.findViewById(R.id.confirm);
-                        TextView cancel = view.findViewById(R.id.cancel);
-
-                        // 创建dialog
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setView(view);
-                        final AlertDialog dialog = builder.show();
-                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                        dialog.getWindow().setLayout(900,WindowManager.LayoutParams.WRAP_CONTENT);
-
-                        // 确定
-                        confirm.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                                deleteSubject(id);
-                                // Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                                Toasty.success(MainActivity.this, "删除成功!", Toast.LENGTH_SHORT, true).show();
-                            }
-                        });
-                        // 取消
-                        cancel.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
+                        // 显示确认对话框
+                        showConfirmDialog(id);
                     }
                 })
-                .callback(getDateDelayAdapter(dateDelay))//这行要放在下行的前边
+                .callback(getDateDelayAdapter(startDate))//这行要放在下行的前边
                 .callback(new ISchedule.OnWeekChangedListener() {
                     @Override
                     public void onWeekChanged(int curWeek) {
@@ -260,22 +229,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 配置OnDateDelayAdapter
      */
-    public OnDateDelayAdapter getDateDelayAdapter(String date) {
+    public OnDateDelayAdapter getDateDelayAdapter(String str_date) {
         OnDateDelayAdapter onDateDelayAdapter = new OnDateDelayAdapter();
 
         //计算开学时间戳
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         long startTime = 0;
+        Date date = null;
         try {
-            startTime = sdf.parse(date).getTime();
+            startTime = sdf.parse(str_date).getTime();
+            date = sdf.parse(str_date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        // 星期与Date类是同：1代表星期日、2代表星期1、3代表星期二，以此类推
+        // 不是星期一就往后面推
+        int[] addDays = {1, 0, -1, -2, -3, -4, 2};   // 往后(前)推的天数
+        c.add(Calendar.DATE, addDays[c.get(Calendar.DAY_OF_WEEK) - 1]);
+
+        int month = c.get(Calendar.MONTH) + 1;
+        int day = c.get(Calendar.DATE);
+        Log.e(TAG, "month: " + month);
+        Log.e(TAG, "day: " + day);
         // 第一个是月份，后面七个第一周的日期
         //计算开学时的一周日期，我这里模拟一下
-        List<String> dateList = Arrays.asList("9", "3", "4", "5", "6", "7", "8", "9");
-
+        //List<String> dateList = Arrays.asList("9", "3", "4", "5", "6", "7", "8", "9");
+        List<String> dateList = new ArrayList<String>();
+        dateList.add(String.valueOf(month));
+        for (int i = 0; i < 7; i++) {
+            dateList.add(String.valueOf(c.get(Calendar.DATE)));
+            c.add(Calendar.DATE, 1);
+        }
         //设置
         onDateDelayAdapter.setStartTime(startTime);
         onDateDelayAdapter.setDateList(dateList);
@@ -401,6 +388,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    /**
+     * 长按显示确认对话框
+     * @param id 课程id
+     */
+    protected void showConfirmDialog(int id){
+        View view = getLayoutInflater().inflate(R.layout.fragment_confirm, null);
+        TextView text = view.findViewById(R.id.text);
+        text.setText("确认删除？");
+        TextView confirm = view.findViewById(R.id.confirm);
+        TextView cancel = view.findViewById(R.id.cancel);
+
+        // 创建dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setView(view);
+        final AlertDialog dialog = builder.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(900,WindowManager.LayoutParams.WRAP_CONTENT);
+
+        // 确定
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                deleteSubject(id);
+                // Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                Toasty.success(MainActivity.this, "删除成功!", Toast.LENGTH_SHORT, true).show();
+            }
+        });
+        // 取消
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
 
     @Override
     public void onClick(View view) {
@@ -416,60 +439,132 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     /**
-     * 显示弹出菜单
+     * 选择开学日期
+     * 年，月，日
      */
-    public void showPopmenu() {
-        PopupMenu popup = new PopupMenu(this, tv_more);
-        popup.getMenuInflater().inflate(R.menu.popmenu_base_func, popup.getMenu());
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @SuppressLint("NonConstantResourceId")
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.import_class:
-                        Intent intent = new Intent(MainActivity.this, ParseHtmlActivity.class);
-                        startActivity(intent);
-                        break;
-                    case R.id.hide_not_tish_week:
-                        hideNonThisWeek();
-                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_NOT_CUR_WEEK, OnMyConfigHandleAdapter.VALUE_FALSE);
-                        break;
-                    case R.id.show_not_this_week:
-                        showNonThisWeek();
-                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_NOT_CUR_WEEK, OnMyConfigHandleAdapter.VALUE_TRUE);
-                        break;
-                    case R.id.show_time:
-                        showTime();
-                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_TIME, OnMyConfigHandleAdapter.VALUE_TRUE);
-                        break;
-                    case R.id.hide_time:
-                        hideTime();
-                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_TIME, OnMyConfigHandleAdapter.VALUE_FALSE);
-                        break;
-                    case R.id.hide_weekends:
-                        hideWeekends();
-                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_WEEKENDS, OnMyConfigHandleAdapter.VALUE_FALSE);
-                        break;
-                    case R.id.show_weekends:
-                        showWeekends();
-                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_WEEKENDS, OnMyConfigHandleAdapter.VALUE_TRUE);
-                        break;
-                    case R.id.about_activity:
-                        Intent intentAbout = new Intent(MainActivity.this, AboutActivity.class);
-                        startActivity(intentAbout);
-                        break;
-                    case R.id.notification_activity:
-                        Intent intentNotConfig = new Intent(MainActivity.this, NotificationConfigActivity.class);
-                        startActivity(intentNotConfig);
-                        break;
-                    default:
-                        break;
-                }
-                MyConfig.saveConfig(mConfigMap);//保存设置信息至本地配置文件
-                return true;
+    protected void selectDate() {
+        View selectDateDetail = getLayoutInflater().inflate(R.layout.fragment_select_date, null);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = sdf.parse(startDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        initDatePicker(selectDateDetail,c);
+
+        // 设置自定义布局
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(selectDateDetail);
+        final AlertDialog dialog = builder.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(900, WindowManager.LayoutParams.WRAP_CONTENT);
+        // 关闭dialog
+        TextView btn_cancel = selectDateDetail.findViewById(R.id.btn_cancel);
+        btn_cancel.setClickable(true);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
             }
         });
-        popup.show();
+        // 保存
+        TextView btn_saveDate = selectDateDetail.findViewById(R.id.btn_save_date);
+        btn_saveDate.setClickable(true);
+        btn_saveDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDate = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DATE);
+                Log.e(TAG,"savedDate:"+startDate);
+                mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_START_DATE,startDate);
+                mMyConfig.saveConfig(mConfigMap);//保存设置信息至本地配置文件
+                Toasty.success(MainActivity.this,"保存成功！重启生效！").show();
+                dialog.dismiss();
+            }
+        });
     }
+
+
+    /**
+     * 初始化DatePicker
+     * @param selectDateDetail DatePickerView
+     */
+    protected void initDatePicker(View selectDateDetail,Calendar calendar) {
+
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DATE);
+
+        // 年
+        yearPicker = selectDateDetail.findViewById(R.id.date_year);
+        String[] displayYear = {String.valueOf(calendar.get(Calendar.YEAR)-1),String.valueOf(calendar.get(Calendar.YEAR)), String.valueOf(calendar.get(Calendar.YEAR)+1)};
+        yearPicker.setDisplayedValues(displayYear);
+        // 设置最大值
+        yearPicker.setMaxValue(displayYear.length - 1);
+        // 设置最小值
+        yearPicker.setMinValue(0);
+        // 设置当前值
+        yearPicker.setValue(1);
+
+        // 月
+        monthPicker = selectDateDetail.findViewById(R.id.date_month);
+        String[] displayMonth = {"1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"};
+        monthPicker.setDisplayedValues(displayMonth);
+        // 设置最大值
+        monthPicker.setMaxValue(displayMonth.length - 1);
+        // 设置最小值
+        monthPicker.setMinValue(0);
+        // 设置当前值
+        monthPicker.setValue(month);
+
+        // 日
+        dayPicker = selectDateDetail.findViewById(R.id.date_day);
+        String[] displayDay = {"1日", "2日", "3日", "4日", "5日", "6日", "7日", "8日", "9日", "10日", "11日", "12日", "13日", "14日", "15日","16日", "17日", "18日", "19日", "20日", "21日","22日", "23日", "24日", "25日","26日", "27日", "28日", "29日", "30日", "31日"};
+        dayPicker.setDisplayedValues(displayDay);
+        // 设置最大值
+        dayPicker.setMaxValue(calendar.getActualMaximum(Calendar.DAY_OF_MONTH) - 1);
+        // 设置最小值
+        dayPicker.setMinValue(0);
+        // 设置当前值
+        dayPicker.setValue(day-1);
+
+        // 年改变，同时改变对应月份的天数
+        yearPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
+                calendar.set(Calendar.YEAR, year + newVal - 1);
+                dayPicker.setMaxValue(calendar.getActualMaximum(Calendar.DAY_OF_MONTH) - 1);
+                dayPicker.setValue(calendar.get(Calendar.DATE) - 1);
+            }
+        });
+        // 月改变，同时改变对应月份的天数
+        monthPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
+                calendar.set(Calendar.MONTH,newVal);
+                if(calendar.get(Calendar.MONTH) != newVal){
+                    calendar.set(Calendar.MONTH,newVal);
+                    calendar.set(Calendar.DATE,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+                }
+                dayPicker.setMaxValue(calendar.getActualMaximum(Calendar.DAY_OF_MONTH) - 1);
+                dayPicker.setValue(calendar.get(Calendar.DATE)-1);
+            }
+        });
+
+        dayPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
+                calendar.set(Calendar.DATE,newVal+1);
+            }
+        });
+
+    }
+
+
+
 
 
     /**
@@ -508,30 +603,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    /**
-     * 添加课程
-     * 内部使用集合维护课程数据，操作集合的方法来操作它即可
-     * 最后更新一下视图（全局更新）
-     */
-    protected void addSubject() {
-//        List<Schedule> dataSource = mTimetableView.dataSource();
-//        int size = dataSource.size();
-//        if (size > 0) {
-//            Schedule schedule = dataSource.get(0);
-//            dataSource.add(schedule);
-//            mTimetableView.updateView();
-//        }
-        List<Integer> weeks = Arrays.asList(1, 2, 3, 4);
-        MySubject mysubject = new MySubject(null, "Test", "寝室", "张三", weeks, 1, 2, 1, -1, null);
-        Schedule schedule = new Schedule("Test", "寝室", "张三", weeks, 1, 2, 1, -1);
-        mySubjects.add(mysubject);
-
-
-        mTimetableView.dataSource().add(schedule);
-        mTimetableView.updateView();
-        toSaveSubjects(mySubjects);
-        initTimetableView();
-    }
 
     /**
      * 隐藏非本周课程
@@ -619,24 +690,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-    /**
-     * 修改课程重叠的样式，在该接口中，你可以自定义出很多的效果
-     */
-    protected void modifyOverlayStyle() {
-        mTimetableView.callback(new OnItemBuildAdapter() {
-            @Override
-            public void onItemUpdate(FrameLayout layout, TextView textView, TextView countTextView, Schedule schedule, GradientDrawable gd) {
-                super.onItemUpdate(layout, textView, countTextView, schedule, gd);
-                //可见说明重叠，取消角标，添加角度
-                if (countTextView.getVisibility() == View.VISIBLE) {
-                    countTextView.setVisibility(View.GONE);
-                    // 设置弧度
-                    // gd.setCornerRadii(new float[]{0, 0, 20, 20, 0, 0, 0, 0});
-                }
-            }
-        });
-        mTimetableView.updateView();
-    }
+//    /**
+//     * 修改课程重叠的样式，在该接口中，你可以自定义出很多的效果
+//     */
+//    protected void modifyOverlayStyle() {
+//        mTimetableView.callback(new OnItemBuildAdapter() {
+//            @Override
+//            public void onItemUpdate(FrameLayout layout, TextView textView, TextView countTextView, Schedule schedule, GradientDrawable gd) {
+//                super.onItemUpdate(layout, textView, countTextView, schedule, gd);
+//                //可见说明重叠，取消角标，添加角度
+//                if (countTextView.getVisibility() == View.VISIBLE) {
+//                    countTextView.setVisibility(View.GONE);
+//                    // 设置弧度
+//                    // gd.setCornerRadii(new float[]{0, 0, 20, 20, 0, 0, 0, 0});
+//                }
+//            }
+//        });
+//        mTimetableView.updateView();
+//    }
 
     /**
      * 保存课程
@@ -646,11 +717,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Gson gson = new Gson();
         String str_subjectJSON = gson.toJson(subject);
-//        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
+//        SharedPreferences sp = getSharedPreferences("COURSE_DATA", Activity.MODE_PRIVATE);//创建sp对象
 //        SharedPreferences.Editor editor = sp.edit();
 //        editor.putString("SUBJECT_LIST", str_subjectJSON); //存入json串
 //        editor.commit();//提交
-        SharedPreferencesUtil.init(ContextApplication.getAppContext(),"SP_Data_List").putString("SUBJECT_LIST", str_subjectJSON); //存入json串
+        SharedPreferencesUtil.init(ContextApplication.getAppContext(),"COURSE_DATA").putString("SUBJECT_LIST", str_subjectJSON); //存入json串
         Log.e(TAG, "toSaveSubjects: " + str_subjectJSON);
 
     }
@@ -661,10 +732,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     public static List<MySubject> toGetSubjects() {
 
-//        SharedPreferences sp = getSharedPreferences("SP_Data_List", Activity.MODE_PRIVATE);//创建sp对象
+//        SharedPreferences sp = getSharedPreferences("COURSE_DATA", Activity.MODE_PRIVATE);//创建sp对象
 //        String str_subjectJSON = sp.getString("SUBJECT_LIST", null);  //取出key为"SUBJECT_LIST"的值，如果值为空，则将第二个参数作为默认值赋值
 //        Log.e(TAG, "toGetSubjects: " + str_subjectJSON);//str_subjectJSON便是取出的数据了
-        String str_subjectJSON = SharedPreferencesUtil.init(ContextApplication.getAppContext(),"SP_Data_List").getString("SUBJECT_LIST", null);
+        String str_subjectJSON = SharedPreferencesUtil.init(ContextApplication.getAppContext(),"COURSE_DATA").getString("SUBJECT_LIST", null);
         Gson gson = new Gson();
         List<MySubject> subjectList = gson.fromJson(str_subjectJSON, new TypeToken<List<MySubject>>() {
         }.getType());
@@ -681,6 +752,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         OnMyConfigHandleAdapter onMyConfigHandleAdapter = new OnMyConfigHandleAdapter();
         for(String key : mConfigMap.keySet()){
             String value = mConfigMap.get(key);
+
             if(value == null)
                 continue;
             switch (key) {
@@ -701,6 +773,64 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_CUR_WEEK, TimeCalUtil.date2Str(new Date()));
             mMyConfig.saveConfig(mConfigMap);
         }
+    }
+
+    private void initNavView(){
+        mDrawerLayout=findViewById(R.id.drawyer_layout);
+        ImageView b=findViewById(R.id.menu);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+        NavigationView navView= findViewById(R.id.nave_view);
+        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.import_class:
+                        Intent intent = new Intent(MainActivity.this, ParseHtmlActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.select_date:
+                        selectDate();
+                        break;
+                    case R.id.hide_not_tish_week:
+                        hideNonThisWeek();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_NOT_CUR_WEEK, OnMyConfigHandleAdapter.VALUE_FALSE);
+                        break;
+                    case R.id.show_not_this_week:
+                        showNonThisWeek();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_NOT_CUR_WEEK, OnMyConfigHandleAdapter.VALUE_TRUE);
+                        break;
+                    case R.id.show_time:
+                        showTime();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_TIME, OnMyConfigHandleAdapter.VALUE_TRUE);
+                        break;
+                    case R.id.hide_time:
+                        hideTime();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_TIME, OnMyConfigHandleAdapter.VALUE_FALSE);
+                        break;
+                    case R.id.hide_weekends:
+                        hideWeekends();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_WEEKENDS, OnMyConfigHandleAdapter.VALUE_FALSE);
+                        break;
+                    case R.id.show_weekends:
+                        showWeekends();
+                        mConfigMap.put(OnMyConfigHandleAdapter.CONFIG_SHOW_WEEKENDS, OnMyConfigHandleAdapter.VALUE_TRUE);
+                        break;
+                    case R.id.about_activity:
+                        Intent intent1 = new Intent(MainActivity.this, AboutActivity.class);
+                        startActivity(intent1);
+                        break;
+                    default:
+                        break;
+                }
+                mMyConfig.saveConfig(mConfigMap);//保存设置信息至本地配置文件
+                return true;
+            }
+        });
     }
 
 }

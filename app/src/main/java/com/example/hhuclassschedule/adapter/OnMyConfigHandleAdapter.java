@@ -1,14 +1,14 @@
 package com.example.hhuclassschedule.adapter;
 
-import android.util.Log;
-
 import com.zhuangfei.timetable.TimetableView;
 
+/**
+ * 处理配置信息
+ */
 public class OnMyConfigHandleAdapter {
 
     public OnMyConfigHandleAdapter() {
     }
-
 
     private static final String TAG = "OnMyConfigHandleAdapter";
 
@@ -20,10 +20,14 @@ public class OnMyConfigHandleAdapter {
      */
     public static final String CONFIG_CUR_WEEK = "config_current_week";
     public static final String CONFIG_SHOW_TIME = "config_show_time";
+
     public static final String CONFIG_NOT_OPEN = "config_not_open";
     public static final String CONFIG_NOT_SHOW_WHERE = "config_not_where";
     public static final String CONFIG_NOT_SHOW_WHEN = "config_not_when";
     public static final String CONFIG_NOT_SHOW_STEP = "config_not_step";
+
+
+    public static final String CONFIG_START_DATE = "config_start_date";
 
 
     public static final String VALUE_TRUE = "config_value_true";
@@ -39,12 +43,10 @@ public class OnMyConfigHandleAdapter {
         if (mView == null || key == null || value == null) return;
         switch (key) {
             case CONFIG_SHOW_WEEKENDS:
-                if (value.equals(VALUE_TRUE)) mView.isShowWeekends(true);
-                else mView.isShowWeekends(false);
+                mView.isShowWeekends(value.equals(VALUE_TRUE));
                 break;
             case CONFIG_SHOW_NOT_CUR_WEEK:
-                if (value.equals(VALUE_TRUE)) mView.isShowNotCurWeek(true);
-                else mView.isShowNotCurWeek(false);
+                mView.isShowNotCurWeek(value.equals(VALUE_TRUE));
                 break;
             case CONFIG_CUR_WEEK:
                 mView.curWeek(value);//value为开学周的时间
