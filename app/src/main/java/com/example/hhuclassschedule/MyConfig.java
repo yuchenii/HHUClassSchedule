@@ -1,14 +1,13 @@
 package com.example.hhuclassschedule;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import com.example.hhuclassschedule.util.ContextApplication;
 import com.example.hhuclassschedule.util.SharedPreferencesUtil;
 
 import java.util.Map;
-import java.util.Set;
 
+/**
+ * 保存加载配置信息
+ */
 public class MyConfig {
     public static final String TAG = "MyConfig";
 //    private Context myContext;

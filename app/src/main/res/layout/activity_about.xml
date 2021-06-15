@@ -49,8 +49,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/app_version"
-                    android:textSize="12sp"
-                    android:textColor="@color/app_gray7" />
+                    android:textColor="@color/app_gray7"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -284,7 +284,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:text="@string/github_lib"
                     android:textColor="@color/black" />
 

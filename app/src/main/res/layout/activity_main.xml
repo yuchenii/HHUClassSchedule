@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawyer_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawyer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-        <include layout="@layout/header_base_func"/>
+        android:orientation="vertical">
+
+        <include layout="@layout/header_base_func" />
+
         <com.zhuangfei.timetable.view.WeekView
             android:id="@+id/id_weekview"
             android:layout_width="match_parent"
@@ -23,8 +21,7 @@
             android:id="@+id/id_timetableView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/app_white">
-        </com.zhuangfei.timetable.TimetableView>
+            android:background="@color/app_white" />
 
     </LinearLayout>
 
@@ -32,8 +29,7 @@
         android:id="@+id/nave_view"
         android:layout_width="250dp"
         android:layout_height="match_parent"
-        app:menu="@menu/popmenu_base_func"
         android:layout_gravity="start"
-        />
+        app:menu="@menu/popmenu_base_func" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
