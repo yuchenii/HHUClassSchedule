@@ -41,5 +41,5 @@ public class SplashActivity extends AppCompatActivity {
         };
         //调度执行timerTask，第二个参数传入延迟时间（毫秒）
         timer.schedule(timerTask,1000);
-    }
+         }
 }
