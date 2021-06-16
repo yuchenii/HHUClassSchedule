@@ -38,8 +38,8 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 //跳转后关闭当前欢迎页面
                 SplashActivity.this.finish();
-            }
-        };
+             }
+         };
         //调度执行timerTask，第二个参数传入延迟时间（毫秒）
         timer.schedule(timerTask, 1000);
     }
