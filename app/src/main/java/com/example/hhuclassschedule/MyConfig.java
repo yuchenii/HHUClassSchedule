@@ -24,6 +24,7 @@ public class MyConfig {
 
     /**
      * 保存当前配置信息（缓冲map）至本地文件
+     *
      * @param configMap 配置缓冲map
      */
     public static void saveConfig(Map<String, String> configMap) {
@@ -68,9 +69,10 @@ public class MyConfig {
     /**
      * 从本地配置文件里获取notConfigMap;
      * 默认value都是false
+     *
      * @return
      */
-    public static Map<String, Boolean> getNotConfigMap(){
+    public static Map<String, Boolean> getNotConfigMap() {
         Map<String, String> originMap = MyConfig.loadConfig();
         Map<String, Boolean> notConfigMap = new HashMap<>();
         //初始化
@@ -79,11 +81,11 @@ public class MyConfig {
         notConfigMap.put(OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_WHERE, false);
         notConfigMap.put(OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_STEP, false);
         //从配置文件里读取
-        for(String key : originMap.keySet()){
+        for (String key : originMap.keySet()) {
             String value = originMap.get(key);
-            if(value == null)
+            if (value == null)
                 continue;
-            switch (key){
+            switch (key) {
                 case OnMyConfigHandleAdapter.CONFIG_NOT_OPEN:
                 case OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_WHEN:
                 case OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_WHERE:

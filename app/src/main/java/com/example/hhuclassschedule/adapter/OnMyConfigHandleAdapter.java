@@ -35,7 +35,8 @@ public class OnMyConfigHandleAdapter {
 
     /**
      * 应用配置信息
-     * @param key 信息的键
+     *
+     * @param key   信息的键
      * @param value 信息的值
      * @param mView 待设置的view
      */

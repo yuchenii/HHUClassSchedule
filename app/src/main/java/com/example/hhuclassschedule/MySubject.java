@@ -12,10 +12,10 @@ import java.util.List;
  */
 public class MySubject implements ScheduleEnable {
 
-    public static final String EXTRAS_ID="extras_id";
-    public static final String EXTRAS_AD_URL="extras_ad_url";
+    public static final String EXTRAS_ID = "extras_id";
+    public static final String EXTRAS_AD_URL = "extras_ad_url";
 
-    private int id=0;
+    private int id = 0;
 
     /**
      * 课程名
@@ -60,7 +60,7 @@ public class MySubject implements ScheduleEnable {
     private String term;
 
     /**
-     *  一个随机数，用于对应课程的颜色
+     * 一个随机数，用于对应课程的颜色
      */
     private int colorRandom;
 
@@ -159,32 +159,33 @@ public class MySubject implements ScheduleEnable {
     }
 
     public int getId() {
-        String str = ""+getWeekList().get(0)+getWeekList().get(getWeekList().size()-1)+getDay()+getStart()+getStep();
+        String str = "" + getWeekList().get(0) + getWeekList().get(getWeekList().size() - 1) + getDay() + getStart() + getStep();
         id = Integer.parseInt(str);
         return id;
     }
 
     public MySubject(String term, String name, String room, String teacher, List<Integer> weekList, int start, int step, int day, int colorRandom, String time) {
         super();
-        this.term=term;
+        this.term = term;
         this.name = name;
         this.room = room;
         this.teacher = teacher;
-        this.weekList=weekList;
+        this.weekList = weekList;
         this.start = start;
         this.step = step;
         this.day = day;
         this.colorRandom = colorRandom;
-        this.time=time;
+        this.time = time;
     }
 
     /**
      * 实现 getSchedule()
+     *
      * @return Schedule列表
      */
     @Override
     public Schedule getSchedule() {
-        Schedule schedule=new Schedule();
+        Schedule schedule = new Schedule();
         schedule.setDay(getDay());
         schedule.setName(getName());
         schedule.setRoom(getRoom());
@@ -193,8 +194,8 @@ public class MySubject implements ScheduleEnable {
         schedule.setTeacher(getTeacher());
         schedule.setWeekList(getWeekList());
         schedule.setColorRandom(2);
-        schedule.putExtras(EXTRAS_ID,getId());
-        schedule.putExtras(EXTRAS_AD_URL,getUrl());
+        schedule.putExtras(EXTRAS_ID, getId());
+        schedule.putExtras(EXTRAS_AD_URL, getUrl());
         return schedule;
     }
 

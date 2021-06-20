@@ -43,6 +43,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     Boolean notIsShowWhen;
     Boolean notIsShowWhere;
     Boolean notIsShowStep;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         //当系统到我们设定的时间点的时候会发送广播，执行这里
@@ -55,22 +56,22 @@ public class AlarmReceiver extends BroadcastReceiver {
         //计算明天的日期
         curWeek = getCurWeek();
         curDay = getCurDay();
-        if(curDay == 6){//周日的下一天为周一
+        if (curDay == 6) {//周日的下一天为周一
             targetDay = 0;
-            targetWeek ++;
+            targetWeek++;
         } else {
             targetDay = curDay + 1;
             targetWeek = curWeek;
         }
         //还没有开学，不通知
-        if(targetWeek <= 0){
+        if (targetWeek <= 0) {
             Log.d(TAG, "targetWeek <= 0");
             return;
         }
         List<Schedule> scheduleList = ScheduleSupport.transform(getOriginalData());
         List<Schedule> finalData = ScheduleSupport.getHaveSubjectsWithDay(scheduleList, targetWeek, targetDay);
 
-        if(finalData == null){
+        if (finalData == null) {
             Log.d(TAG, "finalData is NULL");
             return;
         }
@@ -80,7 +81,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         String myChannelID = "HHU_SCH_NOTIFY";
         String myChannelName = "次日课程提醒";
         int notID = 1001;
-        NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         String notChannel = createNotificationChannel(context,
                 myChannelID, myChannelName, NotificationManager.IMPORTANCE_DEFAULT);
         Intent startIntent = new Intent(context, MainActivity.class);
@@ -98,15 +99,16 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     /**
      * 若Android版本大于等于8,创建channel并返回；否在返回空
+     *
      * @param context
-     * @param channelID 渠道id，须唯一
+     * @param channelID   渠道id，须唯一
      * @param channelNAME 渠道名，给用户看的
      * @param level
      * @return
      */
     protected String createNotificationChannel(Context context, String channelID, String channelNAME, int level) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {//Android版本大于等于8
-            NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             NotificationChannel channel = new NotificationChannel(channelID, channelNAME, level);
             manager.createNotificationChannel(channel);
             return channelID;
@@ -117,9 +119,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     /**
      * 获取所有的课程信息
-     * @return  课程信息
+     *
+     * @return 课程信息
      */
-    private List<MySubject> getOriginalData(){
+    private List<MySubject> getOriginalData() {
         String subjectListJson = SharedPreferencesUtil.init(ContextApplication.getAppContext(),
                 "SP_Data_List").getString("SUBJECT_LIST", null);
         List<MySubject> mySubjects;
@@ -133,12 +136,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     /**
      * 计算出当前周
+     *
      * @return
      */
-    private int getCurWeek(){
+    private int getCurWeek() {
         Map<String, String> configMap = MyConfig.loadConfig();
-        for(String key : configMap.keySet()){
-            if(key.equals(OnMyConfigHandleAdapter.CONFIG_CUR_WEEK)) {
+        for (String key : configMap.keySet()) {
+            if (key.equals(OnMyConfigHandleAdapter.CONFIG_CUR_WEEK)) {
                 Log.d(TAG, "load CUR_WEEK " + configMap.get(key));
                 return ScheduleSupport.timeTransfrom(configMap.get(key));
             }
@@ -148,9 +152,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     /**
      * 计算出当前是周几
+     *
      * @return 周一：0 周二：1 ......周六：5 周日：6
      */
-    private int getCurDay(){
+    private int getCurDay() {
         Calendar calendar = Calendar.getInstance();
         if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
             return 6;
@@ -158,12 +163,13 @@ public class AlarmReceiver extends BroadcastReceiver {
         return (calendar.get(Calendar.DAY_OF_WEEK) - 2);
     }
 
-    public void setContentText(String contentText){
+    public void setContentText(String contentText) {
         myContentText = contentText;
     }
 
     /**
      * 获取通知的内容；默认已包含课程名
+     *
      * @param finalData 当天的课程信息
      * @param showWhen  是否通知上课时间
      * @param showWhere 是否通知上课地点
@@ -171,25 +177,25 @@ public class AlarmReceiver extends BroadcastReceiver {
      * @return
      */
     public String getContentText(List<Schedule> finalData, boolean showWhen, boolean showWhere
-                                 , boolean showStep){
-        Log.d(TAG, "getContentText:" + showWhen + " " + showWhere +" "+ showStep);
+            , boolean showStep) {
+        Log.d(TAG, "getContentText:" + showWhen + " " + showWhere + " " + showStep);
         StringBuilder contentTextBuilder = new StringBuilder();
-        for(Schedule course : finalData){
+        for (Schedule course : finalData) {
             contentTextBuilder.append(course.getName());
             contentTextBuilder.append("\n");
-            if(showWhen) {
+            if (showWhen) {
                 contentTextBuilder.append("\t第").append(course.getStart()).append("节课;");
             }
-            if(showWhere) {
+            if (showWhere) {
                 contentTextBuilder.append("\t").append(course.getRoom()).append("；");
             }
-            if(showStep) {
+            if (showStep) {
                 contentTextBuilder.append("\t课程时长").append(course.getStep()).append("节课；");
             }
             contentTextBuilder.append("\n");
         }
         Log.d(TAG, "contentText:" + contentTextBuilder.toString());
-        if(contentTextBuilder.toString().isEmpty())
+        if (contentTextBuilder.toString().isEmpty())
             return "明天没有课程";
         return contentTextBuilder.toString();
     }

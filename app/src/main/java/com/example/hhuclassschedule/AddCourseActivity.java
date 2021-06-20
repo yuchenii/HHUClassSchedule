@@ -73,7 +73,8 @@ public class AddCourseActivity extends AppCompatActivity {
         initToolbar(title);
         if (title.equals("编辑课程")) {
             String scheduleJson = getIntent().getStringExtra("scheduleList");
-            scheduleList = new Gson().fromJson(scheduleJson,new TypeToken<List<Schedule>>(){}.getType());
+            scheduleList = new Gson().fromJson(scheduleJson, new TypeToken<List<Schedule>>() {
+            }.getType());
             editSubject(scheduleList);
         } else {
             int i_day = (int) getIntent().getExtras().get("day");
@@ -84,6 +85,7 @@ public class AddCourseActivity extends AppCompatActivity {
 
     /**
      * 初始化 toolbar
+     *
      * @param title toolbar标题
      */
     protected void initToolbar(String title) {
@@ -147,13 +149,13 @@ public class AddCourseActivity extends AppCompatActivity {
                     }
                 }
             }
-            if(null == mySubjects){
+            if (null == mySubjects) {
                 mySubjects = new ArrayList<>();
             }
             mySubjects.add(new MySubject(null, name, position, teacher, weeks, start, step, day, -1, null));
             toSaveSubjects(mySubjects);  // 保存课程
             Intent intent = new Intent(AddCourseActivity.this, MainActivity.class);
-            if(MainActivity.mainActivity != null){
+            if (MainActivity.mainActivity != null) {
                 MainActivity.mainActivity.finish(); // 销毁MainActivity
             }
             startActivity(intent);
@@ -165,6 +167,7 @@ public class AddCourseActivity extends AppCompatActivity {
 
     /**
      * 编辑课程
+     *
      * @param beans 课程列表
      */
     protected void editSubject(List<Schedule> beans) {
@@ -222,12 +225,13 @@ public class AddCourseActivity extends AppCompatActivity {
 
     /**
      * 添加课程
-     * @param i_day 星期
+     *
+     * @param i_day   星期
      * @param i_start 开始节次
      */
     protected void addSubject(int i_day, int i_start) {
 
-        day = i_day+1;
+        day = i_day + 1;
         start = i_start;
         step = 2;
         weeks = new ArrayList<>();
@@ -315,6 +319,7 @@ public class AddCourseActivity extends AppCompatActivity {
 
     /**
      * 初始化TimePicker
+     *
      * @param selectTimeDetail TimePickerView
      */
     protected void initTimePicker(View selectTimeDetail) {
@@ -327,7 +332,7 @@ public class AddCourseActivity extends AppCompatActivity {
         // 设置最小值
         dayPicker.setMinValue(0);
         // 设置当前值
-        dayPicker.setValue(day-1);
+        dayPicker.setValue(day - 1);
 
         // 开始节次
         sectionStartPicker = selectTimeDetail.findViewById(R.id.time_start);
@@ -338,7 +343,7 @@ public class AddCourseActivity extends AppCompatActivity {
         // 设置最小值
         sectionStartPicker.setMinValue(0);
         // 设置当前值
-        sectionStartPicker.setValue(start-1);
+        sectionStartPicker.setValue(start - 1);
 
         // 结束节次
         sectionEndPicker = selectTimeDetail.findViewById(R.id.time_end);
@@ -349,16 +354,16 @@ public class AddCourseActivity extends AppCompatActivity {
         // 设置最小值
         sectionEndPicker.setMinValue(0);
         // 设置当前值
-        sectionEndPicker.setValue(start+step-2);
+        sectionEndPicker.setValue(start + step - 2);
 
         // 始终使 sectionStartPicker <= sectionEndPicker
         sectionStartPicker.setOnValueChangedListener(new NumberPickerView.OnValueChangeListener() {
             //当NumberPicker的值发生改变时，将会激发该方法
             @Override
             public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
-                if(newVal>sectionEndPicker.getValue()){
+                if (newVal > sectionEndPicker.getValue()) {
                     sectionEndPicker.setValue(sectionStartPicker.getValue());
-                    sectionEndPicker.smoothScrollToValue(sectionStartPicker.getValue(),false);
+                    sectionEndPicker.smoothScrollToValue(sectionStartPicker.getValue(), false);
                 }
             }
         });
@@ -366,9 +371,9 @@ public class AddCourseActivity extends AppCompatActivity {
             //当NumberPicker的值发生改变时，将会激发该方法
             @Override
             public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
-                if(newVal<sectionStartPicker.getValue()){
+                if (newVal < sectionStartPicker.getValue()) {
                     sectionStartPicker.setValue(sectionEndPicker.getValue());
-                    sectionStartPicker.smoothScrollToValue(sectionEndPicker.getValue(),false);
+                    sectionStartPicker.smoothScrollToValue(sectionEndPicker.getValue(), false);
                 }
             }
         });
@@ -385,7 +390,7 @@ public class AddCourseActivity extends AppCompatActivity {
         builder.setView(selectWeekDetail);
         final AlertDialog dialog = builder.show();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().setLayout(900,WindowManager.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(900, WindowManager.LayoutParams.WRAP_CONTENT);
         // 关闭dialog
         TextView btn_cancel = selectWeekDetail.findViewById(R.id.btn_cancel);
         btn_cancel.setClickable(true);
@@ -417,6 +422,7 @@ public class AddCourseActivity extends AppCompatActivity {
 
     /**
      * 初始化WeekPicker
+     *
      * @param selectWeekDetail weekPickerView
      */
     protected void initWeekPicker(View selectWeekDetail) {
@@ -430,10 +436,10 @@ public class AddCourseActivity extends AppCompatActivity {
         // 设置最小值
         weekStartPicker.setMinValue(0);
         // 设置当前值
-        if(weeks.isEmpty()){
+        if (weeks.isEmpty()) {
             weekStartPicker.setValue(0);
-        }else {
-            weekStartPicker.setValue(weeks.get(0)-1);
+        } else {
+            weekStartPicker.setValue(weeks.get(0) - 1);
         }
 
         // 结束周数
@@ -446,10 +452,10 @@ public class AddCourseActivity extends AppCompatActivity {
         // 设置最小值
         weekEndPicker.setMinValue(0);
         // 设置当前值
-        if(weeks.isEmpty()){
+        if (weeks.isEmpty()) {
             weekEndPicker.setValue(0);
-        }else {
-            weekEndPicker.setValue(weeks.get(weeks.size()-1)-1);
+        } else {
+            weekEndPicker.setValue(weeks.get(weeks.size() - 1) - 1);
         }
 
         // 始终使 weekStartPicker <= weekEndPicker
@@ -457,9 +463,9 @@ public class AddCourseActivity extends AppCompatActivity {
             //当NumberPicker的值发生改变时，将会激发该方法
             @Override
             public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
-                if(newVal>weekEndPicker.getValue()){
+                if (newVal > weekEndPicker.getValue()) {
                     weekEndPicker.setValue(weekStartPicker.getValue());
-                    weekEndPicker.smoothScrollToValue(weekStartPicker.getValue(),false);
+                    weekEndPicker.smoothScrollToValue(weekStartPicker.getValue(), false);
                 }
             }
         });
@@ -467,9 +473,9 @@ public class AddCourseActivity extends AppCompatActivity {
             //当NumberPicker的值发生改变时，将会激发该方法
             @Override
             public void onValueChange(NumberPickerView picker, int oldVal, int newVal) {
-                if(newVal<weekStartPicker.getValue()){
+                if (newVal < weekStartPicker.getValue()) {
                     weekStartPicker.setValue(weekEndPicker.getValue());
-                    weekStartPicker.smoothScrollToValue(weekEndPicker.getValue(),false);
+                    weekStartPicker.smoothScrollToValue(weekEndPicker.getValue(), false);
                 }
             }
         });

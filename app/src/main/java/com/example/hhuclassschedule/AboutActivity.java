@@ -26,6 +26,7 @@ public class AboutActivity extends AppCompatActivity {
 
     /**
      * 初始化 toolbar
+     *
      * @param title toolbar标题
      */
     protected void initToolbar(String title) {
