@@ -78,6 +78,7 @@ public class NotificationConfigActivity extends AppCompatActivity {
 
     /**
      * 初始化 toolbar
+     *
      * @param title toolbar标题
      */
     protected void initToolbar(String title) {
@@ -93,12 +94,12 @@ public class NotificationConfigActivity extends AppCompatActivity {
 
     /**
      * 配置通知开启开关
-     * @param mySwitch 需要配置的开关
+     *
+     * @param mySwitch  需要配置的开关
      * @param setHour   定时通知的时间-小时
      * @param setMinute 定时通知的时间-分钟
      */
-    protected void setNotOpenSwitch(Switch mySwitch, int setHour, int setMinute)
-    {
+    protected void setNotOpenSwitch(Switch mySwitch, int setHour, int setMinute) {
 
         mySwitch.setOnCheckedChangeListener(
                 new CompoundButton.OnCheckedChangeListener() {
@@ -119,8 +120,7 @@ public class NotificationConfigActivity extends AppCompatActivity {
                                         "请先在系统设置中允许通知", Toast.LENGTH_SHORT).show();
                                 mySwitch.setChecked(false);
                             }
-                        }
-                        else {//被关闭
+                        } else {//被关闭
                             if (NotificationManagerCompat.from(NotificationConfigActivity.this).areNotificationsEnabled()) {
                                 //允许系统通知
                                 stopRemind();
@@ -128,8 +128,7 @@ public class NotificationConfigActivity extends AppCompatActivity {
                                 notIsOpen = false;
                                 configMap.put(OnMyConfigHandleAdapter.CONFIG_NOT_OPEN, OnMyConfigHandleAdapter.VALUE_FALSE);
                                 MyConfig.saveConfig(configMap);
-                            }
-                            else      //禁止系统通知
+                            } else      //禁止系统通知
                                 Toast.makeText(NotificationConfigActivity.this, "请先在系统设置中允许通知", Toast.LENGTH_SHORT).show();
                         }
 
@@ -140,20 +139,21 @@ public class NotificationConfigActivity extends AppCompatActivity {
 
     /**
      * 配置通知设置开关
+     *
      * @param mySwitch 需要配置的开关
      */
-    protected void setNotSetSwitch(Switch mySwitch){
+    protected void setNotSetSwitch(Switch mySwitch) {
         mySwitch.setOnCheckedChangeListener(
                 new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        switch (mySwitch.getId()){
+                        switch (mySwitch.getId()) {
                             case R.id.switch_notification_showWhen:
-                                if(isChecked){
+                                if (isChecked) {
                                     Log.d(TAG, "showWhen set to on");
                                     notIsShowWhen = true;
                                     configMap.put(OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_WHEN, OnMyConfigHandleAdapter.VALUE_TRUE);
-                                }else{
+                                } else {
                                     notIsShowWhen = false;
                                     Log.d(TAG, "showWhen  set to off");
                                     configMap.put(OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_WHEN, OnMyConfigHandleAdapter.VALUE_FALSE);
@@ -161,11 +161,11 @@ public class NotificationConfigActivity extends AppCompatActivity {
                                 MyConfig.saveConfig(configMap);
                                 break;
                             case R.id.switch_notification_showWhere:
-                                if(isChecked){
+                                if (isChecked) {
                                     Log.d(TAG, "showWhere  set to on");
                                     notIsShowWhere = true;
                                     configMap.put(OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_WHERE, OnMyConfigHandleAdapter.VALUE_TRUE);
-                                }else{
+                                } else {
                                     notIsShowWhere = false;
                                     Log.d(TAG, "showWhere  set to off");
                                     configMap.put(OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_WHERE, OnMyConfigHandleAdapter.VALUE_FALSE);
@@ -173,11 +173,11 @@ public class NotificationConfigActivity extends AppCompatActivity {
                                 MyConfig.saveConfig(configMap);
                                 break;
                             case R.id.switch_notification_showStep:
-                                if(isChecked){
+                                if (isChecked) {
                                     Log.d(TAG, "showStep  set to on");
                                     notIsShowStep = true;
                                     configMap.put(OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_STEP, OnMyConfigHandleAdapter.VALUE_TRUE);
-                                }else{
+                                } else {
                                     Log.d(TAG, "showStep  set to off");
                                     notIsShowStep = false;
                                     configMap.put(OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_STEP, OnMyConfigHandleAdapter.VALUE_FALSE);
@@ -197,7 +197,8 @@ public class NotificationConfigActivity extends AppCompatActivity {
 
     /**
      * 开启定时通知
-     * @param setHour 发出通知的时间-小时
+     *
+     * @param setHour   发出通知的时间-小时
      * @param setMinute 发出通知的时间-分钟
      */
     protected void startRemind(int setHour, int setMinute) {
@@ -221,7 +222,7 @@ public class NotificationConfigActivity extends AppCompatActivity {
         long selectTime = mCalendar.getTimeInMillis();
 
         // 如果当前时间大于设置的时间，那么就从第二天的设定时间开始
-        if(systemTime > selectTime) {
+        if (systemTime > selectTime) {
             mCalendar.add(Calendar.DAY_OF_MONTH, 1);
         }
         //AlarmReceiver.class为广播接受者
@@ -232,8 +233,8 @@ public class NotificationConfigActivity extends AppCompatActivity {
         intent.putExtra(OnMyConfigHandleAdapter.CONFIG_NOT_SHOW_STEP, notIsShowStep);
         PendingIntent pi = PendingIntent.getBroadcast(NotificationConfigActivity.this, 0, intent, 0);
         //得到AlarmManager实例
-        AlarmManager alarm = (AlarmManager)getSystemService(ALARM_SERVICE);
-       //设定重复提醒，提醒周期为一天（24H）
+        AlarmManager alarm = (AlarmManager) getSystemService(ALARM_SERVICE);
+        //设定重复提醒，提醒周期为一天（24H）
         alarm.setRepeating(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), (1000 * 60 * 60 * 24), pi);
 
         Log.d(NotificationConfigActivity.TAG, "startRemind");
@@ -241,12 +242,13 @@ public class NotificationConfigActivity extends AppCompatActivity {
 
     /**
      * 在修改通知内容后重新启动通知；若通知本身未开启，则不启动
+     *
      * @param notIsOpen
      * @param setHour
      * @param setMinute
      */
-    protected void reStartRemind(boolean notIsOpen, int setHour, int setMinute){
-        if(notIsOpen) {
+    protected void reStartRemind(boolean notIsOpen, int setHour, int setMinute) {
+        if (notIsOpen) {
             stopRemind();
             startRemind(setHour, setMinute);
         }
@@ -260,7 +262,7 @@ public class NotificationConfigActivity extends AppCompatActivity {
         Intent intent = new Intent(NotificationConfigActivity.this, AlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(NotificationConfigActivity.this, 0,
                 intent, 0);
-        AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
         //取消警报
         am.cancel(pi);
         Log.d(TAG, "stopRemind");

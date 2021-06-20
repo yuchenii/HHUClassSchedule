@@ -166,14 +166,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .isShow(false)//设置隐藏，默认显示
                 .showView();
 
-        mTimetableView.source(mySubjects)
+        mTimetableView.source(mySubjects)  // 课程源
                 //      .curWeek(1)
-                .curTerm(null)
-                .maxSlideItem(12)
-                .monthWidthDp(40)
-                .cornerAll(20)
-                .marTop(10)
-                .marLeft(10)
+                .curTerm(null)     // 当前学期
+                .maxSlideItem(12)  // 节数
+                .monthWidthDp(40)  // 月份宽度
+                .cornerAll(20)     // 圆角弧度
+                .marTop(10)        // 顶部距离
+                .marLeft(10)       // 左侧距离
                 //透明度
                 //日期栏0.1f、侧边栏0.1f，周次选择栏0.6f
                 //透明度范围为0->1，0为全透明，1为不透明

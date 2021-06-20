@@ -1,6 +1,7 @@
 package com.example.hhuclassschedule;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ public class ParseHtmlActivity extends AppCompatActivity {
 
     /**
      * 打开网页
+     *
      * @throws IOException
      */
     public void openWeb() throws IOException {
@@ -133,7 +135,7 @@ public class ParseHtmlActivity extends AppCompatActivity {
     /**
      * 导入课程保存为json字符串
      */
-    public void importSubject(){
+    public void importSubject() {
         // 导入课程
         tv_import = findViewById(R.id.tv_button);
         tv_import.setOnClickListener(new View.OnClickListener() {
@@ -155,12 +157,12 @@ public class ParseHtmlActivity extends AppCompatActivity {
 //                                editor.clear();
 //                                editor.putString("HTML_TO_SUBJECT", value); //存入json串
 //                                editor.commit();//提交
-                                SharedPreferencesUtil.init(ContextApplication.getAppContext(),"COURSE_DATA").putString("HTML_TO_SUBJECT", value);
-                                SharedPreferencesUtil.init(ContextApplication.getAppContext(),"COURSE_DATA").remove("SUBJECT_LIST");
+                                SharedPreferencesUtil.init(ContextApplication.getAppContext(), "COURSE_DATA").putString("HTML_TO_SUBJECT", value);
+                                SharedPreferencesUtil.init(ContextApplication.getAppContext(), "COURSE_DATA").remove("SUBJECT_LIST");
                                 Log.e(TAG, "HTML_TO_SUBJECT: " + value);
 
                                 Intent intent = new Intent(ParseHtmlActivity.this, MainActivity.class);
-                                if(MainActivity.mainActivity != null){
+                                if (MainActivity.mainActivity != null) {
                                     MainActivity.mainActivity.finish(); // 销毁MainActivity
                                 }
                                 startActivity(intent);

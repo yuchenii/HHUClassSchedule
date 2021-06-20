@@ -36,7 +36,7 @@ public class TimeCalUtil {
      * 计算某一时间 某几周前的Date:
      * 计算date时间在weeksNum周前的Date
      */
-    public static Date calWeeksAgo(Date date, int weeksNum){
+    public static Date calWeeksAgo(Date date, int weeksNum) {
         return new Date(date.getTime() - weeksNum * 7 * 24 * 60 * 60 * 1000);
     }
 

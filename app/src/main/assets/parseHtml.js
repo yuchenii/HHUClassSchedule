@@ -50,7 +50,7 @@ function getSections(str_sections) {
 
 function parseHtml() {
 
-    let courseTable = (document.getElementById("mainDIV")).querySelector("#courseTableBody");
+    let courseTable = document.querySelector("#courseTableBody");
     let trs = courseTable.querySelectorAll("tr");
     let sectionTimes = [];
     let courseInfos = [];
