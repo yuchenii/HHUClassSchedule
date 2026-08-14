@@ -1,3 +1,5 @@
+
+
 # HHUClassSchedule
 
 > HHU课程表是一个简洁高效无广告的课程表软件，正在开发中
@@ -43,6 +45,7 @@
 # 注意事项
 
 - pr提交到dev分支，不是main分支！
+- 运行本项目，请使用 Android Studio 打开项目目录，同步 Gradle 后即可编译运行。
 
 
 # 感谢
